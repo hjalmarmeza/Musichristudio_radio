@@ -638,11 +638,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Enter") handleAdminLogin();
     });
 
-    // 🤫 Backdoor A: URL query parameters check
+    // 🤫 Backdoor A: URL query parameters or URL hash check
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get("admin") === "true" || urlParams.get("edit") === "true") {
+    const hasAdminQuery = urlParams.get("admin") === "true" || urlParams.get("edit") === "true";
+    const hasAdminHash = window.location.hash === "#admin" || window.location.hash === "#edit";
+
+    if (hasAdminQuery || hasAdminHash) {
         adminTriggerBtn.style.display = "flex";
+        // Directly open the admin modal login for outstanding UX
+        setTimeout(() => {
+            openAdminPanel();
+        }, 300);
     }
+
+    // Dynamic Hash Listener to open the Admin Modal without forcing a page reload
+    window.addEventListener("hashchange", () => {
+        if (window.location.hash === "#admin" || window.location.hash === "#edit") {
+            adminTriggerBtn.style.display = "flex";
+            openAdminPanel();
+        }
+    });
 
     // 🤫 Backdoor B: 5-click Logo Easter Egg
     const logoArea = document.querySelector(".logo-area");
