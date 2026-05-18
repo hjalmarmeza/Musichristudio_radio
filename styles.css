@@ -1169,7 +1169,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     left: 0;
     width: 200%;
     height: 100%;
-    background-image: url('assets/world_map_seamless.png');
+    background-image: url('assets/world_map_seamless_color.png');
     background-repeat: repeat-x;
     background-size: 50% 100%;
     background-position: 0 0;
@@ -1185,10 +1185,10 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     height: 100%;
     border-radius: 50%;
     pointer-events: none;
-    box-shadow: inset 15px -15px 35px rgba(0, 0, 0, 0.9),
-                inset -8px 8px 15px rgba(255, 255, 255, 0.08),
-                inset 0 0 30px rgba(223, 195, 130, 0.15);
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.9) 100%);
+    box-shadow: inset 20px -20px 40px rgba(0, 0, 0, 0.95),
+                inset -10px 10px 25px rgba(0, 242, 254, 0.45),
+                inset 0 0 35px rgba(0, 242, 254, 0.25);
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.92) 100%);
     z-index: 2;
 }
 
