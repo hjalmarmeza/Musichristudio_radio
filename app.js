@@ -759,6 +759,832 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // -------------------------------------------------------------
+    // 🌟 LISTADO DE LIBROS DE LA BIBLIA (REINA VALERA 1960 API)
+    // -------------------------------------------------------------
+    const BIBLE_BOOKS = [
+        { display: "Génesis", query: "genesis", chapters: 50 },
+        { display: "Éxodo", query: "exodo", chapters: 40 },
+        { display: "Levítico", query: "levitico", chapters: 27 },
+        { display: "Números", query: "numeros", chapters: 36 },
+        { display: "Deuteronomio", query: "deuteronomio", chapters: 34 },
+        { display: "Josué", query: "josue", chapters: 24 },
+        { display: "Jueces", query: "jueces", chapters: 21 },
+        { display: "Rut", query: "rut", chapters: 4 },
+        { display: "1 Samuel", query: "1-samuel", chapters: 31 },
+        { display: "2 Samuel", query: "2-samuel", chapters: 24 },
+        { display: "1 Reyes", query: "1-reyes", chapters: 22 },
+        { display: "2 Reyes", query: "2-reyes", chapters: 25 },
+        { display: "1 Crónicas", query: "1-cronicas", chapters: 29 },
+        { display: "2 Crónicas", query: "2-cronicas", chapters: 36 },
+        { display: "Esdras", query: "esdras", chapters: 10 },
+        { display: "Nehemías", query: "nehemias", chapters: 13 },
+        { display: "Ester", query: "ester", chapters: 10 },
+        { display: "Job", query: "job", chapters: 42 },
+        { display: "Salmos", query: "salmos", chapters: 150 },
+        { display: "Proverbios", query: "proverbios", chapters: 31 },
+        { display: "Eclesiastés", query: "eclesiastes", chapters: 12 },
+        { display: "Cantares", query: "cantares", chapters: 8 },
+        { display: "Isaías", query: "isaias", chapters: 66 },
+        { display: "Jeremías", query: "jeremias", chapters: 52 },
+        { display: "Lamentaciones", query: "lamentaciones", chapters: 5 },
+        { display: "Ezequiel", query: "ezequiel", chapters: 48 },
+        { display: "Daniel", query: "daniel", chapters: 12 },
+        { display: "Oseas", query: "oseas", chapters: 14 },
+        { display: "Joel", query: "joel", chapters: 3 },
+        { display: "Amós", query: "amos", chapters: 9 },
+        { display: "Abdías", query: "abdias", chapters: 1 },
+        { display: "Jonás", query: "jonas", chapters: 4 },
+        { display: "Miqueas", query: "miqueas", chapters: 7 },
+        { display: "Nahúm", query: "nahum", chapters: 3 },
+        { display: "Habacuc", query: "habacuc", chapters: 3 },
+        { display: "Sofonías", query: "sofonias", chapters: 3 },
+        { display: "Hageo", query: "hageo", chapters: 2 },
+        { display: "Zacarías", query: "zacarias", chapters: 14 },
+        { display: "Malaquías", query: "malaquias", chapters: 4 },
+        { display: "Mateo", query: "mateo", chapters: 28 },
+        { display: "Marcos", query: "marcos", chapters: 16 },
+        { display: "Lucas", query: "lucas", chapters: 24 },
+        { display: "Juan", query: "juan", chapters: 21 },
+        { display: "Hechos", query: "hechos", chapters: 28 },
+        { display: "Romanos", query: "romanos", chapters: 16 },
+        { display: "1 Corintios", query: "1-corintios", chapters: 16 },
+        { display: "2 Corintios", query: "2-corintios", chapters: 13 },
+        { display: "Gálatas", query: "galatas", chapters: 6 },
+        { display: "Efesios", query: "efesios", chapters: 6 },
+        { display: "Filipenses", query: "filipenses", chapters: 4 },
+        { display: "Colosenses", query: "colosenses", chapters: 4 },
+        { display: "1 Tesalonicenses", query: "1-tesalonicenses", chapters: 5 },
+        { display: "2 Tesalonicenses", query: "2-tesalonicenses", chapters: 3 },
+        { display: "1 Timoteo", query: "1-timoteo", chapters: 6 },
+        { display: "2 Timoteo", query: "2-timoteo", chapters: 4 },
+        { display: "Tito", query: "tito", chapters: 3 },
+        { display: "Filemón", query: "filemon", chapters: 1 },
+        { display: "Hebreos", query: "hebreos", chapters: 13 },
+        { display: "Santiago", query: "santiago", chapters: 5 },
+        { display: "1 Pedro", query: "1-pedro", chapters: 5 },
+        { display: "2 Pedro", query: "2-pedro", chapters: 3 },
+        { display: "1 Juan", query: "1-juan", chapters: 5 },
+        { display: "2 Juan", query: "2-juan", chapters: 1 },
+        { display: "3 Juan", query: "3-juan", chapters: 1 },
+        { display: "Judas", query: "judas", chapters: 1 },
+        { display: "Apocalipsis", query: "apocalipsis", chapters: 22 }
+    ];
+
+    // -------------------------------------------------------------
+    // 🌟 BIBLIA INTERACTIVA REINA VALERA 1960 ENGINE
+    // -------------------------------------------------------------
+    let currentBookIndex = 18; // Default: Salmos
+    let currentChapter = 23;    // Default: Salmo 23
+
+    function initInteractiveBible() {
+        const bookSelect = document.getElementById("bible-book-select");
+        const chapterSelect = document.getElementById("bible-chapter-select");
+        
+        if (!bookSelect || !chapterSelect) return;
+        
+        // Populate books selector
+        bookSelect.innerHTML = "";
+        BIBLE_BOOKS.forEach((book, index) => {
+            const opt = document.createElement("option");
+            opt.value = index;
+            opt.textContent = book.display;
+            bookSelect.appendChild(opt);
+        });
+        
+        // Set initial values
+        bookSelect.value = currentBookIndex;
+        populateChapters();
+        chapterSelect.value = currentChapter;
+        
+        // Setup change event for book
+        bookSelect.addEventListener("change", (e) => {
+            currentBookIndex = parseInt(e.target.value);
+            currentChapter = 1;
+            populateChapters();
+            loadBibleChapter();
+        });
+        
+        // Setup change event for chapter
+        chapterSelect.addEventListener("change", (e) => {
+            currentChapter = parseInt(e.target.value);
+            loadBibleChapter();
+        });
+
+        // Setup change event for verse selection
+        const verseSelect = document.getElementById("bible-verse-select");
+        if (verseSelect) {
+            verseSelect.addEventListener("change", () => {
+                applyVerseFilter();
+            });
+        }
+        
+        // Setup arrow buttons navigation
+        document.getElementById("bible-prev-btn").addEventListener("click", () => {
+            if (currentChapter > 1) {
+                currentChapter--;
+                chapterSelect.value = currentChapter;
+                loadBibleChapter();
+            } else if (currentBookIndex > 0) {
+                currentBookIndex--;
+                bookSelect.value = currentBookIndex;
+                populateChapters();
+                currentChapter = BIBLE_BOOKS[currentBookIndex].chapters;
+                chapterSelect.value = currentChapter;
+                loadBibleChapter();
+            }
+        });
+        
+        document.getElementById("bible-next-btn").addEventListener("click", () => {
+            const maxChapters = BIBLE_BOOKS[currentBookIndex].chapters;
+            if (currentChapter < maxChapters) {
+                currentChapter++;
+                chapterSelect.value = currentChapter;
+                loadBibleChapter();
+            } else if (currentBookIndex < BIBLE_BOOKS.length - 1) {
+                currentBookIndex++;
+                bookSelect.value = currentBookIndex;
+                populateChapters();
+                currentChapter = 1;
+                chapterSelect.value = currentChapter;
+                loadBibleChapter();
+            }
+        });
+
+        // Copy selection to clipboard (respecting single verse if selected)
+        document.getElementById("copy-chapter-btn").addEventListener("click", () => {
+            const contentArea = document.getElementById("bible-content-area");
+            const selectedVerseVal = document.getElementById("bible-verse-select").value;
+            if (!contentArea) return;
+            
+            const book = BIBLE_BOOKS[currentBookIndex];
+            let formatted = "";
+            
+            if (selectedVerseVal === "all") {
+                const text = contentArea.innerText;
+                formatted = `📖 *${book.display} Capítulo ${currentChapter} (Reina Valera 1960)* 📖\n\n${text}\n\n📻 Escucha MusiChris Studio Radio: https://www.youtube.com/@Musichris_Studio`;
+            } else {
+                const targetNum = parseInt(selectedVerseVal);
+                const verseEl = document.getElementById(`verse-item-${targetNum}`);
+                // Remove verse number prefix from visual copy
+                const verseText = verseEl ? verseEl.innerText.replace(new RegExp(`^${targetNum}\\s*`), "").trim() : "";
+                formatted = `📖 *${book.display} ${currentChapter}:${targetNum} (Reina Valera 1960)* 📖\n\n"${verseText}"\n\n📻 Escucha MusiChris Studio Radio: https://www.youtube.com/@Musichris_Studio`;
+            }
+            
+            navigator.clipboard.writeText(formatted).then(() => {
+                alert("📋 ¡Selección copiada al portapapeles con éxito! Listo para bendecir.");
+            });
+        });
+
+        // Share selection via WhatsApp (respecting single verse if selected)
+        document.getElementById("share-chapter-btn").addEventListener("click", () => {
+            const book = BIBLE_BOOKS[currentBookIndex];
+            const selectedVerseVal = document.getElementById("bible-verse-select").value;
+            let text = "";
+            
+            if (selectedVerseVal === "all") {
+                text = `Te comparto la palabra de Dios de *${book.display} Capítulo ${currentChapter} (Reina Valera 1960)* 📖\n\nLee el capítulo completo en vivo ingresando aquí:\n👉 https://www.youtube.com/@Musichris_Studio`;
+            } else {
+                const targetNum = parseInt(selectedVerseVal);
+                const verseEl = document.getElementById(`verse-item-${targetNum}`);
+                const verseText = verseEl ? verseEl.innerText.replace(new RegExp(`^${targetNum}\\s*`), "").trim() : "";
+                text = `Te comparto la palabra de Dios de *${book.display} ${currentChapter}:${targetNum} (Reina Valera 1960)* 📖\n\n"${verseText}"\n\nSintoniza MusiChris Studio Radio aquí:\n👉 https://www.youtube.com/@Musichris_Studio`;
+            }
+            
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+            window.open(url, "_blank");
+        });
+    }
+
+    function populateChapters() {
+        const chapterSelect = document.getElementById("bible-chapter-select");
+        if (!chapterSelect) return;
+        
+        chapterSelect.innerHTML = "";
+        const maxChapters = BIBLE_BOOKS[currentBookIndex].chapters;
+        
+        for (let i = 1; i <= maxChapters; i++) {
+            const opt = document.createElement("option");
+            opt.value = i;
+            opt.textContent = `Capítulo ${i}`;
+            chapterSelect.appendChild(opt);
+        }
+    }
+
+    function applyVerseFilter() {
+        const selectedVerseVal = document.getElementById("bible-verse-select").value;
+        const verseItems = document.querySelectorAll(".bible-verse-item");
+        const copyBtn = document.getElementById("copy-chapter-btn");
+        const shareBtn = document.getElementById("share-chapter-btn");
+        
+        if (selectedVerseVal === "all") {
+            if (copyBtn) copyBtn.innerHTML = `<i class="fa-solid fa-copy"></i> Copiar Capítulo`;
+            if (shareBtn) shareBtn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Compartir`;
+            
+            verseItems.forEach(item => {
+                item.classList.remove("highlighted");
+                item.style.opacity = "1";
+                item.style.transform = "scale(1)";
+            });
+        } else {
+            if (copyBtn) copyBtn.innerHTML = `<i class="fa-solid fa-copy"></i> Copiar Versículo`;
+            if (shareBtn) shareBtn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Compartir Versículo`;
+            
+            const targetNum = parseInt(selectedVerseVal);
+            verseItems.forEach(item => {
+                const itemNum = parseInt(item.id.replace("verse-item-", ""));
+                if (itemNum === targetNum) {
+                    item.classList.add("highlighted");
+                    item.style.opacity = "1";
+                    item.style.transform = "scale(1.02)";
+                    item.scrollIntoView({ behavior: "smooth", block: "center" });
+                } else {
+                    item.classList.remove("highlighted");
+                    item.style.opacity = "0.2";
+                    item.style.transform = "scale(0.98)";
+                }
+            });
+        }
+    }
+
+    function loadBibleChapter() {
+        const loader = document.getElementById("bible-loader");
+        const contentArea = document.getElementById("bible-content-area");
+        const verseSelect = document.getElementById("bible-verse-select");
+        
+        if (!contentArea || !loader) return;
+        
+        loader.classList.add("active");
+        
+        const book = BIBLE_BOOKS[currentBookIndex];
+        const url = `https://bible-api.deno.dev/api/read/rv1960/${book.query}/${currentChapter}`;
+        
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                loader.classList.remove("active");
+                
+                if (data && data.vers) {
+                    contentArea.innerHTML = "";
+                    
+                    // Reset and Populate Verse Selector
+                    if (verseSelect) {
+                        verseSelect.innerHTML = `<option value="all">Todos los versículos</option>`;
+                        data.vers.forEach(verse => {
+                            const opt = document.createElement("option");
+                            opt.value = verse.number;
+                            opt.textContent = `Versículo ${verse.number}`;
+                            verseSelect.appendChild(opt);
+                        });
+                    }
+                    
+                    data.vers.forEach(verse => {
+                        const verseDiv = document.createElement("div");
+                        verseDiv.className = "bible-verse-item";
+                        verseDiv.id = `verse-item-${verse.number}`;
+                        verseDiv.innerHTML = `<span class="bible-verse-num">${verse.number}</span> ${verse.verse}`;
+                        contentArea.appendChild(verseDiv);
+                    });
+                    
+                    // Scroll to top of viewport
+                    document.querySelector(".bible-reader-viewport").scrollTop = 0;
+                    
+                    // Apply any selected verse filter
+                    applyVerseFilter();
+                } else {
+                    contentArea.innerHTML = `<p class="error-msg" style="text-align: center; padding: 20px;">⚠️ No se pudo cargar el capítulo. Inténtalo nuevamente.</p>`;
+                }
+            })
+            .catch(err => {
+                loader.classList.remove("active");
+                contentArea.innerHTML = `<p class="error-msg" style="text-align: center; padding: 20px;">⚠️ Error de conexión al cargar la palabra sagrada.</p>`;
+                console.error(err);
+            });
+    }
+
+    // -------------------------------------------------------------
+    // 🛐 MURO DE CLAMOR EN VIVO (FIREBASE REALTIME DB)
+    // -------------------------------------------------------------
+    function fetchPrayerWall() {
+        fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/prayers.json")
+            .then(res => res.json())
+            .then(data => {
+                const prayersScroller = document.getElementById("prayers-scroller");
+                if (!prayersScroller) return;
+                
+                prayersScroller.innerHTML = "";
+                
+                let items = [];
+                if (data) {
+                    items = Object.values(data).reverse(); // Latest first
+                }
+                
+                // Add some default beautiful fallback prayers if empty
+                if (items.length === 0) {
+                    items = [
+                        { name: "MusiChris Studio", text: "Orando en cadena global de fe y bendición para todo el mundo." },
+                        { name: "Hermano Pedro", text: "Clamando por restauración familiar y paz espiritual en cada hogar." },
+                        { name: "Hermana María", text: "Dando gracias por un milagro financiero y provisión diaria." }
+                    ];
+                }
+                
+                // Double the list to make seamless scrolling work perfectly
+                const renderItems = [...items, ...items];
+                
+                renderItems.forEach(item => {
+                    const el = document.createElement("div");
+                    el.className = "scroll-item";
+                    el.innerHTML = `✨ <span class="item-name">${item.name || "Anónimo"}:</span> ${item.text}`;
+                    prayersScroller.appendChild(el);
+                });
+            })
+            .catch(err => {
+                console.error("Error loading prayers:", err);
+            });
+    }
+
+    // -------------------------------------------------------------
+    // 🌾 PAN DE VIDA DIARIO (FIREBASE REALTIME DB)
+    // -------------------------------------------------------------
+    async function fetchDailyDevotional() {
+        try {
+            const res = await fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/daily_devotional.json");
+            const data = await res.json();
+            
+            if (data && data.titulo) {
+                // Hay devocional, rellenar y activar
+                document.getElementById("devotional-new-badge").style.display = "inline-block";
+                document.getElementById("devotional-preview-text").textContent = `"${data.revelacion_rhema.substring(0, 80)}..."`;
+                
+                document.getElementById("devotional-date").textContent = data.fecha;
+                document.getElementById("devotional-title").textContent = data.titulo;
+                document.getElementById("devotional-verse-text").textContent = `"${data.promesa_texto}"`;
+                document.getElementById("devotional-verse-ref").textContent = data.promesa_cita;
+                document.getElementById("devotional-content").textContent = data.revelacion_rhema;
+                document.getElementById("devotional-action").textContent = data.accion_diaria;
+                
+                // Add Share functionality for Devocional
+                const shareBtn = document.getElementById("share-devotional-btn");
+                if (shareBtn) {
+                    shareBtn.onclick = () => {
+                        const shareMsg = `🍞 *Pan de Vida Diario* 🍞\n\n*${data.promesa_cita}*\n"${data.promesa_texto}"\n\n🔥 *Revelación:* ${data.revelacion_rhema}\n\n📻 Edifica tu vida escuchando la radio cristiana en vivo 24/7:\n👉 https://www.youtube.com/@Musichris_Studio`;
+                        const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMsg)}`;
+                        window.open(url, "_blank");
+                    };
+                }
+            } else {
+                document.getElementById("devotional-preview-text").textContent = "No hay un nuevo mensaje de hoy. Regresa mañana para recibir alimento fresco.";
+                document.getElementById("devotional-title").textContent = "Sin actualización de hoy";
+            }
+        } catch (error) {
+            console.error("Error fetching daily devotional:", error);
+            document.getElementById("devotional-preview-text").textContent = "No pudimos cargar la promesa de hoy. Intenta de nuevo más tarde.";
+        }
+    }
+
+    function submitPrayerToWall() {
+        const nameInput = document.getElementById("wall-name");
+        const textInput = document.getElementById("wall-text");
+        
+        if (!nameInput || !textInput) return;
+        
+        const name = nameInput.value.trim() || "Anónimo";
+        const text = textInput.value.trim();
+        
+        if (!text) {
+            alert("Por favor ingresa una petición de oración.");
+            return;
+        }
+        
+        const submitBtn = document.getElementById("submit-wall-btn");
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Publicando...`;
+        
+        fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/prayers.json", {
+            method: "POST",
+            body: JSON.stringify({
+                name: name,
+                text: text,
+                timestamp: Date.now()
+            })
+        })
+        .then(res => res.json())
+        .then(() => {
+            nameInput.value = "";
+            textInput.value = "";
+            
+            // Close modal
+            document.getElementById("prayer-wall-modal").classList.remove("active");
+            
+            // Show success status
+            alert("🙏 ¡Petición publicada con éxito! Toda la comunidad estará intercediendo por ti.");
+            
+            // Refresh Wall
+            fetchPrayerWall();
+        })
+        .catch(err => {
+            console.error("Error submitting prayer:", err);
+            alert("Hubo un problema al publicar. Inténtalo nuevamente.");
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Publicar en el Muro`;
+        });
+    }
+
+    // -------------------------------------------------------------
+    // 🛠️ BINDING EVENT LISTENERS FOR MODALS & ACTIONS
+    // -------------------------------------------------------------
+    function bindSpiritualWidgets() {
+        // Modals Trigger Handlers
+        const bibleModal = document.getElementById("bible-modal");
+        const openBibleWidget = document.getElementById("open-bible-widget");
+        const closeBibleBtn = document.getElementById("close-bible-btn");
+        
+        if (openBibleWidget && bibleModal) {
+            openBibleWidget.addEventListener("click", (e) => {
+                // Prevent if clicked internal elements
+                if (e.target.tagName !== "BUTTON" && !e.target.closest("button")) {
+                    bibleModal.classList.add("active");
+                    loadBibleChapter();
+                }
+            });
+            
+            // Add listener on opening button directly
+            const openBtn = openBibleWidget.querySelector(".widget-btn");
+            if (openBtn) {
+                openBtn.addEventListener("click", () => {
+                    bibleModal.classList.add("active");
+                    loadBibleChapter();
+                });
+            }
+        }
+        
+        if (closeBibleBtn && bibleModal) {
+            closeBibleBtn.addEventListener("click", () => {
+                bibleModal.classList.remove("active");
+            });
+            
+            // Close on clicking overlay
+            bibleModal.addEventListener("click", (e) => {
+                if (e.target === bibleModal) {
+                    bibleModal.classList.remove("active");
+                }
+            });
+        }
+        
+        const prayerWallModal = document.getElementById("prayer-wall-modal");
+        const openPrayerWallBtn = document.getElementById("open-prayer-wall-btn");
+        const closePrayerWallBtn = document.getElementById("close-prayer-wall-btn");
+        const submitWallBtn = document.getElementById("submit-wall-btn");
+        
+        if (openPrayerWallBtn && prayerWallModal) {
+            openPrayerWallBtn.addEventListener("click", () => {
+                prayerWallModal.classList.add("active");
+            });
+        }
+        
+        if (closePrayerWallBtn && prayerWallModal) {
+            closePrayerWallBtn.addEventListener("click", () => {
+                prayerWallModal.classList.remove("active");
+            });
+            
+            prayerWallModal.addEventListener("click", (e) => {
+                if (e.target === prayerWallModal) {
+                    prayerWallModal.classList.remove("active");
+                }
+            });
+        }
+        
+        if (submitWallBtn) {
+            submitWallBtn.addEventListener("click", submitPrayerToWall);
+        }
+
+        // Devotional Modal Triggers
+        const devotionalModal = document.getElementById("devotional-modal");
+        const openDevotionalWidget = document.getElementById("open-devotional-widget");
+        const closeDevotionalBtn = document.getElementById("close-devotional-btn");
+
+        if (openDevotionalWidget && devotionalModal) {
+            openDevotionalWidget.addEventListener("click", (e) => {
+                if (e.target.tagName !== "BUTTON" && !e.target.closest("button")) {
+                    devotionalModal.classList.add("active");
+                }
+            });
+            const openBtn = openDevotionalWidget.querySelector(".widget-btn");
+            if (openBtn) {
+                openBtn.addEventListener("click", () => {
+                    devotionalModal.classList.add("active");
+                });
+            }
+        }
+
+        if (closeDevotionalBtn && devotionalModal) {
+            closeDevotionalBtn.addEventListener("click", () => {
+                devotionalModal.classList.remove("active");
+            });
+            devotionalModal.addEventListener("click", (e) => {
+                if (e.target === devotionalModal) {
+                    devotionalModal.classList.remove("active");
+                }
+            });
+        }
+    }
+
+    // 🎨 CREADOR DE POSTALES DE FE (INTERACTIVE CLIENT-SIDE WIDGET)
+    function initPostcardCreator() {
+        const previewCard = document.getElementById("postcard-preview-card");
+        const videoBg = document.getElementById("postcard-video-bg");
+        const textPreview = document.getElementById("postcard-text-preview");
+        const bgThumbsGrid = document.getElementById("bg-thumbs-grid");
+        const textarea = document.getElementById("postcard-textarea");
+        const charCounter = document.getElementById("char-counter");
+        const chipsContainer = document.getElementById("postcard-chips-container");
+        const btnShare = document.getElementById("btn-share-postcard");
+        const btnDownload = document.getElementById("btn-download-postcard");
+
+        if (!previewCard || !videoBg || !textPreview || !bgThumbsGrid || !textarea) return;
+
+        const POSTCARD_VIDEOS = [
+            { id: 1, name: "Luz Celestial", src: "assets/videos/250709_medium.mp4", icon: "fa-solid fa-sun" },
+            { id: 2, name: "Bosque Sagrado", src: "assets/videos/11957221_1080_1920_60fps.mp4", icon: "fa-solid fa-tree" },
+            { id: 3, name: "Atardecer Divino", src: "assets/videos/13666742-uhd_1992_3542_30fps.mp4", icon: "fa-solid fa-water" },
+            { id: 4, name: "Cielo Estrellado", src: "assets/videos/14744791_1080_1920_30fps.mp4", icon: "fa-solid fa-star" },
+            { id: 5, name: "Agua de Vida", src: "assets/videos/199379-910162329_medium.mp4", icon: "fa-solid fa-droplet" },
+            { id: 6, name: "Lluvia de Fe", src: "assets/videos/264472_medium.mp4", icon: "fa-solid fa-cloud-showers-heavy" },
+            { id: 7, name: "Cosecha Santa", src: "assets/videos/312257_medium.mp4", icon: "fa-solid fa-wheat-awn" },
+            { id: 8, name: "Nubes de Gloria", src: "assets/videos/6291877-hd_1080_1920_30fps.mp4", icon: "fa-solid fa-cloud" },
+            { id: 9, name: "Alturas Divinas", src: "assets/videos/12386447_2160_3840_60fps.mp4", icon: "fa-solid fa-mountain" }
+        ];
+
+        const INSPIRATIONAL_PHRASES = [
+            "\"El Señor es mi pastor; nada me faltará.\" — Salmo 23:1",
+            "\"Todo lo puedo en Cristo que me fortalece.\" — Filipenses 4:13",
+            "\"No temas, porque yo estoy contigo; no desmayes.\" — Isaías 41:10",
+            "\"Tu gracia es suficiente para mí, pues mi poder se perfecciona en la debilidad.\" — 2 Corintios 12:9",
+            "\"Jehová es mi luz y mi salvación; ¿de quién temeré?\" — Salmo 27:1",
+            "\"Clama a mí, y yo te responderé, y te enseñaré cosas grandes.\" — Jeremías 33:3",
+            "\"El Señor guardará tu salida y tu entrada desde ahora y para siempre.\" — Salmo 121:8",
+            "\"Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal.\" — Jeremías 29:11"
+        ];
+
+        let selectedVideo = POSTCARD_VIDEOS[0];
+
+        // 1. Render Background Selector Thumbnails (3x3 grid)
+        bgThumbsGrid.innerHTML = "";
+        POSTCARD_VIDEOS.forEach((video, index) => {
+            const thumb = document.createElement("button");
+            thumb.className = `bg-thumb ${index === 0 ? "active" : ""}`;
+            thumb.title = video.name;
+            thumb.setAttribute("aria-label", video.name);
+            
+            thumb.innerHTML = `
+                <i class="${video.icon}"></i>
+                <span>${video.name}</span>
+            `;
+
+            thumb.addEventListener("click", () => {
+                // Remove active class from all thumbs
+                document.querySelectorAll(".bg-thumb").forEach(t => t.classList.remove("active"));
+                // Add active to current
+                thumb.classList.add("active");
+                // Update playing video source
+                selectedVideo = video;
+                videoBg.src = video.src;
+                videoBg.load();
+                videoBg.play().catch(err => console.log("Video preview autoplay error:", err));
+            });
+            bgThumbsGrid.appendChild(thumb);
+        });
+
+        // Initialize first video preview
+        videoBg.src = selectedVideo.src;
+        videoBg.load();
+        videoBg.play().catch(err => console.log("Video initial play error:", err));
+
+        // 2. Render Inspirational Chips
+        chipsContainer.innerHTML = "";
+        INSPIRATIONAL_PHRASES.forEach((phrase) => {
+            const chip = document.createElement("div");
+            chip.className = "postcard-chip";
+            chip.innerText = phrase.split(" — ")[0].replace(/\"/g, ""); // Shorten for the chip label
+            chip.addEventListener("click", () => {
+                textarea.value = phrase;
+                updatePreviewText(phrase);
+            });
+            chipsContainer.appendChild(chip);
+        });
+
+        // 3. Setup textarea event listeners
+        textarea.addEventListener("input", (e) => {
+            const text = e.target.value;
+            updatePreviewText(text);
+        });
+
+        function updatePreviewText(text) {
+            const cleanText = text.trim() || "\"Escribe aquí tu mensaje de fe...\"";
+            textPreview.innerText = cleanText;
+            charCounter.innerText = text.length;
+        }
+
+        // Set default text
+        textarea.value = INSPIRATIONAL_PHRASES[0];
+        updatePreviewText(INSPIRATIONAL_PHRASES[0]);
+
+        // Helper to draw video or image maintaining cover ratio (object-fit: cover for canvas)
+        function drawImageCover(ctx, img, x, y, w, h) {
+            const imgWidth = img.videoWidth || img.width;
+            const imgHeight = img.videoHeight || img.height;
+            
+            if (!imgWidth || !imgHeight) {
+                // Fallback background color if not fully loaded
+                ctx.fillStyle = "#0c0614";
+                ctx.fillRect(x, y, w, h);
+                return;
+            }
+
+            const imgRatio = imgWidth / imgHeight;
+            const canvasRatio = w / h;
+            let sx, sy, sWidth, sHeight;
+
+            if (imgRatio > canvasRatio) {
+                sHeight = imgHeight;
+                sWidth = imgHeight * canvasRatio;
+                sx = (imgWidth - sWidth) / 2;
+                sy = 0;
+            } else {
+                sWidth = imgWidth;
+                sHeight = imgWidth / canvasRatio;
+                sx = 0;
+                sy = (imgHeight - sHeight) / 2;
+            }
+
+            ctx.drawImage(img, sx, sy, sWidth, sHeight, x, y, w, h);
+        }
+
+        // Helper to generate the high-res off-screen canvas in vertical 9:16 aspect ratio
+        function generateHighResCanvas() {
+            const canvas = document.createElement("canvas");
+            canvas.width = 1080;
+            canvas.height = 1920;
+            const ctx = canvas.getContext("2d");
+
+            // Enable smoothing for crisp text and graphics
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+
+            // 1. Paint Current Background Video Frame
+            drawImageCover(ctx, videoBg, 0, 0, canvas.width, canvas.height);
+
+            // 2. Draw Translucent Dark Gradient Overlay for optimal readability
+            const overlayGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            overlayGrad.addColorStop(0, "rgba(0, 0, 0, 0.55)");
+            overlayGrad.addColorStop(0.4, "rgba(0, 0, 0, 0.15)");
+            overlayGrad.addColorStop(0.6, "rgba(0, 0, 0, 0.25)");
+            overlayGrad.addColorStop(1, "rgba(0, 0, 0, 0.85)");
+            ctx.fillStyle = overlayGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 3. Top Watermark
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetY = 2;
+            ctx.font = "bold 30px 'Outfit', 'Segoe UI', sans-serif";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+            ctx.textAlign = "center";
+            ctx.fillText("📻 MUSICHRIS STUDIO RADIO", canvas.width / 2, 180);
+
+            // 4. Main Text rendering with auto wrap and auto font sizing
+            const rawText = textarea.value.trim() || "\"Escribe aquí tu mensaje de fe...\"";
+            
+            // Adjust font size dynamically based on length of text
+            let fontSize = 60;
+            if (rawText.length < 50) fontSize = 72;
+            else if (rawText.length > 120) fontSize = 48;
+
+            ctx.font = `italic bold ${fontSize}px 'Outfit', 'Segoe UI', sans-serif`;
+            ctx.fillStyle = "#ffffff";
+            
+            // Text shadow for high readability on any gradient background
+            ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 8;
+
+            const maxWidth = canvas.width - 200;
+            const words = rawText.split(" ");
+            let lines = [];
+            let currentLine = "";
+
+            for (let n = 0; n < words.length; n++) {
+                const testLine = currentLine + words[n] + " ";
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = words[n] + " ";
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine.trim());
+
+            // Draw wrapped lines centered vertically
+            const lineHeight = fontSize * 1.5;
+            const totalHeight = lines.length * lineHeight;
+            let startY = (canvas.height / 2) - (totalHeight / 2) + (lineHeight / 2);
+
+            lines.forEach(line => {
+                ctx.fillText(line, canvas.width / 2, startY);
+                startY += lineHeight;
+            });
+
+            // 5. Bottom Watermark
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetY = 2;
+            ctx.font = "26px 'Outfit', 'Segoe UI', sans-serif";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            ctx.fillText("Sintoniza en vivo: musichris.studio", canvas.width / 2, canvas.height - 180);
+
+            return canvas;
+        }
+
+        // 4. Download Action
+        btnDownload.addEventListener("click", () => {
+            const originalText = btnDownload.innerHTML;
+            btnDownload.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin'></i> Generando...";
+            btnDownload.disabled = true;
+
+            setTimeout(() => {
+                try {
+                    const canvas = generateHighResCanvas();
+                    const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
+                    const link = document.createElement("a");
+                    link.download = "MusiChris_Postal_de_Fe.jpg";
+                    link.href = dataUrl;
+                    link.click();
+                } catch (err) {
+                    console.error("Fallo al descargar la postal:", err);
+                    alert("No pudimos autodescargar la imagen. Intenta en otro navegador.");
+                } finally {
+                    btnDownload.innerHTML = originalText;
+                    btnDownload.disabled = false;
+                }
+            }, 300);
+        });
+
+        // 5. Share Action
+        btnShare.addEventListener("click", () => {
+            const originalText = btnShare.innerHTML;
+            btnShare.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin'></i> Preparando...";
+            btnShare.disabled = true;
+
+            setTimeout(() => {
+                try {
+                    const canvas = generateHighResCanvas();
+                    canvas.toBlob((blob) => {
+                        if (!blob) throw new Error("Fallo al convertir la postal en datos binarios.");
+                        
+                        const file = new File([blob], "Postal_de_Fe.jpg", { type: "image/jpeg" });
+                        const shareText = "🕊️ Mira esta hermosa postal de fe que diseñé en MusiChris Studio Radio. Te invito a sintonizar la radio en vivo y edificar tu vida:\n\n👉 https://musichris.studio";
+
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            navigator.share({
+                                files: [file],
+                                title: "Postal de Fe - MusiChris",
+                                text: shareText
+                            }).catch(err => {
+                                console.log("Compartido cancelado o fallido:", err);
+                            });
+                        } else {
+                            // Fallback for sharing
+                            const downloadLink = document.createElement("a");
+                            downloadLink.download = "MusiChris_Postal_de_Fe.jpg";
+                            downloadLink.href = URL.createObjectURL(blob);
+                            downloadLink.click();
+
+                            // Invite to share manually via WhatsApp
+                            const encodedText = encodeURIComponent(shareText);
+                            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+                            
+                            setTimeout(() => {
+                                if (confirm("¡Tu postal se ha descargado con éxito! ¿Te gustaría abrir WhatsApp para compartir la invitación con tus amigos y familiares?")) {
+                                    window.open(whatsappUrl, "_blank");
+                                }
+                            }, 500);
+                        }
+                    }, "image/jpeg", 0.95);
+                } catch (err) {
+                    console.error("Fallo al compartir la postal:", err);
+                    alert("Hubo un error al preparar el archivo para compartir.");
+                } finally {
+                    btnShare.innerHTML = originalText;
+                    btnShare.disabled = false;
+                }
+            }, 300);
+        });
+    }
+
     // Boot Up Rendering
     startAnnouncementSlideshow();
     renderPublicSchedule();
@@ -766,4 +1592,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Iniciar integración de AzuraCast (si está activa)
     startAzuraCastMetadataPolling();
+
+    // 🚀 INICIALIZACIÓN DE HERRAMIENTAS DE EDIFICACIÓN
+    initInteractiveBible();
+    fetchPrayerWall();
+    fetchDailyDevotional();
+    initPostcardCreator();
+    bindSpiritualWidgets();
+
+    // Actualización del Muro cada 30 segundos
+    setInterval(fetchPrayerWall, 30000);
 });
