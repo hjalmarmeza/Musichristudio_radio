@@ -652,6 +652,53 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // 🚀 Custom Ultra-Fast Smooth Scroll for Navigation Links
+    navLinks.forEach(link => {
+        link.addEventListener("click", (e) => {
+            const targetId = link.getAttribute("href");
+            if (targetId && targetId.startsWith("#")) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const header = document.querySelector(".main-header");
+                    const headerHeight = header ? header.offsetHeight : 80;
+                    const targetPosition = targetElement.offsetTop - headerHeight + 5;
+                    
+                    // Temporarily disable native smooth scroll to avoid lag or conflicts
+                    const originalScrollBehavior = document.documentElement.style.scrollBehavior;
+                    document.documentElement.style.scrollBehavior = "auto";
+                    
+                    // High-performance smooth scroll (Snappy 350ms duration)
+                    const startY = window.scrollY || window.pageYOffset;
+                    const difference = targetPosition - startY;
+                    const startTime = performance.now();
+                    const duration = 350; // milliseconds
+
+                    function step(timestamp) {
+                        const progress = timestamp - startTime;
+                        const percentage = Math.min(progress / duration, 1);
+                        
+                        // Cubic ease-out curve (fast initial speed, silky smooth deceleration)
+                        const easeOutCubic = 1 - Math.pow(1 - percentage, 3);
+
+                        window.scrollTo(0, startY + difference * easeOutCubic);
+
+                        if (progress < duration) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            // Restore native scroll behavior
+                            document.documentElement.style.scrollBehavior = originalScrollBehavior;
+                            // Cleanly update URL without layout jumping
+                            history.pushState(null, null, targetId);
+                        }
+                    }
+
+                    window.requestAnimationFrame(step);
+                }
+            }
+        });
+    });
+
     // 6.6. 🎙️ AZURACAST LIVE METADATA INTEGRATION
     const AZURACAST_CONFIG = {
         enabled: true, // Habilitado para la señal oficial de Oracle Cloud
