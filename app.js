@@ -633,21 +633,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // 🚀 Performance Optimization: Cache section offsets to avoid scroll layout thrashing
+    let cachedSectionOffsets = [];
+    function cacheSectionOffsets() {
+        cachedSectionOffsets = Array.from(sections).map(section => {
+            const id = section.getAttribute("id");
+            return {
+                id: id,
+                top: section.offsetTop
+            };
+        });
+    }
+    
+    // Initial cache and update on window resize
+    cacheSectionOffsets();
+    window.addEventListener("resize", cacheSectionOffsets);
+    window.addEventListener("load", cacheSectionOffsets);
+
     // Navigation Scroll Spy
     window.addEventListener("scroll", () => {
         let currentSectionId = "";
+        const scrollY = window.scrollY || window.pageYOffset;
         
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            if (window.scrollY >= (sectionTop - 150)) {
-                currentSectionId = section.getAttribute("id");
+        for (let i = 0; i < cachedSectionOffsets.length; i++) {
+            if (scrollY >= (cachedSectionOffsets[i].top - 180)) {
+                currentSectionId = cachedSectionOffsets[i].id;
             }
-        });
+        }
 
         navLinks.forEach(link => {
-            link.classList.remove("active");
             if (link.getAttribute("href") === `#${currentSectionId}`) {
                 link.classList.add("active");
+            } else {
+                link.classList.remove("active");
             }
         });
     });
@@ -1767,8 +1785,19 @@ function init3DEarth() {
             mouseY = 0;
         });
 
+        // 🚀 Performance Optimization: Only render/animate Three.js when container is visible in viewport
+        let isEarthVisible = false;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isEarthVisible = entry.isIntersecting;
+            });
+        }, { threshold: 0.05 });
+        observer.observe(container);
+
         function animate() {
             requestAnimationFrame(animate);
+
+            if (!isEarthVisible) return; // Save 100% CPU and GPU off-screen!
 
             earthMesh.rotation.y += 0.0012;
 
