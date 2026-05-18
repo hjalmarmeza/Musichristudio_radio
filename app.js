@@ -1325,7 +1325,29 @@ document.addEventListener("DOMContentLoaded", () => {
             "\"Jehová es mi luz y mi salvación; ¿de quién temeré?\" — Salmo 27:1",
             "\"Clama a mí, y yo te responderé, y te enseñaré cosas grandes.\" — Jeremías 33:3",
             "\"El Señor guardará tu salida y tu entrada desde ahora y para siempre.\" — Salmo 121:8",
-            "\"Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal.\" — Jeremías 29:11"
+            "\"Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal.\" — Jeremías 29:11",
+            "\"Confía en el Señor con todo tu corazón, y no te apoyes en tu propia prudencia.\" — Proverbios 3:5",
+            "\"El Señor es mi fuerza y mi escudo; en él confió mi corazón, y fui ayudado.\" — Salmo 28:7",
+            "\"La paz os dejo, mi paz os doy; yo no os la doy como el mundo la da.\" — Juan 14:27",
+            "\"Deléitate asimismo en el Señor, y él te concederá las peticiones de tu corazón.\" — Salmo 37:4",
+            "\"Aunque ande en valle de sombra de muerte, no temeré mal alguno.\" — Salmo 23:4",
+            "\"Sean vuestras costumbres sin avaricia, contentos con lo que tenéis ahora.\" — Hebreos 13:5",
+            "\"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito.\" — Juan 3:16",
+            "\"El amor es sufrido, es benigno; el amor no tiene envidia, el amor no es jactancioso.\" — 1 Corintios 13:4",
+            "\"Mas los que esperan en el Señor tendrán nuevas fuerzas; levantarán alas como las águilas.\" — Isaías 40:31",
+            "\"Buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.\" — Mateo 6:33",
+            "\"Por nada estéis afanosos, sino sean conocidas vuestras peticiones delante de Dios.\" — Filipenses 4:6",
+            "\"El que habita al abrigo del Altísimo morará bajo la sombra del Omnipotente.\" — Salmo 91:1",
+            "\"Diré yo a Jehová: Esperanza mía, y castillo mío; mi Dios, en quien confiaré.\" — Salmo 91:2",
+            "\"Mira que te mando que te esfuerces y seas valiente; no temas ni desmayes.\" — Josué 1:9",
+            "\"Acerquémonos, pues, confiadamente al trono de la gracia, para alcanzar misericordia.\" — Hebreos 4:16",
+            "\"El Señor peleará por vosotros, y vosotros estaréis tranquilos.\" — Éxodo 14:14",
+            "\"Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien.\" — Romanos 8:28",
+            "\"Si Dios es por nosotros, ¿quién contra nosotros?\" — Romanos 8:31",
+            "\"Cristo en vosotros, la esperanza de gloria.\" — Colosenses 1:27",
+            "\"Estad quietos, y conoced que yo soy Dios.\" — Salmo 46:10",
+            "\"Yo soy el camino, y la verdad, y la vida; nadie viene al Padre, sino por mí.\" — Juan 14:6",
+            "\"Encomienda al Señor tu camino, confía en él, y él hará.\" — Salmo 37:5"
         ];
 
         let selectedVideo = POSTCARD_VIDEOS[0];
@@ -1362,18 +1384,48 @@ document.addEventListener("DOMContentLoaded", () => {
         videoBg.load();
         videoBg.play().catch(err => console.log("Video initial play error:", err));
 
-        // 2. Render Inspirational Chips
-        chipsContainer.innerHTML = "";
-        INSPIRATIONAL_PHRASES.forEach((phrase) => {
-            const chip = document.createElement("div");
-            chip.className = "postcard-chip";
-            chip.innerText = phrase.split(" — ")[0].replace(/\"/g, ""); // Shorten for the chip label
-            chip.addEventListener("click", () => {
-                textarea.value = phrase;
-                updatePreviewText(phrase);
+        // 2. Render Inspirational Chips with Shuffle function
+        function renderInspirationalChips() {
+            chipsContainer.innerHTML = "";
+            
+            // Extract 8 unique random verses
+            const shuffled = [...INSPIRATIONAL_PHRASES].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 8);
+            
+            selected.forEach((phrase) => {
+                const parts = phrase.split(" — ");
+                const text = parts[0].replace(/\"/g, "");
+                const ref = parts[1] || "Biblia";
+                
+                const chip = document.createElement("div");
+                chip.className = "postcard-chip";
+                chip.innerHTML = `<i class="fa-solid fa-book-bible" style="margin-right: 6px; color: var(--neon-cyan);"></i> ${ref}`;
+                chip.title = `"${text}" — ${ref}`;
+                
+                chip.addEventListener("click", () => {
+                    textarea.value = phrase;
+                    updatePreviewText(phrase);
+                });
+                chipsContainer.appendChild(chip);
             });
-            chipsContainer.appendChild(chip);
-        });
+            
+            // Add custom Shuffle Action Chip
+            const shuffleChip = document.createElement("div");
+            shuffleChip.className = "postcard-chip shuffle-chip";
+            shuffleChip.style.background = "rgba(0, 242, 254, 0.08)";
+            shuffleChip.style.borderColor = "rgba(0, 242, 254, 0.3)";
+            shuffleChip.style.color = "var(--neon-cyan)";
+            shuffleChip.style.fontWeight = "600";
+            shuffleChip.innerHTML = `<i class="fa-solid fa-arrows-rotate" style="margin-right: 6px; animation: spin 10s linear infinite;"></i> Cargar otros`;
+            shuffleChip.title = "Cargar un juego diferente de 8 versículos de fe";
+            
+            shuffleChip.addEventListener("click", () => {
+                renderInspirationalChips();
+            });
+            chipsContainer.appendChild(shuffleChip);
+        }
+        
+        renderInspirationalChips();
 
         // 3. Setup textarea event listeners
         textarea.addEventListener("input", (e) => {
