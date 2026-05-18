@@ -545,13 +545,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const encodedMsg = encodeURIComponent(waMessage);
             const waUrl = `https://wa.me/${targetPhone}?text=${encodedMsg}`;
             
+            // Open WhatsApp immediately (synchronously) to prevent browser pop-up blockers
+            window.open(waUrl, "_blank");
+            
             formSuccess.classList.add("show");
             prayerForm.reset();
-            
-            // Open WhatsApp after a short delay so user can see success animation
-            setTimeout(() => {
-                window.open(waUrl, "_blank");
-            }, 1000);
             
             setTimeout(() => {
                 formSuccess.classList.remove("show");
