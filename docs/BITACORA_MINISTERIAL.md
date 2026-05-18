@@ -72,6 +72,11 @@ Capturar de forma automatizada un servidor de **Alto Rendimiento (ARM Ampere)** 
 - **Programación Horaria:** Insertados dos schedules exclusivos: madrugada (`180-300` mins) y mañana (`420-600` mins).
 - **Despliegue Live:** Reiniciada la emisora AzuraCast en el contenedor Docker para aplicar y compilar el Liquidsoap config. La playlist ya está 100% activa.
 
+### 6. Rotación 3D del Planeta Tierra (Sección Misión y Visión) [Completado]:
+- **Imagen de Satélite Ultra-Realista:** Se generó y recortó un mapa equirectangular satelital de la Tierra en colores reales y 100% geográficamente preciso (`world_map_seamless_color.png`). Muestra la vegetación, océanos y nubes reales.
+- **Atmósfera y Sombreado 3D:** Implementada una máscara circular (`border-radius: 50%`) y capas CSS para simular la cara oculta del planeta con gradientes de luz solar y un halo azul celeste atmosférico (`rgba(0, 242, 254, 0.45)`).
+- **Aceleración por GPU:** Animación infinita mediante `transform: translateX` que fluye sin tirones a 60 FPS.
+
 ---
 
 ## 🔑 Datos Técnicos y Credenciales
