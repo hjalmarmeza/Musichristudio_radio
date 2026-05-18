@@ -677,13 +677,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🚀 Performance Optimization: Cache section offsets to avoid scroll layout thrashing
     let cachedSectionOffsets = [];
     function cacheSectionOffsets() {
-        cachedSectionOffsets = Array.from(sections).map(section => {
-            const id = section.getAttribute("id");
-            return {
-                id: id,
-                top: section.offsetTop
-            };
-        });
+        cachedSectionOffsets = Array.from(sections)
+            .filter(section => section.getAttribute("id")) // Solo espiar secciones que tengan un ID de navegación válido
+            .map(section => {
+                const id = section.getAttribute("id");
+                return {
+                    id: id,
+                    top: section.getBoundingClientRect().top + window.pageYOffset
+                };
+            });
     }
     
     // Initial cache and update on window resize
@@ -721,7 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (targetElement) {
                     const header = document.querySelector(".main-header");
                     const headerHeight = header ? header.offsetHeight : 80;
-                    const targetPosition = targetElement.offsetTop - headerHeight + 5;
+                    const targetPosition = (targetElement.getBoundingClientRect().top + window.pageYOffset) - headerHeight + 5;
                     
                     // Temporarily disable native smooth scroll to avoid lag or conflicts
                     const originalScrollBehavior = document.documentElement.style.scrollBehavior;
