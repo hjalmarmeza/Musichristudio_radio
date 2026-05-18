@@ -123,17 +123,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
+    // Helper to sanitize announcement background image paths (fixes stale cache/broken shorthand URLs)
+    function sanitizeAnnouncements(list) {
+        if (!Array.isArray(list)) return [];
+        return list.map(item => {
+            if (item && item.bgImage) {
+                const img = item.bgImage.trim();
+                // If it's a relative shorthand path like "photo-1544427928-c49cddeb9744"
+                if (!img.startsWith("http://") && !img.startsWith("https://") && !img.startsWith("assets/")) {
+                    if (img.startsWith("photo-")) {
+                        item.bgImage = `https://images.unsplash.com/${img}?q=80&w=1200`;
+                    } else {
+                        item.bgImage = `https://images.unsplash.com/photo-1544427928-c49cddeb9744?q=80&w=1200`;
+                    }
+                }
+            }
+            return item;
+        });
+    }
+
     // Load active state from localStorage or seed defaults
-    let announcements = JSON.parse(localStorage.getItem("musichris_announcements")) || DEFAULT_ANNOUNCEMENTS;
+    let announcements = sanitizeAnnouncements(JSON.parse(localStorage.getItem("musichris_announcements")) || DEFAULT_ANNOUNCEMENTS);
     let schedule = JSON.parse(localStorage.getItem("musichris_schedule")) || DEFAULT_SCHEDULE;
 
-    // Seed back into storage if empty
-    if (!localStorage.getItem("musichris_announcements")) {
-        localStorage.setItem("musichris_announcements", JSON.stringify(DEFAULT_ANNOUNCEMENTS));
-    }
-    if (!localStorage.getItem("musichris_schedule")) {
-        localStorage.setItem("musichris_schedule", JSON.stringify(DEFAULT_SCHEDULE));
-    }
+    // Seed back into storage
+    localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
+    localStorage.setItem("musichris_schedule", JSON.stringify(schedule));
 
     // Asynchronously fetch latest configurations from the Google Cloud Database in the background
     function fetchGlobalConfig() {
@@ -145,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 if (data) {
                     if (data.announcements && Array.isArray(data.announcements)) {
-                        announcements = data.announcements;
+                        announcements = sanitizeAnnouncements(data.announcements);
                         localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
                     }
                     if (data.schedule && Array.isArray(data.schedule)) {
@@ -1447,7 +1462,22 @@ document.addEventListener("DOMContentLoaded", () => {
         // Initialize first video preview
         videoBg.src = selectedVideo.src;
         videoBg.load();
-        videoBg.play().catch(err => console.log("Video initial play error:", err));
+        
+        // Attempt initial play, handling browser autoplay restrictions silently
+        const playInitialVideo = () => {
+            videoBg.play()
+                .then(() => {
+                    // Played successfully, remove interaction listeners
+                    document.removeEventListener("click", playInitialVideo);
+                    document.removeEventListener("touchstart", playInitialVideo);
+                })
+                .catch(() => {
+                    // Silent catch: suppress browser security warnings on initial load
+                });
+        };
+        playInitialVideo();
+        document.addEventListener("click", playInitialVideo);
+        document.addEventListener("touchstart", playInitialVideo);
 
         // 2. Render Inspirational Chips with Shuffle function
         function renderInspirationalChips() {
