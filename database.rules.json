@@ -7,6 +7,10 @@
     "prayers": {
       ".read": true,
       ".write": true
+    },
+    "daily_devotional": {
+      ".read": true,
+      ".write": "newData.child('password').val() === '25863206'"
     }
   }
 }
