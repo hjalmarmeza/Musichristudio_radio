@@ -59,7 +59,10 @@ body {
     width: 100%;
     position: relative;
     line-height: 1.5;
-    touch-action: manipulation; /* Disable double-tap zoom globally */
+}
+
+body, section, header, footer, .main-content, .hero-section, .about-container, .prayer-container, .announcement-card-strip, .schedule-grid, .visual-card, .prayer-form {
+    touch-action: pan-y; /* Completely lock pinch zoom and horizontal swipe zoom while allowing smooth vertical scrolling */
 }
 
 /* 2. Background Glow System */

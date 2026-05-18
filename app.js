@@ -2,6 +2,17 @@
    ⚡ MusiChris Studio Radio - Master Dynamic & CMS Controller (Landing Page)
    ========================================================================== */
 
+// 📱 Global Zoom Prevention (Safari/iOS & Chrome Mobile support)
+document.addEventListener("touchstart", (e) => {
+    if (e.touches.length > 1) {
+        e.preventDefault(); // Prevent multi-touch pinch zoom
+    }
+}, { passive: false });
+
+document.addEventListener("gesturestart", (e) => {
+    e.preventDefault(); // Prevent iOS gesture zooming
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. DOM Element Selectors
     const audio = document.getElementById("radio-audio");
@@ -653,15 +664,4 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Iniciar integración de AzuraCast (si está activa)
     startAzuraCastMetadataPolling();
-
-    // 📱 Native App-Like Zoom Prevention (Safari/iOS & Chrome Mobile support)
-    document.addEventListener("touchstart", (e) => {
-        if (e.touches.length > 1) {
-            e.preventDefault(); // Prevent multi-touch pinch zoom
-        }
-    }, { passive: false });
-
-    document.addEventListener("gesturestart", (e) => {
-        e.preventDefault(); // Prevent iOS gesture zooming
-    });
 });
