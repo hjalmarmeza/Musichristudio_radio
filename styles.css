@@ -59,6 +59,7 @@ body {
     width: 100%;
     position: relative;
     line-height: 1.5;
+    touch-action: manipulation; /* Disable double-tap zoom globally */
 }
 
 /* 2. Background Glow System */
