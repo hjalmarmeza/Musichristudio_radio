@@ -75,21 +75,21 @@ document.addEventListener("DOMContentLoaded", () => {
         {
             title: "¡Gran Campaña de Oración Activa!",
             desc: "Escribe tu petición en el formulario inferior de nuestra web. Estaremos intercediendo en vivo y clamando por tu milagro en cada programa.",
-            bgImage: "https://images.unsplash.com/photo-1544427928-c49cddeb9744?q=80&w=1200",
+            bgImage: "linear-gradient(135deg, #1a0533 0%, #3d0a6b 40%, #6b21a8 70%, #1a0533 100%)",
             btnText: "Pedir Oración 🙏",
             btnLink: "#peticiones"
         },
         {
             title: "Devocionales Diarios en YouTube",
             desc: "Acompaña cada día los nuevos videos de edificación ministerial de MusiChris Studio. Suscríbete y activa la campanita para no perderte nada.",
-            bgImage: "https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=1200",
+            bgImage: "linear-gradient(135deg, #0a0f2e 0%, #0d2b6b 40%, #1e40af 70%, #0a0f2e 100%)",
             btnText: "Ir al Canal 🎥",
             btnLink: "https://www.youtube.com/@Musichris_Studio"
         },
         {
             title: "Pide tu Alabanza Favorita por WhatsApp",
             desc: "Envíanos tu recomendación de canción o envíanos un audio con tu testimonio de bendición para transmitirlo en la señal radial en vivo.",
-            bgImage: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200",
+            bgImage: "linear-gradient(135deg, #0a1f0a 0%, #14532d 40%, #16a34a 70%, #0a1f0a 100%)",
             btnText: "Pedir Canción 🎵",
             btnLink: "https://wa.me/34634655522?text=%C2%A1Hola%20MusiChris%20Studio%20Radio!%20%F0%9F%95%8A%20Me%20gustar%C3%ADa%20pedir%20una%20canci%C3%B3n..."
         }
@@ -123,20 +123,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // Helper to sanitize announcement background image paths (fixes stale cache/broken shorthand URLs)
+    // Helper to sanitize announcement background image paths
+    // Converts any broken/external URL into a safe CSS gradient fallback
     function sanitizeAnnouncements(list) {
         if (!Array.isArray(list)) return [];
+        const GRADIENT_FALLBACKS = [
+            "linear-gradient(135deg, #1a0533 0%, #3d0a6b 40%, #6b21a8 70%, #1a0533 100%)",
+            "linear-gradient(135deg, #0a0f2e 0%, #0d2b6b 40%, #1e40af 70%, #0a0f2e 100%)",
+            "linear-gradient(135deg, #0a1f0a 0%, #14532d 40%, #16a34a 70%, #0a1f0a 100%)"
+        ];
+        let fallbackIdx = 0;
         return list.map(item => {
             if (item && item.bgImage) {
                 const img = item.bgImage.trim();
-                // If it's a relative shorthand path like "photo-1544427928-c49cddeb9744"
-                if (!img.startsWith("http://") && !img.startsWith("https://") && !img.startsWith("assets/")) {
-                    if (img.startsWith("photo-")) {
-                        item.bgImage = `https://images.unsplash.com/${img}?q=80&w=1200`;
-                    } else {
-                        item.bgImage = `https://images.unsplash.com/photo-1544427928-c49cddeb9744?q=80&w=1200`;
-                    }
+                // Replace any external URL (http/https) or broken short ID with a gradient
+                if (img.startsWith("http://") || img.startsWith("https://") || img.startsWith("photo-")) {
+                    item.bgImage = GRADIENT_FALLBACKS[fallbackIdx % GRADIENT_FALLBACKS.length];
+                    fallbackIdx++;
                 }
+                // Pure CSS gradients and local 'assets/' paths are kept as-is
             }
             return item;
         });
@@ -145,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── CACHE VERSION BUSTING ────────────────────────────────────────────────
     // Increment this string whenever the data schema changes to force a fresh
     // localStorage load instead of serving corrupted/stale cached data.
-    const CACHE_VERSION = "v3";
+    const CACHE_VERSION = "v4";
     const storedCacheVersion = localStorage.getItem("musichris_cache_version");
     if (storedCacheVersion !== CACHE_VERSION) {
         // Wipe stale data that may have broken shorthand URLs from older versions
@@ -211,8 +216,15 @@ document.addEventListener("DOMContentLoaded", () => {
         stripBg.style.opacity = 0;
 
         setTimeout(() => {
-            // Update resources
-            stripBg.style.backgroundImage = `url('${item.bgImage}')`;
+            // Update resources — gradients are applied directly, URLs are wrapped in url()
+            const bg = item.bgImage && item.bgImage.trim();
+            if (bg && (bg.startsWith("linear-gradient") || bg.startsWith("radial-gradient"))) {
+                stripBg.style.backgroundImage = bg;
+            } else if (bg) {
+                stripBg.style.backgroundImage = `url('${bg}')`;
+            } else {
+                stripBg.style.backgroundImage = "linear-gradient(135deg, #1a0533 0%, #6b21a8 100%)";
+            }
             stripTitle.textContent = item.title;
             stripDesc.textContent = item.desc;
             

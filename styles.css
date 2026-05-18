@@ -2015,7 +2015,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://images.unsplash.com/photo-1504052434569-70ad58c6744a?q=80&w=600');
+    background-image: linear-gradient(135deg, #0c1445 0%, #1a237e 50%, #283593 100%);
     background-size: cover;
     background-position: center;
     opacity: 0.08;
