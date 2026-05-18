@@ -67,6 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const streamUrl = "https://161-153-197-23.sslip.io/listen/musichris_studio_radio/radio.mp3"; 
     audio.src = streamUrl;
 
+    // 🌐 Firebase Realtime Database REST Configuration
+    const DATABASE_URL = "https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/radio.json";
+
     // 2. 🗄️ STATE MANAGEMENT (Announcements & Schedule)
     const DEFAULT_ANNOUNCEMENTS = [
         {
@@ -88,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
             desc: "Envíanos tu recomendación de canción o envíanos un audio con tu testimonio de bendición para transmitirlo en la señal radial en vivo.",
             bgImage: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200",
             btnText: "Pedir Canción 🎵",
-            btnLink: "https://wa.me/3 Spain target..."
+            btnLink: "https://wa.me/34634655522?text=%C2%A1Hola%20MusiChris%20Studio%20Radio!%20%F0%9F%95%8A%20Me%20gustar%C3%ADa%20pedir%20una%20canci%C3%B3n..."
         }
     ];
 
@@ -131,6 +134,37 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("musichris_schedule")) {
         localStorage.setItem("musichris_schedule", JSON.stringify(DEFAULT_SCHEDULE));
     }
+
+    // Asynchronously fetch latest configurations from the Google Cloud Database in the background
+    function fetchGlobalConfig() {
+        fetch(DATABASE_URL)
+            .then(res => {
+                if (!res.ok) throw new Error("Acceso a base de datos inestable.");
+                return res.json();
+            })
+            .then(data => {
+                if (data) {
+                    if (data.announcements && Array.isArray(data.announcements)) {
+                        announcements = data.announcements;
+                        localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
+                    }
+                    if (data.schedule && Array.isArray(data.schedule)) {
+                        schedule = data.schedule;
+                        localStorage.setItem("musichris_schedule", JSON.stringify(schedule));
+                    }
+                    // Smooth hot-swap rendering in real-time
+                    currentAnnounceIndex = 0;
+                    startAnnouncementSlideshow();
+                    renderPublicSchedule();
+                }
+            })
+            .catch(err => {
+                console.warn("⚠️ Usando cache local o defaults offline:", err.message);
+            });
+    }
+
+    // Call fetch immediately
+    fetchGlobalConfig();
 
     // 3. 🖼️ RENDER ANNOUNCEMENT BANNER STRIP & CROSSFADE ROTATION
     let currentAnnounceIndex = 0;
@@ -303,8 +337,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 💾 Save Admin Changes to LocalStorage & Refresh
+    // 💾 Save Admin Changes to Firebase Realtime Database & Local Cache
     function saveAdminChanges() {
+        saveLocalBtn.disabled = true;
+        const originalBtnHtml = saveLocalBtn.innerHTML;
+        saveLocalBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando en Nube...';
+
         // 1. Gather Edited Announcements
         const editedAnnouncements = [];
         const annTitles = document.querySelectorAll(".edit-ann-title");
@@ -337,20 +375,58 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // 3. Save State & Sync
-        announcements = editedAnnouncements;
-        schedule = editedSchedule;
+        // 3. Save State & Sync to Firebase
+        const payload = {
+            password: "25863206",
+            announcements: editedAnnouncements,
+            schedule: editedSchedule
+        };
 
-        localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
-        localStorage.setItem("musichris_schedule", JSON.stringify(schedule));
+        fetch(DATABASE_URL, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Acceso denegado o fallo de conexión.");
+            return res.json();
+        })
+        .then(data => {
+            announcements = editedAnnouncements;
+            schedule = editedSchedule;
 
-        // Re-render
-        currentAnnounceIndex = 0;
-        startAnnouncementSlideshow();
-        renderPublicSchedule();
-        generateExportCode();
+            localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
+            localStorage.setItem("musichris_schedule", JSON.stringify(schedule));
 
-        alert("✨ ¡Configuración guardada en este navegador con éxito! Los cambios son visibles inmediatamente en las secciones correspondientes.");
+            // Re-render
+            currentAnnounceIndex = 0;
+            startAnnouncementSlideshow();
+            renderPublicSchedule();
+            generateExportCode();
+
+            alert("✨ ¡Configuración guardada en la base de datos de Google con éxito! Los cambios ya son visibles al instante en todo el mundo.");
+        })
+        .catch(err => {
+            console.error(err);
+            alert("❌ Error al guardar en la base de datos global de Google: " + err.message + "\n\nSe ha guardado localmente como respaldo en este navegador.");
+            
+            // Fallback: save locally
+            announcements = editedAnnouncements;
+            schedule = editedSchedule;
+            localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
+            localStorage.setItem("musichris_schedule", JSON.stringify(schedule));
+            
+            currentAnnounceIndex = 0;
+            startAnnouncementSlideshow();
+            renderPublicSchedule();
+            generateExportCode();
+        })
+        .finally(() => {
+            saveLocalBtn.disabled = false;
+            saveLocalBtn.innerHTML = originalBtnHtml;
+        });
     }
 
     // 📤 Generate JSON Export String for easy copy-pasting

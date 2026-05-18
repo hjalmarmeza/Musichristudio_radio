@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "radio": {
+      ".read": true,
+      ".write": "newData.child('password').val() === '25863206'"
+    }
+  }
+}
