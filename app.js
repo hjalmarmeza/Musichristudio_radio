@@ -1651,6 +1651,7 @@ function init3DEarth() {
         earthGroup.add(earthMesh);
         scene.add(earthGroup);
 
+        earthMesh.rotation.y = 3.5; // Centrar América en la vista inicial
         earthMesh.rotation.z = -23.4 * Math.PI / 180;
 
         let mouseX = 0, mouseY = 0;
