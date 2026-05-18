@@ -1147,58 +1147,29 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     background: #000;
 }
 
-.nations-earth-globe {
+.nations-earth-globe-container {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     overflow: hidden;
     position: relative;
-    background: #04020a;
+    background: radial-gradient(circle at 30% 30%, #0a0e1c 0%, #020306 100%);
     box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.95);
     display: block;
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nations-card:hover .nations-earth-globe {
-    transform: scale(1.04);
+.nations-card:hover .nations-earth-globe-container {
+    transform: scale(1.05);
 }
 
-.nations-earth-map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background-image: url('assets/world_map_seamless_color.png');
-    background-repeat: repeat-x;
-    background-size: 50% 100%;
-    background-position: 0 0;
-    animation: spinGlobe 80s linear infinite;
-    pointer-events: none;
-}
-
-.nations-earth-shading {
-    position: absolute;
-    top: 0;
-    left: 0;
+#earth-3d-container {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    pointer-events: none;
-    box-shadow: inset 20px -20px 40px rgba(0, 0, 0, 0.95),
-                inset -10px 10px 25px rgba(0, 242, 254, 0.45),
-                inset 0 0 35px rgba(0, 242, 254, 0.25);
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.92) 100%);
-    z-index: 2;
-}
-
-@keyframes spinGlobe {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: auto;
 }
 
 .nations-glow {
