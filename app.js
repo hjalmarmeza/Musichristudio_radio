@@ -142,11 +142,25 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ─── CACHE VERSION BUSTING ────────────────────────────────────────────────
+    // Increment this string whenever the data schema changes to force a fresh
+    // localStorage load instead of serving corrupted/stale cached data.
+    const CACHE_VERSION = "v3";
+    const storedCacheVersion = localStorage.getItem("musichris_cache_version");
+    if (storedCacheVersion !== CACHE_VERSION) {
+        // Wipe stale data that may have broken shorthand URLs from older versions
+        localStorage.removeItem("musichris_announcements");
+        localStorage.removeItem("musichris_schedule");
+        localStorage.setItem("musichris_cache_version", CACHE_VERSION);
+        console.log(`🔄 Cache limpiado y actualizado a ${CACHE_VERSION}`);
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
     // Load active state from localStorage or seed defaults
     let announcements = sanitizeAnnouncements(JSON.parse(localStorage.getItem("musichris_announcements")) || DEFAULT_ANNOUNCEMENTS);
     let schedule = JSON.parse(localStorage.getItem("musichris_schedule")) || DEFAULT_SCHEDULE;
 
-    // Seed back into storage
+    // Always persist clean, sanitized copies back to storage
     localStorage.setItem("musichris_announcements", JSON.stringify(announcements));
     localStorage.setItem("musichris_schedule", JSON.stringify(schedule));
 
