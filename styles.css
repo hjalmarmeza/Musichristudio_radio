@@ -442,16 +442,17 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 60px;
-    background: linear-gradient(to top, rgba(7, 5, 15, 0.8) 0%, rgba(7, 5, 15, 0) 100%);
+    height: 75px;
+    background: linear-gradient(to top, rgba(7, 5, 15, 0.9) 0%, rgba(7, 5, 15, 0) 100%);
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 6px;
-    padding-bottom: 16px;
+    gap: 4px;
+    padding-bottom: 12px;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
+    z-index: 2;
 }
 
 .card-player.playing .sound-visualizer-overlay {
@@ -459,12 +460,12 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 }
 
 .bar {
-    width: 4px;
+    width: 3px;
     height: 4px;
-    background-color: var(--neon-cyan);
-    border-radius: 2px;
-    box-shadow: 0 0 8px var(--neon-cyan);
-    transition: height 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(to top, var(--neon-cyan), var(--neon-purple));
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0, 242, 254, 0.5), 0 0 4px rgba(185, 29, 250, 0.4);
+    transition: height 0.08s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .metadata-container {
@@ -877,6 +878,79 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     color: var(--text-muted);
     line-height: 1.7;
     margin-bottom: 20px;
+}
+
+/* Mission & Vision Blocks */
+.mission-vision-blocks {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.mv-block {
+    background: rgba(20, 16, 36, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+.mv-block:hover {
+    background: rgba(20, 16, 36, 0.6);
+    border-color: rgba(0, 242, 254, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.06);
+}
+
+.mv-block:nth-child(2):hover {
+    border-color: rgba(185, 29, 250, 0.2);
+    box-shadow: 0 12px 30px rgba(185, 29, 250, 0.06);
+}
+
+.mv-icon-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.mv-icon {
+    font-size: 1.25rem;
+    color: var(--neon-cyan);
+    background: rgba(0, 242, 254, 0.08);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+}
+
+.mv-block:nth-child(2) .mv-icon {
+    color: var(--neon-purple);
+    background: rgba(185, 29, 250, 0.08);
+    box-shadow: 0 0 10px rgba(185, 29, 250, 0.15);
+}
+
+.mv-icon-title h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+.mv-block .about-para {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
 }
 
 /* 9. PRAYER SECTION */

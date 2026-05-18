@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             desc: "Acompaña cada día los nuevos videos de edificación ministerial de MusiChris Studio. Suscríbete y activa la campanita para no perderte nada.",
             bgImage: "https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=1200",
             btnText: "Ir al Canal 🎥",
-            btnLink: "https://www.youtube.com/@MusiChrisStudio"
+            btnLink: "https://www.youtube.com/@Musichris_Studio"
         },
         {
             title: "Pide tu Alabanza Favorita por WhatsApp",
@@ -444,8 +444,9 @@ document.addEventListener("DOMContentLoaded", () => {
             analyser.getByteFrequencyData(dataArray);
 
             for (let i = 0; i < bars.length; i++) {
-                const freqValue = dataArray[i + 1] || 0;
-                const barHeight = Math.max(4, (freqValue / 255) * 36 + 4);
+                const freqIndex = Math.floor(i * 1.5) + 1;
+                const freqValue = dataArray[freqIndex] || 0;
+                const barHeight = Math.max(4, (freqValue / 255) * 48 + 4);
                 bars[i].style.height = `${barHeight}px`;
             }
         }
@@ -537,8 +538,20 @@ document.addEventListener("DOMContentLoaded", () => {
             
             console.log("📝 Petición de Oración Recibida:", { name, email, type, message });
             
+            // Premium Routing: Open WhatsApp with beautiful formatted message
+            const targetPhone = "34634655522";
+            const typeLabel = type === "prayer" ? "Petición de Oración 🙏" : "Testimonio de Bendición 🕊️";
+            const waMessage = `¡Hola MusiChris Studio! 🕊️ He enviado una petición desde la web radio:\n\n*Nombre:* ${name}\n*Email:* ${email}\n*Tipo:* ${typeLabel}\n\n*Mensaje:* ${message}`;
+            const encodedMsg = encodeURIComponent(waMessage);
+            const waUrl = `https://wa.me/${targetPhone}?text=${encodedMsg}`;
+            
             formSuccess.classList.add("show");
             prayerForm.reset();
+            
+            // Open WhatsApp after a short delay so user can see success animation
+            setTimeout(() => {
+                window.open(waUrl, "_blank");
+            }, 1000);
             
             setTimeout(() => {
                 formSuccess.classList.remove("show");
