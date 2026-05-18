@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const exportJsonCode = document.getElementById("export-json-code");
 
     // Live Stream Target URL
-    const streamUrl = "http://161.153.197.23/listen/musichris_studio_radio/radio.mp3"; 
+    const streamUrl = "https://161-153-197-23.sslip.io/listen/musichris_studio_radio/radio.mp3"; 
     audio.src = streamUrl;
 
     // 2. 🗄️ STATE MANAGEMENT (Announcements & Schedule)
@@ -557,7 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6.6. 🎙️ AZURACAST LIVE METADATA INTEGRATION
     const AZURACAST_CONFIG = {
         enabled: true, // Habilitado para la señal oficial de Oracle Cloud
-        apiUrl: "http://161.153.197.23/api/nowplaying/musichris_studio_radio", // URL de la API Now Playing de AzuraCast
+        apiUrl: "https://161-153-197-23.sslip.io/api/nowplaying/musichris_studio_radio", // URL de la API Now Playing de AzuraCast
         pollIntervalMs: 15000 // Frecuencia de actualización (15 segundos)
     };
 
