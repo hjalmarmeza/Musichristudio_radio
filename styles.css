@@ -1172,8 +1172,8 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     pointer-events: auto;
 }
 
-/* 🌍 Earth Video Loop Premium Styling */
-.earth-video-wrapper {
+/* 🌍 High-Performance CSS Spherical Earth Globe */
+.earth-css-wrapper {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -1184,17 +1184,32 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle at 30% 30%, #0a0e1c 0%, #020306 100%);
+    background: radial-gradient(circle at 30% 30%, #0c142c 0%, #020306 100%);
+    pointer-events: none;
 }
 
-.earth-video-loop {
+.earth-css-globe {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     border-radius: 50%;
-    filter: brightness(1.15) saturate(1.2);
-    mix-blend-mode: initial;
+    background-image: url('assets/world_map_seamless_color.png');
+    background-size: auto 100%; /* Height matches 100% of container, width scales proportionally */
+    background-repeat: repeat-x;
+    background-position: 0 0;
+    /* Clean West-to-East rotation matching the real Earth */
+    animation: spinEarthCSS 220s linear infinite;
     pointer-events: none;
+    z-index: 1;
+    filter: brightness(1.15) saturate(1.25) contrast(1.05);
+}
+
+@keyframes spinEarthCSS {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -20000px 0; /* Infinite seamless scroll regardless of size */
+    }
 }
 
 .earth-glow-overlay {
@@ -1204,19 +1219,21 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    /* 3D sphere volumetric shading overlay */
-    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.85),
-                inset 12px 12px 25px rgba(255, 255, 255, 0.12),
-                inset -12px -12px 25px rgba(0, 242, 254, 0.15);
+    /* 3D sphere volumetric shading overlay with atmospheric cyan rim */
+    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9),
+                inset 15px 15px 25px rgba(255, 255, 255, 0.15),
+                inset -15px -15px 25px rgba(0, 242, 254, 0.18),
+                0 0 15px rgba(0, 242, 254, 0.12); /* Soft outer atmospheric glow */
     pointer-events: none;
     z-index: 2;
     transition: var(--transition-smooth);
 }
 
 .nations-card:hover .earth-glow-overlay {
-    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.75),
-                inset 15px 15px 30px rgba(255, 255, 255, 0.18),
-                inset -15px -15px 30px rgba(0, 242, 254, 0.22);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8),
+                inset 18px 18px 30px rgba(255, 255, 255, 0.22),
+                inset -18px -18px 30px rgba(0, 242, 254, 0.25),
+                0 0 25px rgba(0, 242, 254, 0.25); /* Atmospheric flash on hover */
 }
 
 .nations-glow {
