@@ -1635,7 +1635,7 @@ function init3DEarth() {
     scene.add(atmosphereGlowLight);
 
     const textureLoader = new THREE.TextureLoader();
-    textureLoader.load('assets/world_map_seamless_color.png', (earthTexture) => {
+    textureLoader.load('https://raw.githubusercontent.com/hjalmarmeza/Musichristudio_radio/main/assets/world_map_seamless_color.png', (earthTexture) => {
         earthTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
         
         const geometry = new THREE.SphereGeometry(0.85, 64, 64);
