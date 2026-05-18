@@ -72,10 +72,11 @@ Capturar de forma automatizada un servidor de **Alto Rendimiento (ARM Ampere)** 
 - **Programación Horaria:** Insertados dos schedules exclusivos: madrugada (`180-300` mins) y mañana (`420-600` mins).
 - **Despliegue Live:** Reiniciada la emisora AzuraCast en el contenedor Docker para aplicar y compilar el Liquidsoap config. La playlist ya está 100% activa.
 
-### 6. Rotación 3D del Planeta Tierra (Sección Misión y Visión) [Completado]:
-- **Imagen de Satélite Ultra-Realista:** Se generó y recortó un mapa equirectangular satelital de la Tierra en colores reales y 100% geográficamente preciso (`world_map_seamless_color.png`). Muestra la vegetación, océanos y nubes reales.
-- **Atmósfera y Sombreado 3D:** Implementada una máscara circular (`border-radius: 50%`) y capas CSS para simular la cara oculta del planeta con gradientes de luz solar y un halo azul celeste atmosférico (`rgba(0, 242, 254, 0.45)`).
-- **Aceleración por GPU:** Animación infinita mediante `transform: translateX` que fluye sin tirones a 60 FPS.
+### 6. Globo Planetario 3D Interactivo Real (Sección Misión y Visión) [Completado]:
+- **Tecnología WebGL (Three.js):** Creada una esfera 3D real usando Three.js integrada de forma fluida directamente en la interfaz.
+- **Textura de Satélite Realista y Precisa:** Envolvimos el globo con una proyección satelital geográfica exacta (`world_map_seamless_color.png`) en colores naturales (océanos profundos, vegetación real, desiertos y nubes).
+- **Iluminación Volumétrica y Atmósfera:** Configurada una luz ambiental base, una luz solar direccional intensa a 45° y una luz de dispersión opuesta azul cian (`#00f2fe`) para recrear un brillo de ozono ultra-realista sobre el borde oscuro.
+- **Interacción y Paralaque:** El planeta rota sobre su eje de inclinación real (23.4°). Al pasar el mouse por la tarjeta, el globo se inclina y reacciona de forma dinámica y suave, sin tirones ni reinicios bruscos.
 
 ---
 
