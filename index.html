@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusiChris Studio Radio | Señal de Bendición 24/7</title>
+    <meta name="description" content="Escucha la señal de radio oficial de MusiChris Studio. Música, testimonios, adoración y la palabra de Dios 24/7.">
+    <!-- Local Premium Fonts loaded via CSS -->
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Glows -->
+    <div class="background-glows">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="logo-icon"><i class="fa-solid fa-cross"></i></span>
+                <span class="logo-text">MusiChris <span>Studio</span></span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#inicio" class="nav-link active">Inicio</a>
+                <a href="#programacion" class="nav-link">Programación</a>
+                <a href="#mision" class="nav-link">Misión</a>
+                <a href="#peticiones" class="nav-link">Peticiones</a>
+            </nav>
+            <div class="header-actions">
+                <button class="admin-trigger-btn" id="admin-trigger-btn" style="display: none;" title="Panel de Administración">
+                    <i class="fa-solid fa-gears"></i> Admin
+                </button>
+                <a href="#peticiones" class="cta-header-btn">Orar Ahora</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="main-content">
+        
+        <!-- SECTION 1: HERO SECTION -->
+        <section class="hero-section" id="inicio">
+            <div class="hero-container">
+                <div class="hero-text-area">
+                    <div class="tagline">📻 TRANSMITIENDO EN VIVO</div>
+                    <h1 class="hero-title">Sintoniza la Presencia de Dios en Cualquier Lugar</h1>
+                    <p class="hero-description">
+                        Bienvenido a la señal de radio oficial de <strong>MusiChris Studio</strong>. Acompaña tus días con la mejor música de adoración, reflexiones bíblicas profundas, y devocionales diseñados para fortalecer tu fe y llenar tu hogar de paz.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="https://www.youtube.com/@MusiChrisStudio" target="_blank" class="social-btn yt-btn">
+                            <i class="fa-brands fa-youtube"></i> YouTube
+                        </a>
+                        <a href="https://spotify.com" target="_blank" class="social-btn sp-btn">
+                            <i class="fa-brands fa-spotify"></i> Spotify
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-player-area">
+                    <!-- Interactive Glassmorphic Radio Player -->
+                    <div class="card-player" id="main-player-card">
+                        <!-- Album Art Area -->
+                        <div class="album-art-container">
+                            <img src="assets/cover.png" alt="MusiChris Studio Radio Cover" id="song-cover" class="album-art">
+                            <div class="sound-visualizer-overlay" id="visualizer">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                        </div>
+
+                        <!-- Song/Stream Metadata -->
+                        <div class="metadata-container">
+                            <h2 class="song-title" id="song-title">MusiChris Studio Radio</h2>
+                            <p class="song-artist" id="song-artist">Sintonizando la señal de bendición...</p>
+                            
+                            <!-- Infinite Scripture Carousel -->
+                            <div class="phrase-carousel-container" id="phrase-carousel">
+                                <i class="fa-solid fa-quote-left quote-icon"></i>
+                                <span class="phrase-text" id="phrase-text">Todo lo puedo en Cristo que me fortalece. — Filipenses 4:13</span>
+                            </div>
+                        </div>
+
+                        <!-- Player Controls -->
+                        <div class="controls-container">
+                            <div class="volume-control-wrapper">
+                                <button class="icon-btn" id="mute-btn" title="Silenciar">
+                                    <i class="fa-solid fa-volume-high" id="volume-icon"></i>
+                                </button>
+                                <input type="range" id="volume-slider" min="0" max="100" value="80" class="volume-slider" title="Volumen">
+                            </div>
+
+                            <div class="play-button-wrapper">
+                                <button class="play-btn" id="play-btn" title="Reproducir Señal">
+                                    <i class="fa-solid fa-play" id="play-icon"></i>
+                                </button>
+                            </div>
+
+                            <div class="interaction-wrapper">
+                                <button class="whatsapp-btn" id="whatsapp-btn" title="Pedir canción por WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <span>Pedir Canción</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1.5: MAJESTIC RECTANGULAR ANNOUNCEMENT BANNER STRIP -->
+        <section class="announcement-strip-section">
+            <div class="strip-container">
+                <div class="announcement-card-strip" id="announcement-card-strip">
+                    <!-- Dynamic Content Crossfades Here via JS -->
+                    <div class="strip-bg-layer" id="strip-bg"></div>
+                    <div class="strip-overlay-layer"></div>
+                    <div class="strip-content-area">
+                        <div class="strip-left">
+                            <span class="strip-tag" id="strip-tag">📢 NOVEDADES</span>
+                            <h2 class="strip-title" id="strip-title">Cargando anuncios...</h2>
+                            <p class="strip-desc" id="strip-desc">Por favor, espera mientras sincronizamos la cartelera.</p>
+                        </div>
+                        <div class="strip-right">
+                            <a href="#" class="strip-cta-btn" id="strip-cta">Ver Más <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PROGRAMMING GRID (DYNAMIC CONTENT) -->
+        <section class="schedule-section" id="programacion">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">PROGRAMACIÓN</span>
+                    <h2 class="section-title">Espacios de Bendición Diaria</h2>
+                    <p class="section-subtitle">Acompaña tu rutina diaria con segmentos enfocados en fortalecer tu espíritu.</p>
+                </div>
+
+                <!-- JS dynamically renders cards here -->
+                <div class="schedule-grid" id="schedule-grid">
+                    <!-- Loading state -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MISSION -->
+        <section class="about-section" id="mision">
+            <div class="about-container">
+                <div class="about-visual">
+                    <div class="visual-card">
+                        <i class="fa-solid fa-earth-americas mission-icon"></i>
+                        <h3>Llevando luz a las naciones</h3>
+                        <p>A través de la señal digital y la fuerza de la adoración y la palabra.</p>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <span class="section-tag">NUESTRA MISIÓN</span>
+                    <h2 class="section-title">Llevar la palabra de Dios hasta los confines de la tierra</h2>
+                    <p class="about-para">
+                        <strong>MusiChris Studio Radio</strong> nace con el firme propósito de ser un canal de bendición ininterrumpido. Creemos que la música es un vehículo poderoso para adorar al Creador, y que su palabra es lumbrera que transforma corazones.
+                    </p>
+                    <p class="about-para">
+                        A través de tecnologías digitales avanzadas y sin ningún costo para nuestros oyentes, transmitimos una señal limpia, profesional y ungida para edificar las vidas en cualquier rincón del planeta.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PRAYER & TESTIMONY FORM -->
+        <section class="prayer-section" id="peticiones">
+            <div class="prayer-container">
+                <div class="prayer-info-area">
+                    <span class="section-tag">INTERACCIÓN</span>
+                    <h2 class="section-title">¿Cómo podemos orar por ti hoy?</h2>
+                    <p class="prayer-desc">
+                        En MusiChris Studio creemos en el poder de la oración unida. Si tienes una petición de oración o un testimonio de agradecimiento de lo que Dios ha hecho en tu vida, escríbenos.
+                    </p>
+                    <div class="prayer-contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>contacto@musichris.studio</span>
+                    </div>
+                    <div class="prayer-contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Ministerio Digital — Alcance Global</span>
+                    </div>
+                </div>
+
+                <div class="prayer-form-area">
+                    <form class="prayer-form" id="prayer-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="form-name">Nombre</label>
+                                <input type="text" id="form-name" placeholder="Tu nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="form-email">Email</label>
+                                <input type="email" id="form-email" placeholder="Tu correo electrónico" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-type">Tipo de Mensaje</label>
+                            <select id="form-type" required>
+                                <option value="oracion">Petición de Oración</option>
+                                <option value="testimonio">Testimonio de Victoria</option>
+                                <option value="contacto">Sugerencia / Mensaje</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-message">Mensaje</label>
+                            <textarea id="form-message" rows="4" placeholder="Escribe tu mensaje o petición aquí..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fa-solid fa-paper-plane"></i> Enviar Mensaje
+                        </button>
+                        
+                        <div class="form-success-msg" id="form-success">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>¡Petición recibida! Estaremos orando por ti. ¡Bendiciones!</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ADMIN DASHBOARD MODAL PANEL -->
+    <div class="admin-modal-overlay" id="admin-modal">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h3><i class="fa-solid fa-gears"></i> Panel de Administración</h3>
+                <button class="close-admin-btn" id="close-admin-btn">&times;</button>
+            </div>
+            
+            <!-- STEP 1: PASSWORD LOGIN -->
+            <div class="admin-login-screen" id="admin-login-screen">
+                <p class="admin-screen-desc">Ingresa la contraseña de seguridad ministerial para editar el portal.</p>
+                <div class="form-group">
+                    <input type="password" id="admin-password" placeholder="Contraseña de acceso">
+                </div>
+                <button class="submit-btn" id="admin-login-btn">Acceder al Panel</button>
+                <p class="login-error-msg" id="login-error">⚠️ Contraseña incorrecta. Inténtalo de nuevo.</p>
+            </div>
+
+            <!-- STEP 2: DASHBOARD CONTROL PANEL -->
+            <div class="admin-dashboard-screen" id="admin-dashboard-screen">
+                <!-- Navigation Tabs -->
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="tab-anuncios">Anuncios</button>
+                    <button class="tab-btn" data-tab="tab-programacion">Programación</button>
+                    <button class="tab-btn" data-tab="tab-export">Guardar/Exportar</button>
+                </div>
+
+                <div class="tab-contents">
+                    <!-- Tab 1: Edit Announcements -->
+                    <div class="tab-content-panel active" id="tab-anuncios">
+                        <p class="tab-desc">Edita los 3 anuncios rotativos de tu tira rectangular superior.</p>
+                        
+                        <div class="admin-scroll-container" id="announcements-edit-list">
+                            <!-- Loop items rendered dynamically by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Edit Programming -->
+                    <div class="tab-content-panel" id="tab-programacion">
+                        <p class="tab-desc">Edita los 5 espacios de tu grilla de programación radial.</p>
+                        
+                        <div class="admin-scroll-container" id="schedule-edit-list">
+                            <!-- Loop items rendered dynamically by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Export/Import Options -->
+                    <div class="tab-content-panel" id="tab-export">
+                        <p class="tab-desc">Guarda los cambios temporalmente en tu navegador o exporta el código definitivo para subir a GitHub.</p>
+                        
+                        <div class="export-actions">
+                            <button class="submit-btn save-local-btn" id="save-local-btn">
+                                <i class="fa-solid fa-floppy-disk"></i> Guardar en este navegador
+                            </button>
+                            <button class="submit-btn copy-code-btn" id="copy-code-btn">
+                                <i class="fa-solid fa-code"></i> Copiar Código para GitHub
+                            </button>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label for="export-json-code">Código de Configuración (Copiar y guardar):</label>
+                            <textarea id="export-json-code" rows="6" readonly placeholder="El código JSON se generará aquí..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="logo-area">
+                <span class="logo-icon"><i class="fa-solid fa-cross"></i></span>
+                <span class="logo-text">MusiChris <span>Studio</span></span>
+            </div>
+            <p class="footer-copyright">© 2026 MusiChris Studio Radio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://www.youtube.com/@MusiChrisStudio" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Hidden HTML5 Audio Element -->
+    <audio id="radio-audio" src="http://161.153.197.23/listen/musichris_studio_radio/radio.mp3" crossorigin="anonymous" preload="none"></audio>
+
+    <!-- Javascript Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
