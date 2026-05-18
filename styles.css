@@ -21,18 +21,18 @@
 
 /* 1. Global Reset & Variables */
 :root {
-    --bg-dark: #07050f;
-    --bg-card: rgba(20, 16, 36, 0.45);
-    --border-color: rgba(255, 255, 255, 0.07);
-    --primary-glow: rgba(0, 242, 254, 0.12);
-    --secondary-glow: rgba(143, 0, 255, 0.12);
-    --text-main: #ffffff;
-    --text-muted: #afacc4;
+    --bg-dark: #0a0b12; /* Deep Celestial Indigo/Midnight, warmer and cleaner */
+    --bg-card: rgba(24, 27, 43, 0.45); /* Refined translucent slate blue */
+    --border-color: rgba(255, 255, 255, 0.05); /* Thinner and more elegant card boundary */
+    --primary-glow: rgba(140, 178, 201, 0.06); /* Sophisticated Celestial Blue ambient glow */
+    --secondary-glow: rgba(197, 168, 128, 0.05); /* Soft Warm Champagne ambient glow */
+    --text-main: #f5f6f8; /* Softer, highly readable off-white */
+    --text-muted: #a3a7be; /* Muted stone grey for elegant hierarchy */
     
-    /* Elegant Vibrant Color Palette */
-    --neon-cyan: #00f2fe;
-    --neon-purple: #8f00ff;
-    --gold: #f4c257;
+    /* Elegant Vibrant Color Palette (Toned down for Premium Spiritual Minimalism) */
+    --neon-cyan: #8cb2c9; /* Beautiful, serene Celestial Blue */
+    --neon-purple: #ae9dc2; /* Regal Lavender / Soft Indigo */
+    --gold: #c5a880; /* Timeless Champagne Gold / Matte Gold */
     
     --transition-smooth: all 0.2s ease-out;
 }
@@ -82,7 +82,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 .glow {
     position: absolute;
     border-radius: 50%;
-    opacity: 0.35;
+    opacity: 0.15; /* Softened from 0.35 to make ambient light extremely premium and gentle */
     mix-blend-mode: screen;
     /* filter:blur removed — triggers expensive GPU repaint on all three orbs every frame */
 }
