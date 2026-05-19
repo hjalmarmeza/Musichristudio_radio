@@ -1994,7 +1994,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.shadowOffsetY = 2;
             ctx.font = "26px 'Outfit', 'Segoe UI', sans-serif";
             ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-            ctx.fillText("Sintoniza en vivo: musichris.studio", canvas.width / 2, canvas.height - 180);
+            ctx.fillText("🙏 Sintoniza una Radio cristiana creada para tus mejores momentos.", canvas.width / 2, canvas.height - 180);
 
             return canvas;
         }
@@ -2036,7 +2036,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (!blob) throw new Error("Fallo al convertir la postal en datos binarios.");
                         
                         const file = new File([blob], "Postal_de_Fe.jpg", { type: "image/jpeg" });
-                        const shareText = "🕊️ Mira esta hermosa postal de fe que diseñé en MusiChris Studio Radio. Te invito a sintonizar la radio en vivo y edificar tu vida:\n\n👉 https://musichris.studio";
+                        const shareText = "🕊️ Mira esta hermosa postal de fe que diseñé en MusiChris Studio Radio. Te invito a sintonizar la radio en vivo y edificar tu vida:\n\n👉 https://hjalmarmeza.github.io/Musichristudio_radio/";
 
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
                             navigator.share({
