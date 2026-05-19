@@ -413,14 +413,17 @@
                 <button class="close-admin-btn" id="close-admin-btn">&times;</button>
             </div>
             
-            <!-- STEP 1: PASSWORD LOGIN -->
+            <!-- STEP 1: FIREBASE AUTH LOGIN -->
             <div class="admin-login-screen" id="admin-login-screen">
-                <p class="admin-screen-desc">Ingresa la contraseña de seguridad ministerial para editar el portal.</p>
+                <p class="admin-screen-desc"><i class="fa-solid fa-shield-halved"></i> Acceso seguro con verificación de identidad ministerial.</p>
                 <div class="form-group">
-                    <input type="password" id="admin-password" placeholder="Contraseña de acceso">
+                    <input type="email" id="admin-email" placeholder="Correo electrónico" autocomplete="email">
                 </div>
-                <button class="submit-btn" id="admin-login-btn">Acceder al Panel</button>
-                <p class="login-error-msg" id="login-error">⚠️ Contraseña incorrecta. Inténtalo de nuevo.</p>
+                <div class="form-group">
+                    <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="current-password">
+                </div>
+                <button class="submit-btn" id="admin-login-btn"><i class="fa-solid fa-lock-open"></i> Acceder al Panel</button>
+                <p class="login-error-msg" id="login-error">⚠️ Credenciales incorrectas. Verifica tu correo y contraseña.</p>
             </div>
 
             <!-- STEP 2: DASHBOARD CONTROL PANEL -->
@@ -644,7 +647,7 @@
     <audio id="radio-audio" src="https://161-153-197-23.sslip.io/listen/musichris_studio_radio/radio.mp3" crossorigin="anonymous" preload="none"></audio>
 
 
-    <!-- Javascript Application Logic -->
-    <script src="app.js"></script>
+    <!-- Firebase SDK (Auth) -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>

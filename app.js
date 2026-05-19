@@ -2,6 +2,26 @@
    ⚡ MusiChris Studio Radio - Master Dynamic & CMS Controller (Landing Page)
    ========================================================================== */
 
+// 🔒 Firebase Auth SDK Imports (v11 ESM modular)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDns9TUBRrrwIyyuVAizHmWsv9C3iX4neU",
+    authDomain: "proyecto-musichris-350df.firebaseapp.com",
+    databaseURL: "https://proyecto-musichris-350df-default-rtdb.firebaseio.com",
+    projectId: "proyecto-musichris-350df",
+    storageBucket: "proyecto-musichris-350df.firebasestorage.app",
+    messagingSenderId: "437162185012",
+    appId: "1:437162185012:web:f4d6ccb0c01e2435c29561"
+};
+
+const firebaseApp = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth(firebaseApp);
+
+
+
+
 // 📱 Global Zoom Prevention (Safari/iOS & Chrome Mobile support)
 document.addEventListener("touchstart", (e) => {
     if (e.touches.length > 1) {
@@ -50,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeAdminBtn = document.getElementById("close-admin-btn");
     const adminLoginScreen = document.getElementById("admin-login-screen");
     const adminDashboardScreen = document.getElementById("admin-dashboard-screen");
+    const adminEmailInput = document.getElementById("admin-email");
     const adminPasswordInput = document.getElementById("admin-password");
     const adminLoginBtn = document.getElementById("admin-login-btn");
     const loginError = document.getElementById("login-error");
@@ -288,20 +309,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleAdminLogin() {
-        const password = adminPasswordInput.value;
-        if (password === "25863206") {
+        const email = adminEmailInput ? adminEmailInput.value.trim() : "";
+        const password = adminPasswordInput ? adminPasswordInput.value : "";
+
+        if (!email || !password) {
+            loginError.classList.add("show");
+            return;
+        }
+
+        adminLoginBtn.disabled = true;
+        adminLoginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                // onAuthStateChanged will handle opening the dashboard
+            })
+            .catch(() => {
+                loginError.classList.add("show");
+                adminLoginBtn.disabled = false;
+                adminLoginBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i> Acceder al Panel';
+            });
+    }
+
+    // Auth State Observer: auto-restore session or show login
+    onAuthStateChanged(auth, (user) => {
+        if (user && user.uid === "7zo6o1g0IFNF81GbVNvl3BIRC9t1") {
+            // Valid admin — open dashboard directly
             adminLoginScreen.style.display = "none";
             adminDashboardScreen.classList.add("show");
-            
-            // Render editing lists inside tabs
             renderAdminAnnouncementsEditor();
             renderAdminScheduleEditor();
-            fetchPrivateMessages(); // 📩 Sincronizar bandeja de entrada
+            fetchPrivateMessages();
             generateExportCode();
-        } else {
-            loginError.classList.add("show");
+        } else if (adminDashboardScreen.classList.contains("show")) {
+            // Session expired — go back to login
+            adminDashboardScreen.classList.remove("show");
+            adminLoginScreen.style.display = "flex";
         }
-    }
+    });
 
     // Handle editing tabs
     tabBtns.forEach(btn => {
@@ -1032,7 +1077,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Admin Bindings & Invisible Backdoor Engine
     adminTriggerBtn.addEventListener("click", openAdminPanel);
-    closeAdminBtn.addEventListener("click", closeAdminPanel);
+    closeAdminBtn.addEventListener("click", () => {
+        closeAdminPanel();
+        // Sign out from Firebase when closing panel
+        signOut(auth).catch(() => {});
+    });
     adminLoginBtn.addEventListener("click", handleAdminLogin);
     saveLocalBtn.addEventListener("click", saveAdminChanges);
     copyCodeBtn.addEventListener("click", copyExportCodeToClipboard);
@@ -1040,6 +1089,11 @@ document.addEventListener("DOMContentLoaded", () => {
     adminPasswordInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") handleAdminLogin();
     });
+    if (adminEmailInput) {
+        adminEmailInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") adminPasswordInput && adminPasswordInput.focus();
+        });
+    }
 
     // 🤫 Backdoor A: URL query parameters or URL hash check
     const urlParams = new URLSearchParams(window.location.search);

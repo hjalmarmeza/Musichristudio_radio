@@ -2,7 +2,11 @@
   "rules": {
     "radio": {
       ".read": true,
-      ".write": "newData.child('password').val() === '25863206'"
+      ".write": "auth != null && auth.uid === '7zo6o1g0IFNF81GbVNvl3BIRC9t1'"
+    },
+    "private_messages": {
+      ".read": "auth != null && auth.uid === '7zo6o1g0IFNF81GbVNvl3BIRC9t1'",
+      ".write": true
     },
     "prayers": {
       ".read": true,
@@ -10,7 +14,7 @@
     },
     "daily_devotional": {
       ".read": true,
-      ".write": "newData.child('password').val() === '25863206'"
+      ".write": "auth != null && auth.uid === '7zo6o1g0IFNF81GbVNvl3BIRC9t1'"
     }
   }
 }
