@@ -1447,20 +1447,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🛐 MURO DE CLAMOR EN VIVO (FIREBASE REALTIME DB)
     // -------------------------------------------------------------
     function fetchPrayerWall() {
-        fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/prayers.json")
+        // Pedimos solo los últimos 20 mensajes ordenados por timestamp
+        const url = "https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/prayers.json?orderBy=\"timestamp\"&limitToLast=20";
+        fetch(url)
             .then(res => res.json())
             .then(data => {
                 const prayersScroller = document.getElementById("prayers-scroller");
                 if (!prayersScroller) return;
-                
+
                 prayersScroller.innerHTML = "";
-                
+
                 let items = [];
                 if (data) {
-                    items = Object.values(data).reverse(); // Latest first
+                    // Los últimos 20, del más reciente al más antiguo
+                    items = Object.values(data).reverse();
                 }
-                
-                // Add some default beautiful fallback prayers if empty
+
+                // Mensajes de muestra si la lista está vacía
                 if (items.length === 0) {
                     items = [
                         { name: "MusiChris Studio", text: "Orando en cadena global de fe y bendición para todo el mundo." },
@@ -1468,10 +1471,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         { name: "Hermana María", text: "Dando gracias por un milagro financiero y provisión diaria." }
                     ];
                 }
-                
-                // Double the list to make seamless scrolling work perfectly
+
+                // Duplicar para el efecto de scroll infinito
                 const renderItems = [...items, ...items];
-                
+
                 renderItems.forEach(item => {
                     const el = document.createElement("div");
                     el.className = "scroll-item";
@@ -1482,6 +1485,36 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(err => {
                 console.error("Error loading prayers:", err);
             });
+    }
+
+    // 🧹 Depurador automático: elimina los más antiguos si hay más de 20
+    function purgePrayerWall() {
+        const MAX_PRAYERS = 20;
+        const DB_URL = "https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/prayers.json?orderBy=\"timestamp\"";
+
+        fetch(DB_URL)
+            .then(res => res.json())
+            .then(data => {
+                if (!data) return;
+
+                const entries = Object.entries(data); // [key, value]
+                // Están ordenados del más antiguo al más reciente
+                const totalCount = entries.length;
+
+                if (totalCount <= MAX_PRAYERS) return; // Nada que depurar
+
+                // Eliminar los más antiguos hasta quedarnos con solo 20
+                const toDelete = entries.slice(0, totalCount - MAX_PRAYERS);
+
+                toDelete.forEach(([key]) => {
+                    fetch(`https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/prayers/${key}.json`, {
+                        method: "DELETE"
+                    }).catch(err => console.warn("No se pudo depurar mensaje:", err));
+                });
+
+                console.log(`🧹 Clamor en Cadena: ${toDelete.length} mensaje(s) antiguo(s) depurado(s). Quedan ${MAX_PRAYERS}.`);
+            })
+            .catch(err => console.warn("Error al depurar el muro:", err));
     }
 
     // -------------------------------------------------------------
@@ -1553,15 +1586,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(() => {
             nameInput.value = "";
             textInput.value = "";
-            
+
             // Close modal
             document.getElementById("prayer-wall-modal").classList.remove("active");
-            
+
             // Show success status
             alert("🙏 ¡Petición publicada con éxito! Toda la comunidad estará intercediendo por ti.");
-            
-            // Refresh Wall
+
+            // Refrescar y depurar automáticamente
             fetchPrayerWall();
+            purgePrayerWall(); // 🧹 Elimina los más antiguos si hay más de 20
         })
         .catch(err => {
             console.error("Error submitting prayer:", err);

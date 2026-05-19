@@ -10,7 +10,8 @@
     },
     "prayers": {
       ".read": true,
-      ".write": true
+      ".write": true,
+      ".indexOn": ["timestamp"]
     },
     "daily_devotional": {
       ".read": true,
