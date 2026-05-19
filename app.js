@@ -1778,3 +1778,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Actualización del Muro cada 30 segundos
     setInterval(fetchPrayerWall, 30000);
 });
+
+// 📱 Register Service Worker for PWA (Progressive Web App)
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+            .register("./sw.js")
+            .then((registration) => {
+                console.log("[PWA] Service Worker registered successfully with scope:", registration.scope);
+            })
+            .catch((error) => {
+                console.error("[PWA] Service Worker registration failed:", error);
+            });
+    });
+}
