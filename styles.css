@@ -499,26 +499,27 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     justify-content: center;
     gap: 10px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px dashed rgba(255, 255, 255, 0.06);
-    padding: 8px 14px;
+    background: rgba(7, 5, 15, 0.75);
+    border: 1px solid rgba(140, 178, 201, 0.15);
+    padding: 10px 16px;
     border-radius: 14px;
-    min-height: 40px;
-    margin-top: 4px;
+    min-height: 44px;
+    margin-top: 6px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .quote-icon {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     color: var(--neon-cyan);
-    opacity: 0.65;
+    opacity: 0.85;
     align-self: flex-start;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .phrase-text {
-    font-size: 0.68rem;
+    font-size: 0.74rem;
     font-style: italic;
-    color: var(--text-muted);
+    color: #ffffff;
     line-height: 1.4;
     transition: opacity 0.5s ease-in-out;
     opacity: 1;
@@ -1195,7 +1196,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-image: url('https://raw.githubusercontent.com/hjalmarmeza/Musichristudio_radio/main/assets/world_map_seamless_color.png');
+    background-image: url('assets/world_map_seamless_color.png');
     background-size: 200% 100%;
     background-repeat: repeat-x;
     background-position: 0% center;
@@ -1614,9 +1615,10 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(5, 4, 12, 0.82);
-    /* removed */
-    z-index: 1000;
+    background: rgba(5, 4, 12, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99999;
     display: none;
     justify-content: center;
     align-items: center;
@@ -2295,6 +2297,10 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 75, 43, 0.8); }
     100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 75, 43, 0.5); }
 }
+/* 📱 MOBILE BOTTOM NAVIGATION SYSTEM */
+.mobile-bottom-nav {
+    display: none;
+}
 
 /* 🕊️ BIBLE MODAL, PRAYER WALL & DEVOTIONAL MODALS */
 .bible-modal-overlay,
@@ -2305,10 +2311,10 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(3, 2, 7, 0.9);
-    /* removed */
-    -webkit-/* removed */
-    z-index: 1000;
+    background: rgba(3, 2, 7, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2768,10 +2774,15 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 }
 
 @media (max-width: 768px) {
+    body {
+        padding-bottom: 78px; /* Give room for mobile floating bottom nav */
+    }
+
     .main-header {
-        background: rgba(7, 5, 15, 0.45); /* slightly more transparent to let the floating badge stand out */
-        /* removed */
-        -webkit-/* removed */
+        background: rgba(7, 5, 15, 0.82) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .header-container {
@@ -2824,47 +2835,196 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     .header-actions .cta-header-btn {
         display: none;
     }
+    
+    .admin-trigger-btn {
+        margin-right: 0px !important;
+        padding: 8px 12px !important;
+        font-size: 0.78rem !important;
+    }
+
+    /* Floating Bottom Navigation Bar for Mobile */
+    .mobile-bottom-nav {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 68px;
+        background: rgba(10, 8, 20, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+        justify-content: space-around;
+        align-items: center;
+        z-index: 9999;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 0.65rem;
+        font-weight: 600;
+        gap: 4px;
+        flex: 1;
+        height: 100%;
+        transition: var(--transition-smooth);
+    }
+    
+    .mobile-nav-item i {
+        font-size: 1.2rem;
+        transition: transform 0.2s ease-out;
+    }
+    
+    .mobile-nav-item:hover,
+    .mobile-nav-item.active {
+        color: var(--neon-cyan) !important;
+    }
+    
+    .mobile-nav-item.active i {
+        transform: translateY(-2px);
+        text-shadow: 0 0 10px rgba(140, 178, 201, 0.5);
+    }
     .hero-title {
         font-size: 2.2rem;
     }
-    .form-row {
-        grid-template-columns: 1fr;
+    
+    .section-title {
+        font-size: 1.8rem !important;
     }
-    .prayer-form {
-        padding: 24px;
+
+    .section-subtitle {
+        font-size: 0.88rem !important;
     }
-    .footer-container {
+
+    /* Announcement card fixes (preventing clip) */
+    .announcement-card-strip {
+        padding: 35px 24px;
+        min-height: auto;
+    }
+    
+    .strip-content-area {
         flex-direction: column;
         gap: 20px;
         text-align: center;
     }
-    .announcement-card-strip {
-        padding: 30px 20px;
+
+    .strip-left {
+        align-items: center;
     }
+    
     .strip-title {
-        font-size: 1.4rem;
+        font-size: 1.35rem;
     }
+    
     .strip-desc {
         font-size: 0.85rem;
+        margin-bottom: 8px;
     }
 
-    /* Modal scroll and centering improvements */
+    .strip-cta-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 24px;
+    }
+
+    /* Postcard creator actions stack */
+    .postcard-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        margin-top: 10px;
+    }
+    
+    .postcard-btn {
+        width: 100% !important;
+        justify-content: center;
+        padding: 14px 20px !important;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .prayer-form {
+        padding: 24px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    /* Modal improvements */
     .admin-modal-overlay {
         align-items: flex-start;
-        padding: 20px 10px;
+        padding: 20px 12px;
     }
+    
     .admin-modal-box {
         padding: 20px;
         border-radius: 24px;
         max-height: 90vh;
     }
+    
     .admin-tabs {
         gap: 6px;
         padding-bottom: 8px;
     }
+    
     .tab-btn {
         padding: 6px 12px;
         font-size: 0.8rem;
+    }
+    
+    .export-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .export-actions button {
+        width: 100% !important;
+    }
+
+    /* Bible & Devotional Modals Responsive Fixes */
+    .bible-modal-box,
+    .prayer-wall-box,
+    .devotional-modal-box {
+        width: 95% !important;
+        max-height: 90vh !important;
+        padding: 24px 18px !important;
+        border-radius: 24px !important;
+    }
+
+    .bible-reader-viewport {
+        max-height: 52vh !important;
+    }
+
+    .devotional-modal-body {
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+        padding-right: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Close buttons touch target */
+    .close-bible-btn,
+    .close-devotional-btn,
+    .close-prayer-wall-btn,
+    .close-admin-btn {
+        width: 44px !important;
+        height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 2rem !important;
     }
 }
 
