@@ -372,6 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🛠️ Render Schedule Editor Inputs
     function renderAdminScheduleEditor() {
+        if (!scheduleEditList) return;
         scheduleEditList.innerHTML = "";
         
         schedule.forEach((item, index) => {
@@ -423,17 +424,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 2. Gather Edited Schedule
-        const editedSchedule = [];
+        let editedSchedule = [...schedule];
         const schTimes = document.querySelectorAll(".edit-sch-time");
         const schTitles = document.querySelectorAll(".edit-sch-title");
         const schDescs = document.querySelectorAll(".edit-sch-desc");
 
-        for (let i = 0; i < schTimes.length; i++) {
-            editedSchedule.push({
-                time: schTimes[i].value,
-                title: schTitles[i].value,
-                desc: schDescs[i].value
-            });
+        if (schTimes.length > 0) {
+            editedSchedule = [];
+            for (let i = 0; i < schTimes.length; i++) {
+                editedSchedule.push({
+                    time: schTimes[i].value,
+                    title: schTitles[i].value,
+                    desc: schDescs[i].value
+                });
+            }
         }
 
         // 3. Save State & Sync to Firebase
