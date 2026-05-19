@@ -70,6 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🌐 Firebase Realtime Database REST Configuration
     const DATABASE_URL = "https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/radio.json";
 
+    // 📩 Private Inbox State Cache
+    let privateMessages = {};
+    let activeMessageFilter = "oracion";
+
     // 2. 🗄️ STATE MANAGEMENT (Announcements & Schedule)
     const DEFAULT_ANNOUNCEMENTS = [
         {
@@ -292,6 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Render editing lists inside tabs
             renderAdminAnnouncementsEditor();
             renderAdminScheduleEditor();
+            fetchPrivateMessages(); // 📩 Sincronizar bandeja de entrada
             generateExportCode();
         } else {
             loginError.classList.add("show");
@@ -310,7 +315,22 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (targetId === "tab-export") {
                 generateExportCode();
+            } else if (targetId === "tab-mensajes") {
+                fetchPrivateMessages(); // 🔄 Refrescar bandeja al abrir la pestaña
             }
+        });
+    });
+
+    // Handle message sub-tabs filtering
+    const subtabBtns = document.querySelectorAll(".subtab-btn");
+
+    subtabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            subtabBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            
+            activeMessageFilter = btn.getAttribute("data-filter");
+            renderPrivateMessages(activeMessageFilter);
         });
     });
 
@@ -485,6 +505,161 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("📋 ¡Código de configuración copiado al portapapeles! Puedes enviarme este código o guardarlo directamente en tu configuración de GitHub para hacerlo definitivo.");
     }
 
+    // 📩 PRIVATE MESSAGES SYSTEM (Serverless Inbox Engine)
+    function escapeHTML(str) {
+        if (!str) return "";
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
+    function fetchPrivateMessages() {
+        const inboxMessagesList = document.getElementById("inbox-messages-list");
+        if (inboxMessagesList) {
+            inboxMessagesList.innerHTML = '<div class="inbox-empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Sincronizando bandeja de entrada...</div>';
+        }
+
+        fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages.json")
+            .then(res => {
+                if (!res.ok) throw new Error("No se pudo conectar a la base de datos.");
+                return res.json();
+            })
+            .then(data => {
+                privateMessages = data || {};
+                renderPrivateMessages(activeMessageFilter);
+            })
+            .catch(err => {
+                console.error("Error al obtener mensajes privados:", err);
+                if (inboxMessagesList) {
+                    inboxMessagesList.innerHTML = `<div class="inbox-empty-state"><i class="fa-solid fa-circle-exclamation" style="color: #ff4b4b;"></i> Error al cargar mensajes: ${err.message}</div>`;
+                }
+            });
+    }
+
+    function renderPrivateMessages(filterType = "oracion") {
+        const inboxMessagesList = document.getElementById("inbox-messages-list");
+        if (!inboxMessagesList) return;
+
+        inboxMessagesList.innerHTML = "";
+
+        // Convert the messages object into an array with IDs and sort by timestamp descending
+        const messageArray = Object.entries(privateMessages)
+            .map(([id, val]) => ({ id, ...val }))
+            .filter(msg => msg.type === filterType)
+            .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        if (messageArray.length === 0) {
+            let emptyText = "No hay peticiones de oración en este momento.";
+            let emptyIcon = "fa-hands-praying";
+            if (filterType === "testimonio") {
+                emptyText = "No hay testimonios registrados en este momento.";
+                emptyIcon = "fa-dove";
+            } else if (filterType === "contacto") {
+                emptyText = "No hay sugerencias o mensajes en este momento.";
+                emptyIcon = "fa-envelope-open";
+            }
+            
+            inboxMessagesList.innerHTML = `
+                <div class="inbox-empty-state">
+                    <i class="fa-solid ${emptyIcon}"></i>
+                    <p>${emptyText}</p>
+                </div>
+            `;
+            return;
+        }
+
+        messageArray.forEach(msg => {
+            const card = document.createElement("div");
+            card.className = "inbox-card";
+            
+            // Format timestamp nicely
+            const dateStr = msg.timestamp ? new Date(msg.timestamp).toLocaleString("es-ES", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }) : "Fecha no especificada";
+
+            card.innerHTML = `
+                <div class="inbox-card-header">
+                    <div class="inbox-card-meta">
+                        <span class="inbox-sender-name">${escapeHTML(msg.name)}</span>
+                        <span class="inbox-sender-email">${escapeHTML(msg.email)}</span>
+                    </div>
+                    <span class="inbox-card-date">${dateStr}</span>
+                </div>
+                <div class="inbox-card-body">${escapeHTML(msg.message)}</div>
+                <div class="inbox-card-actions">
+                    <a href="mailto:${encodeURIComponent(msg.email)}?subject=${encodeURIComponent('Re: Mensaje en MusiChris Studio Radio')}" class="inbox-btn inbox-btn-reply">
+                        <i class="fa-solid fa-reply"></i> Responder
+                    </a>
+                    <button class="inbox-btn inbox-btn-delete" data-id="${msg.id}">
+                        <i class="fa-solid fa-trash-can"></i> Eliminar
+                    </button>
+                </div>
+            `;
+            
+            inboxMessagesList.appendChild(card);
+        });
+
+        // Bind delete buttons
+        const deleteButtons = inboxMessagesList.querySelectorAll(".inbox-btn-delete");
+        deleteButtons.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const messageId = btn.getAttribute("data-id");
+                deletePrivateMessage(messageId, btn);
+            });
+        });
+    }
+
+    function deletePrivateMessage(messageId, btn) {
+        if (!messageId) return;
+
+        const originalBtnHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+        fetch(`https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages/${messageId}.json`, {
+            method: "DELETE"
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("No se pudo eliminar el mensaje.");
+            return res.json();
+        })
+        .then(() => {
+            // Delete from local cache
+            delete privateMessages[messageId];
+            
+            // Highlight card and fade out dynamically for premium micro-interaction feel
+            const card = btn.closest(".inbox-card");
+            if (card) {
+                card.style.transition = "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+                card.style.opacity = "0";
+                card.style.transform = "scale(0.9) translateY(10px)";
+                card.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.3)";
+                
+                setTimeout(() => {
+                    renderPrivateMessages(activeMessageFilter);
+                }, 400); // 400ms for visual transition
+            } else {
+                renderPrivateMessages(activeMessageFilter);
+            }
+        })
+        .catch(err => {
+            console.error("Error al eliminar mensaje:", err);
+            alert("No se pudo eliminar el mensaje. Inténtalo nuevamente.");
+            btn.disabled = false;
+            btn.innerHTML = originalBtnHtml;
+        });
+    }
+
     // 6. 📻 ORIGINAL STREAM CONTROLLER LOGIC (Web Audio & Verses)
     let isPlaying = false;
     let lastVolume = 80;
@@ -648,29 +823,69 @@ document.addEventListener("DOMContentLoaded", () => {
         prayerForm.addEventListener("submit", (e) => {
             e.preventDefault(); 
             
-            const name = document.getElementById("form-name").value;
-            const email = document.getElementById("form-email").value;
-            const type = document.getElementById("form-type").value;
-            const message = document.getElementById("form-message").value;
+            const nameInput = document.getElementById("form-name");
+            const emailInput = document.getElementById("form-email");
+            const typeSelect = document.getElementById("form-type");
+            const messageTextarea = document.getElementById("form-message");
             
-            console.log("📝 Petición de Oración Recibida:", { name, email, type, message });
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const type = typeSelect.value;
+            const message = messageTextarea.value.trim();
             
-            // Premium Routing: Open WhatsApp with beautiful formatted message
-            const targetPhone = "34634655522";
-            const typeLabel = type === "prayer" ? "Petición de Oración 🙏" : "Testimonio de Bendición 🕊️";
-            const waMessage = `¡Hola MusiChris Studio! 🕊️ He enviado una petición desde la web radio:\n\n*Nombre:* ${name}\n*Email:* ${email}\n*Tipo:* ${typeLabel}\n\n*Mensaje:* ${message}`;
-            const encodedMsg = encodeURIComponent(waMessage);
-            const waUrl = `https://wa.me/${targetPhone}?text=${encodedMsg}`;
+            if (!name || !email || !message) {
+                alert("Por favor completa todos los campos del formulario.");
+                return;
+            }
             
-            // Open WhatsApp immediately (synchronously) to prevent browser pop-up blockers
-            window.open(waUrl, "_blank");
+            const submitBtn = prayerForm.querySelector(".submit-btn");
+            const originalBtnHtml = submitBtn.innerHTML;
             
-            formSuccess.classList.add("show");
-            prayerForm.reset();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...`;
             
-            setTimeout(() => {
-                formSuccess.classList.remove("show");
-            }, 6000);
+            fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages.json", {
+                method: "POST",
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    type: type,
+                    message: message,
+                    timestamp: Date.now()
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Error en la conexión con el servidor.");
+                return res.json();
+            })
+            .then(() => {
+                // Personalizar mensaje de éxito según el tipo de mensaje
+                const successSpan = formSuccess.querySelector("span");
+                if (successSpan) {
+                    if (type === "oracion") {
+                        successSpan.textContent = "¡Petición recibida! Estaremos orando por ti. ¡Bendiciones!";
+                    } else if (type === "testimonio") {
+                        successSpan.textContent = "¡Testimonio recibido! Gracias por compartir tu victoria. ¡Gloria a Dios!";
+                    } else {
+                        successSpan.textContent = "¡Mensaje recibido! Nos pondremos en contacto pronto. ¡Bendiciones!";
+                    }
+                }
+                
+                formSuccess.classList.add("show");
+                prayerForm.reset();
+                
+                setTimeout(() => {
+                    formSuccess.classList.remove("show");
+                }, 6000);
+            })
+            .catch(err => {
+                console.error("Error al enviar mensaje privado:", err);
+                alert("Hubo un problema al enviar tu mensaje. Por favor, inténtalo nuevamente.");
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            });
         });
     }
 
