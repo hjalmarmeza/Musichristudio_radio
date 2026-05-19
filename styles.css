@@ -932,51 +932,76 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     aspect-ratio: 16/10;
     border-radius: 12px;
     border: 2px solid rgba(255,255,255,0.08);
-    background: rgba(255, 255, 255, 0.03);
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 0.72rem;
-    font-weight: 700;
-    font-family: 'Outfit', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background: #0a0a14;
     cursor: pointer;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    gap: 4px;
-    padding: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    padding: 0;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.bg-thumb i {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.45);
-    transition: color 0.25s ease;
+/* Video de vista previa dentro del recuadro */
+.bg-thumb-preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+/* Capa oscura sutil encima del video */
+.bg-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.65) 100%);
+    border-radius: 10px;
+    transition: background 0.25s ease;
+}
+
+/* Nombre del fondo superpuesto en la parte inferior */
+.bg-thumb-label {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.62rem;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    z-index: 2;
+    padding: 0 4px;
+    line-height: 1.2;
 }
 
 .bg-thumb:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
 }
 
-.bg-thumb:hover i {
-    color: var(--neon-cyan);
+.bg-thumb:hover .bg-thumb-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.55) 100%);
 }
 
 .bg-thumb.active {
     border-color: var(--neon-cyan);
-    background: rgba(0, 242, 254, 0.12);
-    color: var(--neon-cyan);
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.45);
 }
 
-.bg-thumb.active i {
+.bg-thumb.active .bg-thumb-overlay {
+    background: linear-gradient(to bottom, rgba(0, 242, 254, 0.08) 0%, rgba(0,0,0,0.5) 100%);
+}
+
+.bg-thumb.active .bg-thumb-label {
     color: var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.8);
 }
 
 .postcard-textarea {

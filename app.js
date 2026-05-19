@@ -1767,17 +1767,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let selectedVideo = POSTCARD_VIDEOS[0];
 
-        // 1. Render Background Selector Thumbnails (3x3 grid)
+        // 1. Render Background Selector Thumbnails (3x3 grid con fotograma real)
         bgThumbsGrid.innerHTML = "";
         POSTCARD_VIDEOS.forEach((video, index) => {
             const thumb = document.createElement("button");
             thumb.className = `bg-thumb ${index === 0 ? "active" : ""}`;
             thumb.title = video.name;
             thumb.setAttribute("aria-label", video.name);
-            
+
+            // Usamos un <video> pausado en el primer fotograma como miniatura
             thumb.innerHTML = `
-                <i class="${video.icon}"></i>
-                <span>${video.name}</span>
+                <video
+                    class="bg-thumb-preview"
+                    src="${video.src}#t=0.5"
+                    muted
+                    playsinline
+                    preload="metadata"
+                ></video>
+                <div class="bg-thumb-label">${video.name}</div>
+                <div class="bg-thumb-overlay"></div>
             `;
 
             thumb.addEventListener("click", () => {
