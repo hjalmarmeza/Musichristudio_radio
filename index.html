@@ -429,6 +429,7 @@
                 <div class="admin-tabs">
                     <button class="tab-btn active" data-tab="tab-anuncios">Anuncios</button>
                     <button class="tab-btn" data-tab="tab-programacion">Programación</button>
+                    <button class="tab-btn" data-tab="tab-mensajes">Mensajes 📩</button>
                     <button class="tab-btn" data-tab="tab-export">Guardar/Exportar</button>
                 </div>
 
@@ -448,6 +449,22 @@
                         
                         <div class="admin-scroll-container" id="schedule-edit-list">
                             <!-- Loop items rendered dynamically by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Messages / Inbox -->
+                    <div class="tab-content-panel" id="tab-mensajes">
+                        <p class="tab-desc">Administra los mensajes y testimonios privados que envían los oyentes.</p>
+                        
+                        <!-- Sub-tabs for categories -->
+                        <div class="msg-subtabs">
+                            <button class="subtab-btn active" data-filter="oracion">Oración 🙏</button>
+                            <button class="subtab-btn" data-filter="testimonio">Victorias 🕊️</button>
+                            <button class="subtab-btn" data-filter="contacto">Mensajes 📝</button>
+                        </div>
+                        
+                        <div class="admin-scroll-container inbox-container" id="inbox-messages-list">
+                            <div class="inbox-empty-state">Cargando mensajes...</div>
                         </div>
                     </div>
 

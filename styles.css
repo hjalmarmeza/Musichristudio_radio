@@ -1837,6 +1837,175 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     margin-bottom: 4px;
 }
 
+/* Inbox Messages & Sub-tabs Styling */
+.msg-subtabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.subtab-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+}
+
+.subtab-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.subtab-btn.active {
+    background: rgba(239, 137, 26, 0.15); /* Warm prayer orange/amber */
+    border-color: rgba(239, 137, 26, 0.4);
+    color: #ff9d33;
+    box-shadow: 0 4px 12px rgba(239, 137, 26, 0.1);
+}
+
+.subtab-btn[data-filter="testimonio"].active {
+    background: rgba(212, 175, 55, 0.15); /* Gold */
+    border-color: rgba(212, 175, 55, 0.4);
+    color: #ffd700;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.1);
+}
+
+.subtab-btn[data-filter="contacto"].active {
+    background: rgba(0, 242, 254, 0.1); /* Cyan */
+    border-color: rgba(0, 242, 254, 0.3);
+    color: var(--neon-cyan);
+    box-shadow: 0 4px 12px rgba(0, 242, 254, 0.08);
+}
+
+/* Inbox List Layout */
+.inbox-container {
+    gap: 16px !important;
+}
+
+.inbox-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.inbox-empty-state i {
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.15);
+}
+
+.inbox-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.25s ease;
+}
+
+.inbox-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateY(-2px);
+}
+
+.inbox-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding-bottom: 8px;
+}
+
+.inbox-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.inbox-sender-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+.inbox-sender-email {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.inbox-card-date {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    align-self: flex-end;
+}
+
+.inbox-card-body {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.inbox-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    justify-content: flex-end;
+}
+
+.inbox-btn {
+    background: none;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.inbox-btn-reply {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    color: var(--neon-cyan);
+}
+
+.inbox-btn-reply:hover {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: rgba(0, 242, 254, 0.4);
+}
+
+.inbox-btn-delete {
+    background: rgba(255, 75, 75, 0.08);
+    border: 1px solid rgba(255, 75, 75, 0.2);
+    color: #ff4b4b;
+}
+
+.inbox-btn-delete:hover {
+    background: rgba(255, 75, 75, 0.15);
+    border-color: rgba(255, 75, 75, 0.4);
+}
+
 /* Export Panel Styling */
 .export-actions {
     display: flex;
