@@ -568,27 +568,33 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
-    function fetchPrivateMessages() {
+    async function fetchPrivateMessages() {
         const inboxMessagesList = document.getElementById("inbox-messages-list");
         if (inboxMessagesList) {
             inboxMessagesList.innerHTML = '<div class="inbox-empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Sincronizando bandeja de entrada...</div>';
         }
 
-        fetch("https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages.json")
-            .then(res => {
-                if (!res.ok) throw new Error("No se pudo conectar a la base de datos.");
-                return res.json();
-            })
-            .then(data => {
-                privateMessages = data || {};
-                renderPrivateMessages(activeMessageFilter);
-            })
-            .catch(err => {
-                console.error("Error al obtener mensajes privados:", err);
-                if (inboxMessagesList) {
-                    inboxMessagesList.innerHTML = `<div class="inbox-empty-state"><i class="fa-solid fa-circle-exclamation" style="color: #ff4b4b;"></i> Error al cargar mensajes: ${err.message}</div>`;
-                }
-            });
+        const user = auth.currentUser;
+        if (!user) {
+            if (inboxMessagesList) {
+                inboxMessagesList.innerHTML = `<div class="inbox-empty-state"><i class="fa-solid fa-circle-exclamation" style="color: #ff4b4b;"></i> Acceso denegado: No has iniciado sesión.</div>`;
+            }
+            return;
+        }
+
+        try {
+            const token = await user.getIdToken();
+            const res = await fetch(`https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages.json?auth=${token}`);
+            if (!res.ok) throw new Error("No se pudo conectar a la base de datos.");
+            const data = await res.json();
+            privateMessages = data || {};
+            renderPrivateMessages(activeMessageFilter);
+        } catch (err) {
+            console.error("Error al obtener mensajes privados:", err);
+            if (inboxMessagesList) {
+                inboxMessagesList.innerHTML = `<div class="inbox-empty-state"><i class="fa-solid fa-circle-exclamation" style="color: #ff4b4b;"></i> Error al cargar mensajes: ${err.message}</div>`;
+            }
+        }
     }
 
     function renderPrivateMessages(filterType = "oracion") {
@@ -668,21 +674,29 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function deletePrivateMessage(messageId, btn) {
+    async function deletePrivateMessage(messageId, btn) {
         if (!messageId) return;
 
         const originalBtnHtml = btn.innerHTML;
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-        fetch(`https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages/${messageId}.json`, {
-            method: "DELETE"
-        })
-        .then(res => {
+        const user = auth.currentUser;
+        if (!user) {
+            alert("No has iniciado sesión como administrador.");
+            btn.disabled = false;
+            btn.innerHTML = originalBtnHtml;
+            return;
+        }
+
+        try {
+            const token = await user.getIdToken();
+            const res = await fetch(`https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/private_messages/${messageId}.json?auth=${token}`, {
+                method: "DELETE"
+            });
             if (!res.ok) throw new Error("No se pudo eliminar el mensaje.");
-            return res.json();
-        })
-        .then(() => {
+            await res.json();
+            
             // Delete from local cache
             delete privateMessages[messageId];
             
@@ -690,23 +704,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const card = btn.closest(".inbox-card");
             if (card) {
                 card.style.transition = "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+                card.style.transform = "scale(0.95)";
                 card.style.opacity = "0";
-                card.style.transform = "scale(0.9) translateY(10px)";
-                card.style.boxShadow = "0 0 20px rgba(255, 75, 75, 0.3)";
-                
                 setTimeout(() => {
-                    renderPrivateMessages(activeMessageFilter);
-                }, 400); // 400ms for visual transition
+                    card.remove();
+                    // If no more items in current filter, re-render empty state
+                    if (Object.keys(privateMessages).filter(k => privateMessages[k].type === activeMessageFilter).length === 0) {
+                        renderPrivateMessages(activeMessageFilter);
+                    }
+                }, 400);
             } else {
                 renderPrivateMessages(activeMessageFilter);
             }
-        })
-        .catch(err => {
+        } catch (err) {
             console.error("Error al eliminar mensaje:", err);
-            alert("No se pudo eliminar el mensaje. Inténtalo nuevamente.");
+            alert("Error al intentar eliminar: " + err.message);
             btn.disabled = false;
             btn.innerHTML = originalBtnHtml;
-        });
+        }
     }
 
     // 6. 📻 ORIGINAL STREAM CONTROLLER LOGIC (Web Audio & Verses)
