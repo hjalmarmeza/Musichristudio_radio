@@ -1,4 +1,4 @@
-const CACHE_NAME = "musichris-radio-cache-v1";
+const CACHE_NAME = "musichris-radio-cache-v2";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
@@ -55,7 +55,7 @@ self.addEventListener("fetch", (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.match(event.request).then((cachedResponse) => {
         const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse.status === 200) {
+          if (networkResponse.status === 200 && event.request.url.startsWith("http")) {
             cache.put(event.request, networkResponse.clone());
           }
           return networkResponse;
