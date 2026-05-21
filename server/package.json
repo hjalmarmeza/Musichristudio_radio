@@ -1,0 +1,13 @@
+{
+  "name": "musichristudio-radio-server",
+  "version": "1.0.0",
+  "description": "Pipeline server: Gmail → Firebase para Pan de Vida Diario",
+  "main": "pan_de_vida_updater.js",
+  "scripts": {
+    "update": "node pan_de_vida_updater.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}

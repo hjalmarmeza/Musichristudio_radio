@@ -1,0 +1,70 @@
+name: 🍞 Pan de Vida Diario — MusiChris Studio Radio
+
+on:
+  schedule:
+    # Todos los días a las 6:00 AM UTC = 8:00 AM España = 1:00 AM México
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # Permite ejecución manual desde la pestaña Actions de GitHub
+
+permissions:
+  contents: read
+
+jobs:
+  pan-de-vida:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: server/package-lock.json
+
+      - name: 📦 Instalar dependencias del servidor
+        working-directory: server
+        run: npm install
+
+      - name: 🔍 Validar token de Gmail
+        env:
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+        run: |
+          node -e "
+          const raw = process.env.YOUTUBE_TOKEN_JSON || '';
+          if (!raw.trim()) { console.error('❌ YOUTUBE_TOKEN_JSON está vacío.'); process.exit(1); }
+          let clean = raw.trim()
+            .replace(/^\`\`\`json/, '').replace(/^\`\`\`/, '').replace(/\`\`\`$/, '').trim();
+          try {
+            const d = JSON.parse(clean);
+            const required = ['client_id','client_secret','refresh_token','token_uri'];
+            const missing = required.filter(k => !d[k]);
+            if (missing.length > 0) {
+              console.error('❌ Token incompleto. Faltan:', missing.join(', '));
+              process.exit(1);
+            }
+            console.log('✅ Token de Gmail validado. Campos OK:', Object.keys(d).join(', '));
+          } catch(e) {
+            console.error('❌ Token inválido (no es JSON):', e.message);
+            process.exit(1);
+          }
+          "
+
+      - name: 🍞 Actualizar Pan de Vida Diario en Firebase
+        working-directory: server
+        env:
+          # Gmail OAuth2 — mismos secretos que usa el proyecto Musichris_Theme
+          YOUTUBE_CREDENTIALS_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRETS_JSON }}
+          YOUTUBE_TOKEN_JSON:       ${{ secrets.YOUTUBE_TOKEN_JSON }}
+          # Firebase Admin — credenciales del panel de administración de la radio
+          FIREBASE_ADMIN_EMAIL:     ${{ secrets.FIREBASE_ADMIN_EMAIL }}
+          FIREBASE_ADMIN_PASSWORD:  ${{ secrets.FIREBASE_ADMIN_PASSWORD }}
+          # IA — mismos secretos que usa Musichris_Theme (al menos uno es necesario)
+          CEREBRAS_API_KEY:         ${{ secrets.CEREBRAS_API_KEY }}
+          DEEPINFRA_API_KEY:        ${{ secrets.DEEPINFRA_API_KEY }}
+          DEEPSEEK_API_KEY:         ${{ secrets.DEEPSEEK_API_KEY }}
+        run: node pan_de_vida_updater.js
