@@ -644,8 +644,9 @@
 
     <!-- FULLSCREEN VIDEO PLAYER MODAL -->
     <div class="fullscreen-video-overlay" id="fullscreen-video-modal">
-        <button class="close-video-btn" id="close-video-btn">&times;</button>
-        <div class="video-container">
+        <div class="fullscreen-video-container">
+            <button id="close-fullscreen-btn" class="close-video-btn"><i class="fa-solid fa-xmark"></i></button>
+            <button id="zoom-toggle-btn" class="zoom-video-btn" title="Ajustar pantalla"><i class="fa-solid fa-expand"></i></button>
             <video id="parable-video-player" controls controlsList="nodownload" playsinline></video>
             <h3 class="fullscreen-video-title" id="fullscreen-video-title">Título del Video</h3>
         </div>

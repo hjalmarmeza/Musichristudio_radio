@@ -67,6 +67,44 @@ document.addEventListener("DOMContentLoaded", () => {
     // Admin Panel Selectors
     const adminTriggerBtn = document.getElementById("admin-trigger-btn");
     const adminModal = document.getElementById("admin-modal");
+    
+    // Close fullscreen video on clicking 'x' or outside the video
+    const closeFullscreenBtn = document.getElementById("close-fullscreen-btn");
+    const fullscreenOverlay = document.getElementById("fullscreen-video-modal");
+
+    if (closeFullscreenBtn) closeFullscreenBtn.addEventListener("click", closeFullscreenVideo);
+    if (fullscreenOverlay) {
+        fullscreenOverlay.addEventListener("click", (e) => {
+            if (e.target === fullscreenOverlay) closeFullscreenVideo();
+        });
+    }
+
+    // Funcionalidad del botón de Zoom (Ajustar Pantalla)
+    const zoomToggleBtn = document.getElementById("zoom-toggle-btn");
+    if (zoomToggleBtn) {
+        zoomToggleBtn.addEventListener("click", () => {
+            const videoPlayer = document.getElementById("parable-video-player");
+            if (videoPlayer) {
+                videoPlayer.classList.toggle("zoomed");
+                if (videoPlayer.classList.contains("zoomed")) {
+                    zoomToggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                } else {
+                    zoomToggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                }
+            }
+        });
+    }
+
+    // Escuchar la tecla "Escape" para salir del modal de video en escritorio
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            const videoOverlay = document.getElementById("fullscreen-video-modal");
+            if (videoOverlay && videoOverlay.classList.contains("active")) {
+                closeFullscreenVideo();
+            }
+        }
+    });
+
     const closeAdminBtn = document.getElementById("close-admin-btn");
     const adminLoginScreen = document.getElementById("admin-login-screen");
     const adminDashboardScreen = document.getElementById("admin-dashboard-screen");
@@ -2193,6 +2231,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (videoTitle) videoTitle.textContent = title;
             videoOverlay.classList.add("active");
             
+            // Limpiar estado de zoom anterior si existe
+            videoPlayer.classList.remove("zoomed");
+            let zoomBtn = document.getElementById("zoom-toggle-btn");
+            if(zoomBtn) {
+                zoomBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            }
+
             // En lugar de forzar fullscreen en el <video> (lo cual abre el reproductor nativo en iOS y rompe el object-fit),
             // intentamos hacer fullscreen en el contenedor modal para navegadores de escritorio/android.
             // En iOS (iPhone), esto fallará silenciosamente y simplemente usará nuestro modal CSS de 100vw/100vh.
