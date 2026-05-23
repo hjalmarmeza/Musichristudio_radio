@@ -2121,7 +2121,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🎬 PARABLES CATALOG & VIDEO PLAYER
     function initParablesCatalog() {
-        const parablesGrid = document.getElementById("parables-grid-container");
+        const parablesGrid = document.getElementById("parables-grid");
+        const loader = document.getElementById("parables-loader");
         if (!parablesGrid) return;
 
         // Fetch parables from Firebase
@@ -2129,6 +2130,8 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(parablesUrl)
             .then(res => res.json())
             .then(data => {
+                if (loader) loader.style.display = "none";
+                parablesGrid.style.display = "grid";
                 parablesGrid.innerHTML = "";
                 if (!data || Object.keys(data).length === 0) {
                     parablesGrid.innerHTML = "<div class='inbox-empty-state' style='grid-column: 1 / -1;'><i class='fa-solid fa-video-slash'></i><p>Aún no hay parábolas disponibles.</p></div>";
@@ -2160,7 +2163,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         // Setup Fullscreen Video Player
-        const videoOverlay = document.getElementById("fullscreen-video-overlay");
+        const videoOverlay = document.getElementById("fullscreen-video-modal");
         const videoPlayer = document.getElementById("parable-video-player");
         const videoTitle = document.getElementById("fullscreen-video-title");
         const closeVideoBtn = document.getElementById("close-video-btn");
@@ -2176,7 +2179,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function openFullscreenVideo(url, title) {
-        const videoOverlay = document.getElementById("fullscreen-video-overlay");
+        const videoOverlay = document.getElementById("fullscreen-video-modal");
         const videoPlayer = document.getElementById("parable-video-player");
         const videoTitle = document.getElementById("fullscreen-video-title");
         
@@ -2189,7 +2192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function closeFullscreenVideo() {
-        const videoOverlay = document.getElementById("fullscreen-video-overlay");
+        const videoOverlay = document.getElementById("fullscreen-video-modal");
         const videoPlayer = document.getElementById("parable-video-player");
         if (videoOverlay && videoPlayer) {
             videoOverlay.classList.remove("active");
