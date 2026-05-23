@@ -65,8 +65,8 @@ def upload_to_oracle(file_path, object_name):
 def get_public_url(namespace, object_name):
     # La estructura de URL pública de Oracle
     # https://objectstorage.<region>.oraclecloud.com/n/<namespace>/b/<bucket>/o/<object_name>
-    # Asumiendo region us-ashburn-1, ajusta si es otra.
-    region = "us-ashburn-1"
+    # Asumiendo region sa-santiago-1, ajusta si es otra.
+    region = "sa-santiago-1"
     encoded_name = urllib.parse.quote(object_name)
     return f"https://objectstorage.{region}.oraclecloud.com/n/{namespace}/b/{BUCKET_NAME}/o/{encoded_name}"
 
