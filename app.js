@@ -85,11 +85,17 @@ document.addEventListener("DOMContentLoaded", () => {
         zoomToggleBtn.addEventListener("click", () => {
             const videoPlayer = document.getElementById("parable-video-player");
             if (videoPlayer) {
-                videoPlayer.classList.toggle("zoomed");
-                if (videoPlayer.classList.contains("zoomed")) {
-                    zoomToggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
-                } else {
+                // Si está rotado, no permitimos zoom tradicional, simplemente lo volvemos a la normalidad
+                if (videoPlayer.classList.contains("rotated-landscape")) {
+                    videoPlayer.classList.remove("rotated-landscape");
                     zoomToggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                } else {
+                    videoPlayer.classList.toggle("zoomed");
+                    if (videoPlayer.classList.contains("zoomed")) {
+                        zoomToggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                    } else {
+                        zoomToggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                    }
                 }
             }
         });
@@ -2184,6 +2190,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     const item = document.createElement("div");
                     item.className = "parable-item";
+                    item.dataset.orientation = parable.orientation || "unknown";
                     item.innerHTML = `
                         <div class="parable-thumb-container">
                             <img src="${parable.thumbnailUrl}" class="parable-thumb" alt="${cleanTitle}" loading="lazy">
@@ -2195,7 +2202,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                     `;
                     item.addEventListener("click", () => {
-                        openFullscreenVideo(parable.videoUrl, parable.title);
+                        openFullscreenVideo(parable.videoUrl, parable.title, item.dataset.orientation);
                     });
                     parablesGrid.appendChild(item);
                 });
@@ -2221,7 +2228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function openFullscreenVideo(url, title) {
+    function openFullscreenVideo(url, title, orientation = "unknown") {
         const videoOverlay = document.getElementById("fullscreen-video-modal");
         const videoPlayer = document.getElementById("parable-video-player");
         const videoTitle = document.getElementById("fullscreen-video-title");
@@ -2231,11 +2238,23 @@ document.addEventListener("DOMContentLoaded", () => {
             if (videoTitle) videoTitle.textContent = title;
             videoOverlay.classList.add("active");
             
-            // Limpiar estado de zoom anterior si existe
-            videoPlayer.classList.remove("zoomed");
+            // Limpiar estados anteriores
+            videoPlayer.classList.remove("zoomed", "rotated-landscape");
             let zoomBtn = document.getElementById("zoom-toggle-btn");
-            if(zoomBtn) {
-                zoomBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            
+            // Lógica automática según la orientación detectada en Firebase
+            if (orientation === "vertical") {
+                // Video vertical con bandas negras -> auto-zoom
+                videoPlayer.classList.add("zoomed");
+                if(zoomBtn) zoomBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+            } else if (orientation === "horizontal") {
+                // Video horizontal puro -> auto-rotar si el dispositivo está en portrait
+                if (window.innerHeight > window.innerWidth && window.innerWidth <= 768) {
+                    videoPlayer.classList.add("rotated-landscape");
+                }
+                if(zoomBtn) zoomBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            } else {
+                if(zoomBtn) zoomBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
             }
 
             // En lugar de forzar fullscreen en el <video> (lo cual abre el reproductor nativo en iOS y rompe el object-fit),
