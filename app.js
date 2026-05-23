@@ -2140,15 +2140,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Render each parable
                 Object.values(data).forEach(parable => {
+                    // Formateo Premium del Título
+                    let cleanTitle = parable.title.replace(/^(par\u00e1bola|parabola)\s+de\s+|^(par\u00e1bola|parabola)\s+/i, "");
+                    cleanTitle = cleanTitle.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+                    
                     const item = document.createElement("div");
                     item.className = "parable-item";
                     item.innerHTML = `
                         <div class="parable-thumb-container">
-                            <img src="${parable.thumbnailUrl}" class="parable-thumb" alt="${parable.title}" loading="lazy">
+                            <img src="${parable.thumbnailUrl}" class="parable-thumb" alt="${cleanTitle}" loading="lazy">
+                            <div class="parable-overlay-gradient"></div>
                             <i class="fa-solid fa-circle-play parable-play-icon"></i>
                         </div>
                         <div class="parable-info">
-                            <h4 class="parable-title">${parable.title}</h4>
+                            <h4 class="parable-title">${cleanTitle}</h4>
                         </div>
                     `;
                     item.addEventListener("click", () => {

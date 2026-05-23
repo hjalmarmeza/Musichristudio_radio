@@ -2870,6 +2870,16 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     transform: scale(1.05);
 }
 
+.parable-overlay-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(9, 8, 18, 0.95) 0%, transparent 100%);
+    pointer-events: none;
+}
+
 .parable-play-icon {
     position: absolute;
     top: 50%;
@@ -2887,18 +2897,24 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 }
 
 .parable-info {
-    padding: 12px 15px;
+    padding: 18px 15px;
+    background: rgba(9, 8, 18, 0.6);
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .parable-title {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f1f1f1;
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    font-family: 'Outfit', 'Inter', sans-serif;
 }
 
 .fullscreen-video-overlay {
