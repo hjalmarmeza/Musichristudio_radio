@@ -2962,21 +2962,40 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     background: rgba(255,255,255,0.25);
 }
 
-.video-container {
+.fullscreen-video-container {
     width: 90%;
     max-width: 1200px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
-.video-container video {
+#parable-video-player {
     width: 100%;
     max-height: 80vh;
-    background: #000;
     outline: none;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    background: #000;
+    object-fit: contain;
+}
+
+/* Magia para Videos con bandas negras (16:9) en celulares verticales (9:16) */
+@media (orientation: portrait) and (max-width: 768px) {
+    .fullscreen-video-container {
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        max-height: none;
+        border-radius: 0;
+    }
+    #parable-video-player {
+        height: 100vh;
+        max-height: none;
+        object-fit: cover; /* Esto hace el zoom automático recortando las bandas negras */
+    }
 }
 
 .fullscreen-video-title {

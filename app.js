@@ -2193,13 +2193,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (videoTitle) videoTitle.textContent = title;
             videoOverlay.classList.add("active");
             
-            // Forzar pantalla completa nativa
-            if (videoPlayer.requestFullscreen) {
-                videoPlayer.requestFullscreen().catch(err => console.log("FS error:", err));
-            } else if (videoPlayer.webkitRequestFullscreen) {
-                videoPlayer.webkitRequestFullscreen();
-            } else if (videoPlayer.msRequestFullscreen) {
-                videoPlayer.msRequestFullscreen();
+            // En lugar de forzar fullscreen en el <video> (lo cual abre el reproductor nativo en iOS y rompe el object-fit),
+            // intentamos hacer fullscreen en el contenedor modal para navegadores de escritorio/android.
+            // En iOS (iPhone), esto fallará silenciosamente y simplemente usará nuestro modal CSS de 100vw/100vh.
+            try {
+                if (videoOverlay.requestFullscreen) {
+                    videoOverlay.requestFullscreen().catch(err => console.log("FS error:", err));
+                } else if (videoOverlay.webkitRequestFullscreen) {
+                    videoOverlay.webkitRequestFullscreen();
+                } else if (videoOverlay.msRequestFullscreen) {
+                    videoOverlay.msRequestFullscreen();
+                }
+            } catch (e) {
+                console.log("Native fullscreen not supported on this device, using CSS modal.");
             }
 
             videoPlayer.play().catch(e => console.error("Autoplay preventd", e));
