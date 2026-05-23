@@ -279,6 +279,21 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- Widget 4: Analizando Parábolas e Historias Bíblicas -->
+                    <div class="widget-card parables-widget" id="open-parables-widget">
+                        <div class="widget-glow parables-glow"></div>
+                        <div class="widget-content">
+                            <div class="widget-icon-box parables-icon">
+                                <i class="fa-solid fa-film"></i>
+                            </div>
+                            <h3>Parábolas e Historias</h3>
+                            <p>Catálogo interactivo con profundas enseñanzas bíblicas analizadas en video para tu crecimiento espiritual.</p>
+                            <button class="widget-btn parables-btn">
+                                <i class="fa-solid fa-play-circle"></i> Explorar Catálogo
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -605,6 +620,34 @@
                     <i class="fa-solid fa-heart-pulse"></i> Publicar en el Muro
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- PARABLES CATALOG MODAL PANEL -->
+    <div class="parables-modal-overlay" id="parables-modal">
+        <div class="parables-modal-box">
+            <div class="parables-modal-header">
+                <h3><i class="fa-solid fa-film"></i> Analizando Parábolas e Historias Bíblicas</h3>
+                <button class="close-parables-btn" id="close-parables-btn">&times;</button>
+            </div>
+            
+            <div class="parables-catalog-container" id="parables-catalog">
+                <div class="parables-loading" id="parables-loader">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Cargando catálogo...
+                </div>
+                <div class="parables-grid" id="parables-grid" style="display: none;">
+                    <!-- Video items injected by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN VIDEO PLAYER MODAL -->
+    <div class="fullscreen-video-overlay" id="fullscreen-video-modal">
+        <button class="close-video-btn" id="close-video-btn">&times;</button>
+        <div class="video-container">
+            <video id="parable-video-player" controls controlsList="nodownload" playsinline></video>
+            <h3 class="fullscreen-video-title" id="fullscreen-video-title">Título del Video</h3>
         </div>
     </div>
 

@@ -1719,6 +1719,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+
+        const parablesModal = document.getElementById("parables-modal");
+        const openParablesWidget = document.getElementById("open-parables-widget");
+        const closeParablesBtn = document.getElementById("close-parables-btn");
+
+        if (openParablesWidget && parablesModal) {
+            openParablesWidget.addEventListener("click", (e) => {
+                if (e.target.tagName !== "BUTTON" && !e.target.closest("button")) {
+                    parablesModal.classList.add("active");
+                }
+            });
+            const openBtn = openParablesWidget.querySelector(".widget-btn");
+            if (openBtn) {
+                openBtn.addEventListener("click", () => {
+                    parablesModal.classList.add("active");
+                });
+            }
+        }
+
+        if (closeParablesBtn && parablesModal) {
+            closeParablesBtn.addEventListener("click", () => {
+                parablesModal.classList.remove("active");
+            });
+            parablesModal.addEventListener("click", (e) => {
+                if (e.target === parablesModal) {
+                    parablesModal.classList.remove("active");
+                }
+            });
+        }
     }
 
     // 🎨 CREADOR DE POSTALES DE FE (INTERACTIVE CLIENT-SIDE WIDGET)
@@ -2090,6 +2119,85 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // 🎬 PARABLES CATALOG & VIDEO PLAYER
+    function initParablesCatalog() {
+        const parablesGrid = document.getElementById("parables-grid-container");
+        if (!parablesGrid) return;
+
+        // Fetch parables from Firebase
+        const parablesUrl = "https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app/parables.json";
+        fetch(parablesUrl)
+            .then(res => res.json())
+            .then(data => {
+                parablesGrid.innerHTML = "";
+                if (!data || Object.keys(data).length === 0) {
+                    parablesGrid.innerHTML = "<div class='inbox-empty-state' style='grid-column: 1 / -1;'><i class='fa-solid fa-video-slash'></i><p>Aún no hay parábolas disponibles.</p></div>";
+                    return;
+                }
+
+                // Render each parable
+                Object.values(data).forEach(parable => {
+                    const item = document.createElement("div");
+                    item.className = "parable-item";
+                    item.innerHTML = `
+                        <div class="parable-thumb-container">
+                            <img src="${parable.thumbnailUrl}" class="parable-thumb" alt="${parable.title}" loading="lazy">
+                            <i class="fa-solid fa-circle-play parable-play-icon"></i>
+                        </div>
+                        <div class="parable-info">
+                            <h4 class="parable-title">${parable.title}</h4>
+                        </div>
+                    `;
+                    item.addEventListener("click", () => {
+                        openFullscreenVideo(parable.videoUrl, parable.title);
+                    });
+                    parablesGrid.appendChild(item);
+                });
+            })
+            .catch(err => {
+                console.error("Error loading parables:", err);
+                parablesGrid.innerHTML = "<div class='inbox-empty-state' style='grid-column: 1 / -1;'><p>Error al cargar el catálogo de parábolas.</p></div>";
+            });
+
+        // Setup Fullscreen Video Player
+        const videoOverlay = document.getElementById("fullscreen-video-overlay");
+        const videoPlayer = document.getElementById("parable-video-player");
+        const videoTitle = document.getElementById("fullscreen-video-title");
+        const closeVideoBtn = document.getElementById("close-video-btn");
+
+        if (videoOverlay && videoPlayer && closeVideoBtn) {
+            closeVideoBtn.addEventListener("click", closeFullscreenVideo);
+            videoOverlay.addEventListener("click", (e) => {
+                if (e.target === videoOverlay) {
+                    closeFullscreenVideo();
+                }
+            });
+        }
+    }
+
+    function openFullscreenVideo(url, title) {
+        const videoOverlay = document.getElementById("fullscreen-video-overlay");
+        const videoPlayer = document.getElementById("parable-video-player");
+        const videoTitle = document.getElementById("fullscreen-video-title");
+        
+        if (videoPlayer && videoOverlay) {
+            videoPlayer.src = url;
+            if (videoTitle) videoTitle.textContent = title;
+            videoOverlay.classList.add("active");
+            videoPlayer.play().catch(e => console.error("Autoplay preventd", e));
+        }
+    }
+
+    function closeFullscreenVideo() {
+        const videoOverlay = document.getElementById("fullscreen-video-overlay");
+        const videoPlayer = document.getElementById("parable-video-player");
+        if (videoOverlay && videoPlayer) {
+            videoOverlay.classList.remove("active");
+            videoPlayer.pause();
+            videoPlayer.src = "";
+        }
+    }
+
     // Boot Up Rendering
     startAnnouncementSlideshow();
     renderPublicSchedule();
@@ -2103,6 +2211,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchPrayerWall();
     fetchDailyDevotional();
     initPostcardCreator();
+    initParablesCatalog();
     bindSpiritualWidgets();
 
     // Actualización del Muro cada 30 segundos
