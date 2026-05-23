@@ -2192,6 +2192,16 @@ document.addEventListener("DOMContentLoaded", () => {
             videoPlayer.src = url;
             if (videoTitle) videoTitle.textContent = title;
             videoOverlay.classList.add("active");
+            
+            // Forzar pantalla completa nativa
+            if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen().catch(err => console.log("FS error:", err));
+            } else if (videoPlayer.webkitRequestFullscreen) {
+                videoPlayer.webkitRequestFullscreen();
+            } else if (videoPlayer.msRequestFullscreen) {
+                videoPlayer.msRequestFullscreen();
+            }
+
             videoPlayer.play().catch(e => console.error("Autoplay preventd", e));
         }
     }
@@ -2203,6 +2213,15 @@ document.addEventListener("DOMContentLoaded", () => {
             videoOverlay.classList.remove("active");
             videoPlayer.pause();
             videoPlayer.src = "";
+            
+            // Salir de pantalla completa nativa si está activa
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(()=>{});
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
         }
     }
 
