@@ -84,10 +84,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (zoomToggleBtn) {
         zoomToggleBtn.addEventListener("click", () => {
             const videoPlayer = document.getElementById("parable-video-player");
-            if (videoPlayer) {
+            const container = document.querySelector('.fullscreen-video-container');
+            if (videoPlayer && container) {
                 videoPlayer.classList.toggle("zoomed");
+                container.classList.toggle("zoomed-container");
                 if (videoPlayer.classList.contains("zoomed")) {
                     zoomToggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                    // Scroll automático al centro de la imagen para que se vea el centro del video
+                    setTimeout(() => {
+                        container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
+                    }, 50);
                 } else {
                     zoomToggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
                 }
@@ -2234,6 +2240,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Limpiar estados anteriores
             videoPlayer.classList.remove("zoomed", "rotated-landscape");
+            const container = document.querySelector('.fullscreen-video-container');
+            if(container) container.classList.remove("zoomed-container");
             let zoomBtn = document.getElementById("zoom-toggle-btn");
             if(zoomBtn) {
                 zoomBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
