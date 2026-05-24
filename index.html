@@ -294,6 +294,21 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- Widget 5: Podcasts y Mensajes -->
+                    <div class="widget-card podcast-widget" id="open-podcast-widget">
+                        <div class="widget-glow podcast-glow"></div>
+                        <div class="widget-content">
+                            <div class="widget-icon-box podcast-icon">
+                                <i class="fa-solid fa-podcast"></i>
+                            </div>
+                            <h3>Podcasts y Mensajes</h3>
+                            <p>Escucha enseñanzas completas, reflexiones y sermones en formato audio para alimentar tu espíritu dondequiera que vayas.</p>
+                            <button class="widget-btn podcast-btn">
+                                <i class="fa-solid fa-play-circle"></i> Escuchar Ahora
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -649,6 +664,41 @@
             <button id="zoom-toggle-btn" class="zoom-video-btn" title="Ajustar pantalla"><i class="fa-solid fa-expand"></i></button>
             <video id="parable-video-player" controls controlsList="nodownload" playsinline></video>
             <h3 class="fullscreen-video-title" id="fullscreen-video-title">Título del Video</h3>
+        </div>
+    </div>
+
+    <!-- PODCAST CATALOG MODAL -->
+    <div class="podcast-modal-overlay" id="podcast-modal">
+        <div class="podcast-modal-box">
+            <div class="podcast-modal-header">
+                <h3><i class="fa-solid fa-podcast"></i> Catálogo de Podcasts</h3>
+                <button class="close-podcast-btn" id="close-podcast-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="podcast-modal-body">
+                <p class="podcast-intro">Selecciona un mensaje para escuchar. Las enseñanzas están diseñadas para acompañarte y fortalecer tu fe.</p>
+                <div class="podcast-grid" id="podcast-grid">
+                    <!-- Ejemplo 1 -->
+                    <div class="podcast-item">
+                        <div class="podcast-thumb">
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                        <div class="podcast-info">
+                            <h4>El Poder de la Oración en Tiempos de Crisis</h4>
+                            <span class="podcast-date">25 de Mayo, 2026</span>
+                        </div>
+                    </div>
+                    <!-- Ejemplo 2 -->
+                    <div class="podcast-item">
+                        <div class="podcast-thumb">
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                        <div class="podcast-info">
+                            <h4>Sanidad Interior: Perdonando lo Imperdonable</h4>
+                            <span class="podcast-date">20 de Mayo, 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

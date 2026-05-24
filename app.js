@@ -1792,6 +1792,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+
+        const podcastModal = document.getElementById("podcast-modal");
+        const openPodcastWidget = document.getElementById("open-podcast-widget");
+        const closePodcastBtn = document.getElementById("close-podcast-btn");
+
+        if (openPodcastWidget && podcastModal) {
+            openPodcastWidget.addEventListener("click", (e) => {
+                if (e.target.tagName !== "BUTTON" && !e.target.closest("button")) {
+                    podcastModal.classList.add("active");
+                }
+            });
+            const openBtn = openPodcastWidget.querySelector(".widget-btn");
+            if (openBtn) {
+                openBtn.addEventListener("click", () => {
+                    podcastModal.classList.add("active");
+                });
+            }
+        }
+
+        if (closePodcastBtn && podcastModal) {
+            closePodcastBtn.addEventListener("click", () => {
+                podcastModal.classList.remove("active");
+            });
+            podcastModal.addEventListener("click", (e) => {
+                if (e.target === podcastModal) {
+                    podcastModal.classList.remove("active");
+                }
+            });
+        }
     }
 
     // 🎨 CREADOR DE POSTALES DE FE (INTERACTIVE CLIENT-SIDE WIDGET)
