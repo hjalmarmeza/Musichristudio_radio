@@ -3014,14 +3014,6 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     object-fit: cover !important;
 }
 
-#parable-video-player.rotated-landscape {
-    transform: rotate(90deg);
-    width: 100vh !important;
-    height: 100vw !important;
-    object-fit: contain !important;
-    transform-origin: center center;
-}
-
 /* Modificamos la media query para que ya no fuerce cover siempre,
    sino que por defecto sea contain, dejando que el usuario use el botón de zoom */
 @media (orientation: portrait) and (max-width: 768px) {
