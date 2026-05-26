@@ -1,4 +1,4 @@
-const CACHE_NAME = "musichris-radio-cache-v2";
+const CACHE_NAME = "musichris-radio-cache-v3";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
@@ -45,6 +45,7 @@ self.addEventListener("fetch", (event) => {
   // Bypass cache for audio streaming and Firebase Realtime DB REST API queries
   if (
     requestUrl.hostname.includes("sslip.io") || 
+    requestUrl.hostname.includes("oraclecloud.com") ||
     requestUrl.pathname.includes(".json") || 
     event.request.method !== "GET"
   ) {
