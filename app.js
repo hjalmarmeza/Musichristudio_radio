@@ -2347,3 +2347,322 @@ if ("serviceWorker" in navigator) {
             });
     });
 }
+
+/* ==========================================================================
+   🎧 BASE DE DATOS DE PODCASTS Y LÓGICA DE PLAYLISTS
+   ========================================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    // === BASE DE DATOS DE SERIES ===
+    const PODCAST_DB = [
+        {
+            id: "victoria",
+            title: "Victoria sobre la Mente",
+            date: "Serie Completa",
+            cover: "assets/podcasts/Victoria sobre la Mente/Imagen de serie Victoria sobre la mente.png",
+            episodes: [
+                { title: "1. La Ansiedad", file: "assets/podcasts/Victoria sobre la Mente/1. La Ansiedad.mp3" },
+                { title: "2. La Depresión", file: "assets/podcasts/Victoria sobre la Mente/2. La Depresión.mp3" },
+                { title: "3. La Envidia", file: "assets/podcasts/Victoria sobre la Mente/3. La Envidia.mp3" },
+                { title: "4. La Ira", file: "assets/podcasts/Victoria sobre la Mente/4. La Ira.mp3" },
+                { title: "5. La Culpa", file: "assets/podcasts/Victoria sobre la Mente/5. La Culpa.mp3" },
+                { title: "6. La Vergüenza", file: "assets/podcasts/Victoria sobre la Mente/6. La Verguenza.mp3" },
+                { title: "7. El Resentimiento", file: "assets/podcasts/Victoria sobre la Mente/7. El Resentimiento.mp3" },
+                { title: "8. El Orgullo", file: "assets/podcasts/Victoria sobre la Mente/8. El Orgullo.mp3" },
+                { title: "9. La Inseguridad", file: "assets/podcasts/Victoria sobre la Mente/9. La Inseguridad.mp3" }
+            ]
+        },
+        {
+            id: "fe",
+            title: "Fe en tiempos de crisis",
+            date: "Serie Completa",
+            cover: "assets/podcasts/Fe en tiempos de crisis/Imagen de serie Fe en Tiempos de Crisis.png",
+            episodes: [
+                { title: "1. El Desierto", file: "assets/podcasts/Fe en tiempos de crisis/1. El Desierto.mp3" },
+                { title: "2. El Silencio de Dios", file: "assets/podcasts/Fe en tiempos de crisis/2. El Silencio de Dios.mp3" },
+                { title: "3. La Pérdida", file: "assets/podcasts/Fe en tiempos de crisis/3. La Pérdida.mp3" },
+                { title: "4. El Fracaso", file: "assets/podcasts/Fe en tiempos de crisis/4. El Fracaso.mp3" },
+                { title: "5. La Incertidumbre", file: "assets/podcasts/Fe en tiempos de crisis/5. La Incertidumbre.mp3" },
+                { title: "6. La Espera", file: "assets/podcasts/Fe en tiempos de crisis/6. La Espera.mp3" },
+                { title: "7. La Escasez", file: "assets/podcasts/Fe en tiempos de crisis/7. La Escacez.mp3" },
+                { title: "8. La Oposición", file: "assets/podcasts/Fe en tiempos de crisis/8. La oposición.mp3" },
+                { title: "9. El Cansancio", file: "assets/podcasts/Fe en tiempos de crisis/9. El Cansancio.mp3" },
+                { title: "10. La Traición", file: "assets/podcasts/Fe en tiempos de crisis/10. La traición.mp3" }
+            ]
+        }
+    ];
+
+    // Variables de estado
+    let currentSeriesIndex = -1;
+    let currentTrackIndex = -1;
+    let sleepTimer = null;
+    let sleepMinutes = 0;
+
+    // Elementos del DOM
+    const podcastGrid = document.getElementById("podcast-grid");
+    const podcastPlayerModal = document.getElementById("podcast-player-modal");
+    const closePlayerBtn = document.getElementById("close-podcast-player-btn");
+    const shareBtn = document.getElementById("share-podcast-btn");
+    
+    const coverImg = document.getElementById("podcast-cover-img");
+    const trackTitle = document.getElementById("podcast-track-title");
+    const trackDate = document.getElementById("podcast-track-date");
+    
+    const audio = document.getElementById("hidden-podcast-audio");
+    const playBtn = document.getElementById("podcast-play-btn");
+    const rewindBtn = document.getElementById("podcast-rewind-btn");
+    const forwardBtn = document.getElementById("podcast-forward-btn");
+    const speedBtn = document.getElementById("podcast-speed-btn");
+    const sleepBtn = document.getElementById("podcast-sleep-btn");
+    
+    const progressBar = document.getElementById("podcast-progress-bar");
+    const currentTimeEl = document.getElementById("podcast-current-time");
+    const totalTimeEl = document.getElementById("podcast-total-time");
+    const playlistContainer = document.getElementById("podcast-playlist-container");
+
+    const mainRadioAudio = document.getElementById("radio-audio");
+    const mainRadioPlayBtn = document.getElementById("play-btn");
+
+    function formatTime(seconds) {
+        if (isNaN(seconds)) return "00:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // --- 1. RENDERIZAR CATÁLOGO (Las 2 Series) ---
+    function renderCatalog() {
+        if (!podcastGrid) return;
+        podcastGrid.innerHTML = "";
+        
+        PODCAST_DB.forEach((series, index) => {
+            const itemHtml = `
+                <div class="podcast-item" data-series-index="${index}">
+                    <div class="podcast-cover-container">
+                        <img src="${series.cover}" alt="${series.title}" class="podcast-cover">
+                        <button class="play-podcast-btn"><i class="fa-solid fa-play"></i></button>
+                    </div>
+                    <div class="podcast-info">
+                        <h4 class="podcast-title">${series.title}</h4>
+                        <p class="podcast-date">${series.episodes.length} episodios</p>
+                    </div>
+                </div>
+            `;
+            podcastGrid.innerHTML += itemHtml;
+        });
+    }
+
+    // Iniciar renderizado
+    renderCatalog();
+
+    // --- 2. LOGICA PLAY / PAUSA Y ANTI-COLISIÓN ---
+    function togglePlay(forcePlay = false) {
+        if (audio.paused || forcePlay) {
+            // ANTI-COLISIÓN
+            if (mainRadioAudio && !mainRadioAudio.paused) {
+                if (mainRadioPlayBtn) mainRadioPlayBtn.click();
+                else mainRadioAudio.pause();
+                console.log("Radio principal pausada automáticamente.");
+            }
+
+            audio.play();
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            playBtn.classList.add("is-playing");
+        } else {
+            audio.pause();
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            playBtn.classList.remove("is-playing");
+        }
+    }
+
+    playBtn.addEventListener("click", () => togglePlay());
+
+    // --- 3. ABRIR REPRODUCTOR Y CARGAR PLAYLIST ---
+    document.addEventListener("click", (e) => {
+        // Clic en la tarjeta de la serie
+        const playPodcastBtn = e.target.closest(".play-podcast-btn");
+        if (playPodcastBtn) {
+            const item = playPodcastBtn.closest(".podcast-item");
+            if (item) {
+                const sIndex = parseInt(item.dataset.seriesIndex);
+                openSeries(sIndex);
+            }
+        }
+
+        // Clic en un elemento de la playlist (episodio individual)
+        const playlistItem = e.target.closest(".playlist-item");
+        if (playlistItem) {
+            const tIndex = parseInt(playlistItem.dataset.trackIndex);
+            playTrack(tIndex);
+        }
+    });
+
+    function openSeries(seriesIndex) {
+        currentSeriesIndex = seriesIndex;
+        const series = PODCAST_DB[seriesIndex];
+        
+        // Actualizar Cabecera del Reproductor
+        coverImg.src = series.cover;
+        
+        // Limpiar y Generar Playlist
+        playlistContainer.innerHTML = "";
+        series.episodes.forEach((ep, index) => {
+            const epHtml = `
+                <div class="playlist-item" data-track-index="${index}">
+                    <span class="playlist-item-index">${index + 1}</span>
+                    <span class="playlist-item-title">${ep.title}</span>
+                    <i class="fa-solid fa-chart-simple playlist-item-icon"></i>
+                </div>
+            `;
+            playlistContainer.innerHTML += epHtml;
+        });
+
+        // Mostrar Modal
+        podcastPlayerModal.classList.add("active");
+        
+        // Iniciar con el primer episodio
+        playTrack(0);
+    }
+
+    function playTrack(trackIndex) {
+        const series = PODCAST_DB[currentSeriesIndex];
+        if (trackIndex >= series.episodes.length) return; // Fin de la serie
+
+        currentTrackIndex = trackIndex;
+        const track = series.episodes[trackIndex];
+
+        // Actualizar Info
+        trackTitle.textContent = track.title;
+        trackDate.textContent = series.title; // Subtítulo: Nombre de la serie
+
+        // Cargar Audio
+        audio.src = track.file;
+        
+        // Resaltar en Playlist
+        const items = playlistContainer.querySelectorAll(".playlist-item");
+        items.forEach(i => i.classList.remove("active"));
+        items[trackIndex].classList.add("active");
+
+        // Autoplay
+        togglePlay(true);
+    }
+
+    // --- 4. CERRAR REPRODUCTOR ---
+    closePlayerBtn.addEventListener("click", () => {
+        podcastPlayerModal.classList.remove("active");
+    });
+
+    // --- 5. ACTUALIZACIÓN DE TIEMPO Y BARRA ---
+    audio.addEventListener("timeupdate", () => {
+        if (!isNaN(audio.duration)) {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = percent;
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+            totalTimeEl.textContent = formatTime(audio.duration);
+        }
+    });
+
+    progressBar.addEventListener("input", (e) => {
+        if (!isNaN(audio.duration)) {
+            const time = (e.target.value / 100) * audio.duration;
+            audio.currentTime = time;
+        }
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+        totalTimeEl.textContent = formatTime(audio.duration);
+    });
+
+    // --- 6. AUTOPLAY (Siguiente Track) ---
+    audio.addEventListener("ended", () => {
+        const series = PODCAST_DB[currentSeriesIndex];
+        if (currentTrackIndex + 1 < series.episodes.length) {
+            // Reproducir el siguiente automáticamente
+            playTrack(currentTrackIndex + 1);
+        } else {
+            // Fin de toda la serie
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            playBtn.classList.remove("is-playing");
+            progressBar.value = 0;
+            currentTimeEl.textContent = "00:00";
+        }
+    });
+
+    // --- 7. ADELANTAR / RETROCEDER 15s ---
+    rewindBtn.addEventListener("click", () => {
+        audio.currentTime = Math.max(0, audio.currentTime - 15);
+    });
+
+    forwardBtn.addEventListener("click", () => {
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
+    });
+
+    // --- 8. CONTROL DE VELOCIDAD ---
+    const speeds = [1, 1.25, 1.5, 2];
+    let currentSpeedIndex = 0;
+    
+    speedBtn.addEventListener("click", () => {
+        currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+        const newSpeed = speeds[currentSpeedIndex];
+        audio.playbackRate = newSpeed;
+        speedBtn.textContent = newSpeed + "x";
+        
+        if (newSpeed !== 1) {
+            speedBtn.classList.add("active");
+        } else {
+            speedBtn.classList.remove("active");
+        }
+    });
+
+    // --- 9. COMPARTIR (Web Share API) ---
+    shareBtn.addEventListener("click", async () => {
+        const titleText = trackTitle.textContent;
+        const shareData = {
+            title: 'MusiChris Studio Radio',
+            text: `MusiChris Studio Radio | 🎧 Escucha este poderoso mensaje: "${titleText}" Encuentra paz y fortaleza para tu vida hoy | 👉 Escúchalo gratis aquí:`,
+            url: window.location.href
+        };
+
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+                console.log('Mensaje compartido con éxito');
+            } else {
+                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+                alert("¡El enlace del mensaje ha sido copiado al portapapeles!");
+            }
+        } catch (err) {
+            console.error('Error al compartir:', err);
+        }
+    });
+
+    // --- 10. TEMPORIZADOR DE APAGADO ---
+    const sleepOptions = [0, 15, 30, 45, 60];
+    let currentSleepIndex = 0;
+
+    sleepBtn.addEventListener("click", () => {
+        currentSleepIndex = (currentSleepIndex + 1) % sleepOptions.length;
+        sleepMinutes = sleepOptions[currentSleepIndex];
+        
+        if (sleepTimer) {
+            clearTimeout(sleepTimer);
+            sleepTimer = null;
+        }
+
+        if (sleepMinutes === 0) {
+            sleepBtn.classList.remove("active");
+            alert("Temporizador de apagado desactivado.");
+        } else {
+            sleepBtn.classList.add("active");
+            alert(`El podcast se pausará automáticamente en ${sleepMinutes} minutos. 🌙`);
+            
+            sleepTimer = setTimeout(() => {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                playBtn.classList.remove("is-playing");
+                sleepBtn.classList.remove("active");
+                currentSleepIndex = 0;
+                alert("Temporizador finalizado: Podcast pausado.");
+            }, sleepMinutes * 60 * 1000);
+        }
+    });
+});

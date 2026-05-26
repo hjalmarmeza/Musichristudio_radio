@@ -677,27 +677,53 @@
             <div class="podcast-modal-body">
                 <p class="podcast-intro">Selecciona un mensaje para escuchar. Las enseñanzas están diseñadas para acompañarte y fortalecer tu fe.</p>
                 <div class="podcast-grid" id="podcast-grid">
-                    <!-- Ejemplo 1 -->
-                    <div class="podcast-item">
-                        <div class="podcast-thumb">
-                            <i class="fa-solid fa-headphones"></i>
-                        </div>
-                        <div class="podcast-info">
-                            <h4>El Poder de la Oración en Tiempos de Crisis</h4>
-                            <span class="podcast-date">25 de Mayo, 2026</span>
-                        </div>
-                    </div>
-                    <!-- Ejemplo 2 -->
-                    <div class="podcast-item">
-                        <div class="podcast-thumb">
-                            <i class="fa-solid fa-headphones"></i>
-                        </div>
-                        <div class="podcast-info">
-                            <h4>Sanidad Interior: Perdonando lo Imperdonable</h4>
-                            <span class="podcast-date">20 de Mayo, 2026</span>
-                        </div>
-                    </div>
+                    <!-- Las series de podcasts se cargarán dinámicamente desde app.js -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PODCAST PLAYER MODAL (Reproductor Avanzado) -->
+    <div class="podcast-player-overlay" id="podcast-player-modal">
+        <div class="podcast-player-box">
+            <div class="podcast-player-header">
+                <button class="close-player-btn" id="close-podcast-player-btn"><i class="fa-solid fa-chevron-down"></i></button>
+                <span class="player-subtitle">Reproduciendo Podcast</span>
+                <button class="share-podcast-btn" id="share-podcast-btn" title="Compartir este mensaje"><i class="fa-solid fa-share-nodes"></i></button>
+            </div>
+            
+            <div class="podcast-player-body">
+                <div class="player-cover-container">
+                    <img src="https://via.placeholder.com/400" alt="Portada de la Serie" class="player-cover-img" id="podcast-cover-img">
+                </div>
+                
+                <div class="player-info-container">
+                    <h3 class="player-track-title" id="podcast-track-title">Cargando mensaje...</h3>
+                    <p class="player-track-date" id="podcast-track-date">...</p>
+                </div>
+
+                <div class="player-progress-container">
+                    <div class="time-displays">
+                        <span id="podcast-current-time">00:00</span>
+                        <span id="podcast-total-time">00:00</span>
+                    </div>
+                    <input type="range" id="podcast-progress-bar" class="custom-slider" value="0" min="0" max="100">
+                </div>
+
+                <div class="player-controls-container">
+                    <button class="control-btn secondary-btn" id="podcast-speed-btn" title="Velocidad">1x</button>
+                    <button class="control-btn skip-btn" id="podcast-rewind-btn" title="Retroceder 15s"><i class="fa-solid fa-rotate-left"></i><span>15</span></button>
+                    <button class="control-btn play-pause-btn" id="podcast-play-btn"><i class="fa-solid fa-play"></i></button>
+                    <button class="control-btn skip-btn" id="podcast-forward-btn" title="Adelantar 15s"><i class="fa-solid fa-rotate-right"></i><span>15</span></button>
+                    <button class="control-btn secondary-btn" id="podcast-sleep-btn" title="Temporizador de apagado"><i class="fa-solid fa-moon"></i></button>
+                </div>
+                
+                <!-- PLAYLIST CONTAINER -->
+                <div class="podcast-playlist" id="podcast-playlist-container">
+                    <!-- Los episodios se inyectarán aquí -->
+                </div>
+
+                <audio id="hidden-podcast-audio" preload="metadata"></audio>
             </div>
         </div>
     </div>
