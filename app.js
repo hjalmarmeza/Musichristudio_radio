@@ -2358,35 +2358,35 @@ document.addEventListener("DOMContentLoaded", () => {
             id: "victoria",
             title: "Victoria sobre la Mente",
             date: "Serie Completa",
-            cover: "assets/podcasts/Victoria sobre la Mente/Imagen de serie Victoria sobre la mente.png",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/Imagen%20de%20serie%20Victoria%20sobre%20la%20mente.png",
             episodes: [
-                { title: "1. La Ansiedad", file: "assets/podcasts/Victoria sobre la Mente/1. La Ansiedad.mp3" },
-                { title: "2. La Depresión", file: "assets/podcasts/Victoria sobre la Mente/2. La Depresión.mp3" },
-                { title: "3. La Envidia", file: "assets/podcasts/Victoria sobre la Mente/3. La Envidia.mp3" },
-                { title: "4. La Ira", file: "assets/podcasts/Victoria sobre la Mente/4. La Ira.mp3" },
-                { title: "5. La Culpa", file: "assets/podcasts/Victoria sobre la Mente/5. La Culpa.mp3" },
-                { title: "6. La Vergüenza", file: "assets/podcasts/Victoria sobre la Mente/6. La Verguenza.mp3" },
-                { title: "7. El Resentimiento", file: "assets/podcasts/Victoria sobre la Mente/7. El Resentimiento.mp3" },
-                { title: "8. El Orgullo", file: "assets/podcasts/Victoria sobre la Mente/8. El Orgullo.mp3" },
-                { title: "9. La Inseguridad", file: "assets/podcasts/Victoria sobre la Mente/9. La Inseguridad.mp3" }
+                { title: "1. La Ansiedad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/1.%20La%20Ansiedad.mp3" },
+                { title: "2. La Depresión", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/2.%20La%20Depresio%CC%81n.mp3" },
+                { title: "3. La Envidia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/3.%20La%20Envidia.mp3" },
+                { title: "4. La Ira", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/4.%20La%20Ira.mp3" },
+                { title: "5. La Culpa", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/5.%20La%20Culpa.mp3" },
+                { title: "6. La Vergüenza", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/6.%20La%20Verguenza.mp3" },
+                { title: "7. El Resentimiento", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/7.%20El%20Resentimiento.mp3" },
+                { title: "8. El Orgullo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/8.%20El%20Orgullo.mp3" },
+                { title: "9. La Inseguridad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/9.%20La%20Inseguridad.mp3" }
             ]
         },
         {
             id: "fe",
             title: "Fe en tiempos de crisis",
             date: "Serie Completa",
-            cover: "assets/podcasts/Fe en tiempos de crisis/Imagen de serie Fe en Tiempos de Crisis.png",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/Imagen%20de%20serie%20Fe%20en%20Tiempos%20de%20Crisis.png",
             episodes: [
-                { title: "1. El Desierto", file: "assets/podcasts/Fe en tiempos de crisis/1. El Desierto.mp3" },
-                { title: "2. El Silencio de Dios", file: "assets/podcasts/Fe en tiempos de crisis/2. El Silencio de Dios.mp3" },
-                { title: "3. La Pérdida", file: "assets/podcasts/Fe en tiempos de crisis/3. La Pérdida.mp3" },
-                { title: "4. El Fracaso", file: "assets/podcasts/Fe en tiempos de crisis/4. El Fracaso.mp3" },
-                { title: "5. La Incertidumbre", file: "assets/podcasts/Fe en tiempos de crisis/5. La Incertidumbre.mp3" },
-                { title: "6. La Espera", file: "assets/podcasts/Fe en tiempos de crisis/6. La Espera.mp3" },
-                { title: "7. La Escasez", file: "assets/podcasts/Fe en tiempos de crisis/7. La Escacez.mp3" },
-                { title: "8. La Oposición", file: "assets/podcasts/Fe en tiempos de crisis/8. La oposición.mp3" },
-                { title: "9. El Cansancio", file: "assets/podcasts/Fe en tiempos de crisis/9. El Cansancio.mp3" },
-                { title: "10. La Traición", file: "assets/podcasts/Fe en tiempos de crisis/10. La traición.mp3" }
+                { title: "1. El Desierto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/1.%20El%20Desierto.mp3" },
+                { title: "2. El Silencio de Dios", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/2.%20El%20Silencio%20de%20Dios.mp3" },
+                { title: "3. La Pérdida", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/3.%20La%20Pe%CC%81rdida.mp3" },
+                { title: "4. El Fracaso", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/4.%20El%20Fracaso.mp3" },
+                { title: "5. La Incertidumbre", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/5.%20La%20Incertidumbre.mp3" },
+                { title: "6. La Espera", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/6.%20La%20Espera.mp3" },
+                { title: "7. La Escasez", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/7.%20La%20Escacez.mp3" },
+                { title: "8. La Oposición", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/8.%20La%20oposicio%CC%81n.mp3" },
+                { title: "9. El Cansancio", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/9.%20El%20Cansancio.mp3" },
+                { title: "10. La Traición", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/10.%20La%20traicio%CC%81n.mp3" }
             ]
         }
     ];
