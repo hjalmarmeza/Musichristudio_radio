@@ -2439,7 +2439,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="podcast-item" data-series-index="${index}">
                     <div class="podcast-cover-container">
                         <img src="${series.cover}" alt="${series.title}" class="podcast-cover">
-                        <button class="play-podcast-btn"><i class="fa-solid fa-play"></i></button>
                     </div>
                     <div class="podcast-info">
                         <h4 class="podcast-title">${series.title}</h4>
@@ -2478,14 +2477,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 3. ABRIR REPRODUCTOR Y CARGAR PLAYLIST ---
     document.addEventListener("click", (e) => {
-        // Clic en la tarjeta de la serie
-        const playPodcastBtn = e.target.closest(".play-podcast-btn");
-        if (playPodcastBtn) {
-            const item = playPodcastBtn.closest(".podcast-item");
-            if (item) {
-                const sIndex = parseInt(item.dataset.seriesIndex);
-                openSeries(sIndex);
-            }
+        // Clic en toda la tarjeta de la serie
+        const item = e.target.closest(".podcast-item");
+        if (item) {
+            const sIndex = parseInt(item.dataset.seriesIndex);
+            openSeries(sIndex);
         }
 
         // Clic en un elemento de la playlist (episodio individual)
@@ -2516,14 +2512,16 @@ document.addEventListener("DOMContentLoaded", () => {
             playlistContainer.innerHTML += epHtml;
         });
 
-        // Mostrar Modal
+        // Ocultar Modal de Catálogo y Mostrar Reproductor
+        const podcastModal = document.getElementById("podcast-modal");
+        if (podcastModal) podcastModal.classList.remove("active");
         podcastPlayerModal.classList.add("active");
         
-        // Iniciar con el primer episodio
-        playTrack(0);
+        // Iniciar con el primer episodio pero SIN AUTOPLAY
+        loadTrack(0);
     }
 
-    function playTrack(trackIndex) {
+    function loadTrack(trackIndex) {
         const series = PODCAST_DB[currentSeriesIndex];
         if (trackIndex >= series.episodes.length) return; // Fin de la serie
 
@@ -2541,14 +2539,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const items = playlistContainer.querySelectorAll(".playlist-item");
         items.forEach(i => i.classList.remove("active"));
         items[trackIndex].classList.add("active");
+        
+        // Resetear barra visual
+        progressBar.value = 0;
+        currentTimeEl.textContent = "00:00";
+    }
 
-        // Autoplay
+    function playTrack(trackIndex) {
+        loadTrack(trackIndex);
         togglePlay(true);
     }
 
-    // --- 4. CERRAR REPRODUCTOR ---
+    // --- 4. CERRAR REPRODUCTOR (Y VOLVER AL CATÁLOGO) ---
     closePlayerBtn.addEventListener("click", () => {
         podcastPlayerModal.classList.remove("active");
+        // Volver a mostrar el catálogo
+        const podcastModal = document.getElementById("podcast-modal");
+        if (podcastModal) podcastModal.classList.add("active");
     });
 
     // --- 5. ACTUALIZACIÓN DE TIEMPO Y BARRA ---

@@ -3738,6 +3738,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 .podcast-player-box {
     width: 90%;
     max-width: 450px;
+    max-height: 90vh; /* Limitar la altura a la pantalla */
     background: rgba(30, 30, 30, 0.6);
     border-radius: 24px;
     padding: 30px;
@@ -3745,7 +3746,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     border: 1px solid rgba(255,255,255,0.05);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px; /* Reducir gap */
     transform: translateY(50px) scale(0.95);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -3786,12 +3787,12 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 
 /* Portada del Podcast */
 .player-cover-container {
-    width: 100%;
+    width: 50%; /* Más pequeña */
+    margin: 0 auto; /* Centrada */
     aspect-ratio: 1 / 1;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-    margin-bottom: 15px;
 }
 
 .player-cover-img {
@@ -3959,11 +3960,12 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
    ========================================================================== */
 
 .podcast-playlist {
-    margin-top: 20px;
-    padding-top: 20px;
+    margin-top: 10px;
+    padding-top: 15px;
     border-top: 1px solid rgba(255,255,255,0.1);
-    max-height: 200px;
+    flex: 1; /* Ocupa el espacio restante */
     overflow-y: auto;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     gap: 8px;
