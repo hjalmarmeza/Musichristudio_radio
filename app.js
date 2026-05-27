@@ -2355,109 +2355,75 @@ document.addEventListener("DOMContentLoaded", () => {
     // === BASE DE DATOS DE SERIES ===
     const PODCAST_DB = [
         {
-            id: "victoria",
-            title: "Victoria sobre la Mente",
+            id: "atributos_de_dios",
+            title: "Atributos de Dios",
             date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/serie_victoria.jpg",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/portada.jpg",
             episodes: [
-                { title: "1. La Ansiedad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/1.%20La%20Ansiedad.mp3" },
-                { title: "2. La Depresión", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/2.%20La%20Depresio%CC%81n.mp3" },
-                { title: "3. La Envidia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/3.%20La%20Envidia.mp3" },
-                { title: "4. La Ira", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/4.%20La%20Ira.mp3" },
-                { title: "5. La Culpa", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/5.%20La%20Culpa.mp3" },
-                { title: "6. La Vergüenza", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/6.%20La%20Verguenza.mp3" },
-                { title: "7. El Resentimiento", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/7.%20El%20Resentimiento.mp3" },
-                { title: "8. El Orgullo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/8.%20El%20Orgullo.mp3" },
-                { title: "9. La Inseguridad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/9.%20La%20Inseguridad.mp3" }
+                { title: "1. Dios Proveedor", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/1._Dios_Proveedor.mp3" },
+                { title: "2. Dios Sanador", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/2._Dios_Sanador.mp3" },
+                { title: "3. Dios Pastor", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/3._Dios_Pastor.mp3" },
+                { title: "4. La Fidelidad Inmutable", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/4._La_Fidelidad_Inmutable.mp3" },
+                { title: "5. La Soberania", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/5._La_Soberania.mp3" },
+                { title: "6. La Justicia Divina", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/6._La_Justicia_Divina.mp3" },
+                { title: "7. El Dios de lo Imposible", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/7._El_Dios_de_lo_Imposible.mp3" },
+                { title: "8. Dios Refugio", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/8._Dios_Refugio.mp3" },
+                { title: "9. La Omnipresencia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/9._La_Omnipresencia.mp3" },
+                { title: "10. La Paciencia de Dios", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Atributos_de_Dios/10._La_Paciencia_de_Dios.mp3" }
             ]
         },
         {
-            id: "fe",
-            title: "Fe en tiempos de crisis",
+            id: "caracter_y_liderazgo",
+            title: "Caracter y Liderazgo",
             date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/serie_fe_crisis.jpg",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/portada.jpg",
             episodes: [
-                { title: "1. El Desierto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/1.%20El%20Desierto.mp3" },
-                { title: "2. El Silencio de Dios", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/2.%20El%20Silencio%20de%20Dios.mp3" },
-                { title: "3. La Pérdida", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/3.%20La%20Pe%CC%81rdida.mp3" },
-                { title: "4. El Fracaso", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/4.%20El%20Fracaso.mp3" },
-                { title: "5. La Incertidumbre", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/5.%20La%20Incertidumbre.mp3" },
-                { title: "6. La Espera", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/6.%20La%20Espera.mp3" },
-                { title: "7. La Escasez", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/7.%20La%20Escacez.mp3" },
-                { title: "8. La Oposición", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/8.%20La%20oposicio%CC%81n.mp3" },
-                { title: "9. El Cansancio", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/9.%20El%20Cansancio.mp3" },
-                { title: "10. La Traición", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/10.%20La%20traicio%CC%81n.mp3" }
+                { title: "1. Vision Clara", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/1._Vision_Clara.mp3" },
+                { title: "2. Valentia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/2._Valentia.mp3" },
+                { title: "3. Mansedumbre", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/3._Mansedumbre.mp3" },
+                { title: "4. Rendicion de Cuentas", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/4._Rendicion_de_Cuentas.mp3" },
+                { title: "5. Ejemplaridad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/5._Ejemplaridad.mp3" },
+                { title: "6. Sabiduria Directiva", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/6._Sabiduria_Directiva.mp3" },
+                { title: "7. Coraje", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/7._Coraje.mp3" },
+                { title: "8. Justicia Social", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/8._Justicia_Social.mp3" },
+                { title: "9. Perseverancia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/9._Perseverancia.mp3" },
+                { title: "10. Legado", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caracter_y_Liderazgo/10._Legado.mp3" }
             ]
         },
         {
-            id: "sabiduria",
-            title: "Sabiduría Práctica",
+            id: "esperanza_y_eternidad",
+            title: "Esperanza y Eternidad",
             date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/portada.jpg",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/portada.jpg",
             episodes: [
-                { title: "1. FinanzasSaludables", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/1.Finanzas_Saludables.mp3" },
-                { title: "2. Trabajo Diligente", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/2._Trabajo_Diligente.mp3" },
-                { title: "3. Gestion del Tiempo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/3._Gestion_del_Tiempo.mp3" },
-                { title: "4. La Pereza", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/4._La_Pereza.mp3" },
-                { title: "5. La Codicia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/5._La_Codicia.mp3" },
-                { title: "6. Toma de Decisiones", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/6._Toma_de_Decisiones.mp3" },
-                { title: "7. Negocios Justos", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/7._Negocios_Justos.mp3" },
-                { title: "8. Las Deudas", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/8._Las_Deudas.mp3" },
-                { title: "9. Planificacion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/9._Planificacion.mp3" },
-                { title: "10. Prudencia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Sabiduria_Practica/10._Prudencia.mp3" }
+                { title: "1. Ciudadanos del Cielo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/1._Ciudadanos_del_Cielo.mp3" },
+                { title: "2. El Regreso del Rey", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/2._El_Regreso_del_Rey.mp3" },
+                { title: "3. Recompensa Eterna", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/3._Recompensa_Eterna.mp3" },
+                { title: "4. Victoria sobre la Muerte", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/4._Victoria_sobre_la_Muerte.mp3" },
+                { title: "5. Cielos y Tierra Nueva", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/5._Cielos_y_Tierra_Nueva.mp3" },
+                { title: "6. El Tribunal de Cristo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/6._El_Tribunal_de_Cristo.mp3" },
+                { title: "7. El Gozo Inalterable", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/7._El_Gozo_Inalterable.mp3" },
+                { title: "8. Consolacion Final", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/8._Consolacion_Final.mp3" },
+                { title: "9. La Gran Comision", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/9._La_Gran_Comision.mp3" },
+                { title: "10. Maranatha", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Esperanza_y_Eternidad/10._Maranatha.mp3" }
             ]
         },
         {
-            id: "identidad",
-            title: "Identidad y Crecimiento",
+            id: "guerra_espiritual",
+            title: "Guerra Espiritual",
             date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/portada.jpg",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/portada.jpg",
             episodes: [
-                { title: "1. Nuevo Comienzo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/1._Nuevo_Comienzo.mp3" },
-                { title: "2. Gracia Inmerecida", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/2._Gracia_Inmerecida.mp3" },
-                { title: "3. El Proposito", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/3._El_Proposito.mp3" },
-                { title: "4. Paternidad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/4._Paternidad.mp3" },
-                { title: "5. Herencia Espiritual", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/5._Herencia_Espiritual.mp3" },
-                { title: "6. Integridad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/6._Integridad.mp3" },
-                { title: "7. Disciplina", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/7._Disciplina.mp3" },
-                { title: "8. Santidad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/8._Santidad.mp3" },
-                { title: "9. Fruto de la Fe", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/9._Fruto_de_la_Fe.mp3" },
-                { title: "10. Humildad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Identidad_y_Crecimiento/10._Humildad.mp3" }
-            ]
-        },
-        {
-            id: "familia",
-            title: "Familia y Comunidad",
-            date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/portada.jpg",
-            episodes: [
-                { title: "1. El Matrimonio", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/1._El_Matrimonio.mp3" },
-                { title: "2. Crianza", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/2._Crianza.mp3" },
-                { title: "3. Amistad Verdadera", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/3._Amistad_Verdadera.mp3" },
-                { title: "4. Resolucion de Conflictos", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/4._Resolucion_de_Conflictos.mp3" },
-                { title: "5. El Poder de la Lengua", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/5._El_Poder_de_la_Lengua.mp3" },
-                { title: "6. El Servicio", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/6._El_Servicio.mp3" },
-                { title: "7. Malas Influencias", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/7._Malas_Influencias.mp3" },
-                { title: "8. Honrar a los Padres", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/8._Honrar_a_los_Padres.mp3" },
-                { title: "9. Generosidad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/9._Generosidad.mp3" },
-                { title: "10. Amor al Projimo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Familia_y_Comunidad/10._Amor_al_Projimo.mp3" }
-            ]
-        },
-        {
-            id: "intimidad",
-            title: "Intimidad con Dios",
-            date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/portada.jpg",
-            episodes: [
-                { title: "1. La Oracion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/1._La_Oracion.mp3" },
-                { title: "2. Estudio Biblico", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/2._Estudio_Biblico.mp3" },
-                { title: "3. El Ayuno", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/3._El_Ayuno.mp3" },
-                { title: "4. La Adoracion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/4._La_Adoracion.mp3" },
-                { title: "5. El Altar Familiar", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/5._El_Altar_Familiar.mp3" },
-                { title: "6. Meditacion Biblica", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/6._Meditacion_Biblica.mp3" },
-                { title: "7. Confesion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/7._Confesion.mp3" },
-                { title: "8. Intercesion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/8._Intercesion.mp3" },
-                { title: "9. Gratitud", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Intimidad_con_Dios/9._Gratitud.mp3" }
+                { title: "1. La Duda", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/1._La_Duda.mp3" },
+                { title: "2. El Temor", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/2._El_Temor.mp3" },
+                { title: "3. La Tentacion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/3._La_Tentacion.mp3" },
+                { title: "4. Distracciones", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/4._Distracciones.mp3" },
+                { title: "5. La Armadura de Dios", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/5._La_Armadura_de_Dios.mp3" },
+                { title: "6. Orgullo Espiritual", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/6._Orgullo_Espiritual.mp3" },
+                { title: "7. Doble Animo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/7._Doble_Animo.mp3" },
+                { title: "8. Falsas Doctrinas", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/8._Falsas_Doctrinas.mp3" },
+                { title: "9. Murmuracion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/9._Murmuracion.mp3" },
+                { title: "10. Conformismo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/10._Conformismo.mp3" }
             ]
         }
     ];
