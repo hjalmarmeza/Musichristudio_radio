@@ -2358,7 +2358,7 @@ document.addEventListener("DOMContentLoaded", () => {
             id: "victoria",
             title: "Victoria sobre la Mente",
             date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/Imagen%20de%20serie%20Victoria%20sobre%20la%20mente.png",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/serie_victoria.jpg",
             episodes: [
                 { title: "1. La Ansiedad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/1.%20La%20Ansiedad.mp3" },
                 { title: "2. La Depresión", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Victoria%20sobre%20la%20Mente/2.%20La%20Depresio%CC%81n.mp3" },
@@ -2375,7 +2375,7 @@ document.addEventListener("DOMContentLoaded", () => {
             id: "fe",
             title: "Fe en tiempos de crisis",
             date: "Serie Completa",
-            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/Imagen%20de%20serie%20Fe%20en%20Tiempos%20de%20Crisis.png",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/serie_fe_crisis.jpg",
             episodes: [
                 { title: "1. El Desierto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/1.%20El%20Desierto.mp3" },
                 { title: "2. El Silencio de Dios", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Fe%20en%20tiempos%20de%20crisis/2.%20El%20Silencio%20de%20Dios.mp3" },
