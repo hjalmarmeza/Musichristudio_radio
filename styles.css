@@ -3724,7 +3724,9 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     z-index: 10000;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; /* En PC se centra. En móvil si desborda, cambiaremos a flex-start con media query o margin auto */
+    padding: 20px 0;
+    overflow-y: auto; /* SCROLL GENERAL */
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -3739,11 +3741,11 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 .podcast-player-box {
     width: 90%;
     max-width: 450px;
-    max-height: 90vh; /* Limitar la altura a la pantalla */
-    overflow: hidden; /* EVITAR SCROLL DEL FONDO */
+    height: auto; /* Altura dinámica */
+    margin: auto; /* Vital para que se centre dentro de un contenedor con scroll */
     background: rgba(30, 30, 30, 0.6);
     border-radius: 24px;
-    padding: 30px 30px 15px 30px; /* Reducir padding inferior para el scroll */
+    padding: 30px 30px 20px 30px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.05);
     display: flex;
@@ -3975,9 +3977,8 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     margin-top: 10px;
     padding-top: 15px;
     border-top: 1px solid rgba(255,255,255,0.1);
-    flex: 1; /* Ocupa el espacio restante */
+    max-height: 220px; /* SCROLL INTERNO: límite fijo de altura para la lista */
     overflow-y: auto;
-    min-height: 0; /* VITAL: Permite que la lista se encoja para no romper el max-height del reproductor */
     display: flex;
     flex-direction: column;
     gap: 8px;
