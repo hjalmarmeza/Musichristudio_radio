@@ -116,7 +116,10 @@ async function procesarConIA(subject, body) {
     const systemPrompt = `Eres el motor ministerial de MusiChris Studio Radio.
 Recibes el contenido de un correo devocional diario del ministerio VNPEM y debes extraer exactamente 5 campos para mostrarlos en la sección "Pan de Vida Diario" de la radio.
 
-RESPONDE ÚNICAMENTE CON UN OBJETO JSON VÁLIDO. SIN MARKDOWN, SIN EXPLICACIONES, SIN TEXTO ADICIONAL:
+RESPONDE ÚNICAMENTE CON UN OBJETO JSON VÁLIDO. SIN MARKDOWN, SIN EXPLICACIONES, SIN TEXTO ADICIONAL.
+ASEGÚRATE DE QUE TODAS LAS CLAVES Y VALORES ESTÉN ENTRE COMILLAS DOBLES Y DE ESCAPAR COMILLAS INTERNAS.
+NO INCLUYAS SALTOS DE LÍNEA LITERALES DENTRO DE LOS TEXTOS, USA ESPACIOS.
+
 {
   "titulo": "Título inspirador y breve del devocional (máximo 60 caracteres)",
   "promesa_cita": "Referencia bíblica exacta (ej: Juan 3:16 o Salmo 23:1-2)",
@@ -156,10 +159,10 @@ REGLAS CRÍTICAS:
         }
     ];
 
-    let rawContent = null;
+    let devocional = null;
 
     for (const api of apis) {
-        if (!api.key || rawContent) continue;
+        if (!api.key || devocional) continue;
         try {
             console.log(`🔄 [IA] Intentando con ${api.name}...`);
             const res = await fetch(api.url, {
@@ -178,9 +181,30 @@ REGLAS CRÍTICAS:
                 })
             });
             const data = await res.json();
-            rawContent = data.choices?.[0]?.message?.content;
+            const rawContent = data.choices?.[0]?.message?.content;
+            
             if (rawContent) {
-                console.log(`✅ [IA] Respuesta recibida de ${api.name}.`);
+                // Limpiar y parsear JSON dentro del try-catch para que si falla, pase a la siguiente IA
+                let clean = rawContent.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const start = clean.indexOf('{');
+                const end   = clean.lastIndexOf('}');
+                
+                if (start === -1 || end === -1) {
+                    throw new Error(`No se encontró un bloque JSON válido. Respuesta parcial: "${clean.substring(0, 50)}..."`);
+                }
+                
+                const parsed = JSON.parse(clean.substring(start, end + 1));
+                
+                // Validar campos requeridos
+                const required = ['titulo', 'promesa_cita', 'promesa_texto', 'revelacion_rhema', 'accion_diaria'];
+                const missing  = required.filter(k => !parsed[k]);
+                
+                if (missing.length > 0) {
+                    throw new Error(`Faltan campos requeridos: ${missing.join(', ')}`);
+                }
+
+                devocional = parsed;
+                console.log(`✅ [IA] Respuesta válida de ${api.name}.`);
                 break;
             }
         } catch (e) {
@@ -188,32 +212,12 @@ REGLAS CRÍTICAS:
         }
     }
 
-    if (!rawContent) {
-        throw new Error('Ningún proveedor de IA respondió. Verifica las API Keys en los secretos de GitHub.');
+    if (!devocional) {
+        throw new Error('Ningún proveedor de IA logró generar un JSON válido. Revisa los logs.');
     }
-
-    // Limpiar y parsear JSON
-    let clean = rawContent
-        .replace(/```json/gi, '')
-        .replace(/```/g, '')
-        .trim();
-    const start = clean.indexOf('{');
-    const end   = clean.lastIndexOf('}');
-    if (start === -1 || end === -1) {
-        throw new Error(`La IA no devolvió un JSON válido. Respuesta: "${clean.substring(0, 200)}"`);
-    }
-
-    const devocional = JSON.parse(clean.substring(start, end + 1));
 
     // Agregar la fecha del día en formato español largo
     devocional.fecha = getFechaEspanol();
-
-    // Validar campos requeridos
-    const required = ['titulo', 'promesa_cita', 'promesa_texto', 'revelacion_rhema', 'accion_diaria'];
-    const missing  = required.filter(k => !devocional[k]);
-    if (missing.length > 0) {
-        throw new Error(`Campos faltantes en la respuesta de la IA: ${missing.join(', ')}`);
-    }
 
     console.log(`✅ [IA] Devocional estructurado: "${devocional.titulo}" — ${devocional.promesa_cita}`);
     return devocional;
