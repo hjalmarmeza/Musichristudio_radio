@@ -2394,8 +2394,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Variables de estado
     let currentSeriesIndex = -1;
     let currentTrackIndex = -1;
-    let sleepTimer = null;
-    let sleepMinutes = 0;
+    let playbackRate = 1;
 
     // Elementos del DOM
     const podcastGrid = document.getElementById("podcast-grid");
@@ -2412,7 +2411,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const rewindBtn = document.getElementById("podcast-rewind-btn");
     const forwardBtn = document.getElementById("podcast-forward-btn");
     const speedBtn = document.getElementById("podcast-speed-btn");
-    const sleepBtn = document.getElementById("podcast-sleep-btn");
     
     const progressBar = document.getElementById("podcast-progress-bar");
     const currentTimeEl = document.getElementById("podcast-current-time");
@@ -2529,8 +2527,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const track = series.episodes[trackIndex];
 
         // Actualizar Info
+        document.getElementById("podcast-series-subtitle").textContent = series.title.toUpperCase();
         trackTitle.textContent = track.title;
-        trackDate.textContent = series.title; // Subtítulo: Nombre de la serie
+        trackDate.textContent = series.title;
 
         // Cargar Audio
         audio.src = track.file;
@@ -2604,20 +2603,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- 8. CONTROL DE VELOCIDAD ---
-    const speeds = [1, 1.25, 1.5, 2];
-    let currentSpeedIndex = 0;
-    
     speedBtn.addEventListener("click", () => {
-        currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
-        const newSpeed = speeds[currentSpeedIndex];
-        audio.playbackRate = newSpeed;
-        speedBtn.textContent = newSpeed + "x";
-        
-        if (newSpeed !== 1) {
-            speedBtn.classList.add("active");
-        } else {
-            speedBtn.classList.remove("active");
-        }
+        if (playbackRate === 1) playbackRate = 1.25;
+        else if (playbackRate === 1.25) playbackRate = 1.5;
+        else if (playbackRate === 1.5) playbackRate = 2;
+        else playbackRate = 1;
+
+        audio.playbackRate = playbackRate;
+        speedBtn.textContent = playbackRate + "x";
     });
 
     // --- 9. COMPARTIR (Web Share API) ---
