@@ -687,7 +687,7 @@
     <div class="podcast-player-overlay" id="podcast-player-modal">
         <div class="podcast-player-box">
             <div class="podcast-player-header">
-                <button class="close-player-btn" id="close-podcast-player-btn"><i class="fa-solid fa-chevron-left"></i> Volver</button>
+                <button class="close-player-btn" id="close-podcast-player-btn" title="Cerrar reproductor"><i class="fa-solid fa-xmark"></i></button>
                 <span class="player-subtitle" id="podcast-series-subtitle">SERIE</span>
                 <button class="share-podcast-btn" id="share-podcast-btn" title="Compartir este mensaje"><i class="fa-solid fa-share-nodes"></i></button>
             </div>
@@ -701,16 +701,18 @@
                     <h3 class="player-track-title" id="podcast-track-title">Cargando mensaje...</h3>
                 </div>
 
-                <div class="player-progress-container">
-                    <div class="time-displays">
-                        <span id="podcast-current-time">00:00</span>
-                        <span id="podcast-total-time">00:00</span>
+                <div class="player-progress-wrapper" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div class="player-progress-container" style="flex: 1; margin-bottom: 0;">
+                        <div class="time-displays">
+                            <span id="podcast-current-time">00:00</span>
+                            <span id="podcast-total-time">00:00</span>
+                        </div>
+                        <input type="range" id="podcast-progress-bar" class="custom-slider" value="0" min="0" max="100">
                     </div>
-                    <input type="range" id="podcast-progress-bar" class="custom-slider" value="0" min="0" max="100">
+                    <button class="control-btn secondary-btn" id="podcast-speed-btn" title="Velocidad" style="margin-top: 15px;">1x</button>
                 </div>
 
                 <div class="player-controls-container">
-                    <button class="control-btn secondary-btn" id="podcast-speed-btn" title="Velocidad">1x</button>
                     <button class="control-btn skip-btn" id="podcast-rewind-btn" title="Retroceder 15s"><i class="fa-solid fa-rotate-left"></i><span>15</span></button>
                     <button class="control-btn play-pause-btn" id="podcast-play-btn"><i class="fa-solid fa-play"></i></button>
                     <button class="control-btn skip-btn" id="podcast-forward-btn" title="Adelantar 15s"><i class="fa-solid fa-rotate-right"></i><span>15</span></button>
