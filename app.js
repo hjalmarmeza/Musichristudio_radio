@@ -2436,7 +2436,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const itemHtml = `
                 <div class="podcast-item" data-series-index="${index}">
                     <div class="podcast-cover-container">
-                        <img src="${series.cover}" alt="${series.title}" class="podcast-cover">
+                        <img src="${series.cover}" alt="${series.title}" class="podcast-cover" loading="lazy">
                     </div>
                     <div class="podcast-info">
                         <h4 class="podcast-title">${series.title}</h4>
