@@ -2529,7 +2529,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Actualizar Info
         document.getElementById("podcast-series-subtitle").textContent = series.title.toUpperCase();
         trackTitle.textContent = track.title;
-        trackDate.textContent = series.title;
 
         // Cargar Audio
         audio.src = track.file;
