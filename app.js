@@ -2532,6 +2532,151 @@ document.addEventListener("DOMContentLoaded", () => {
                 { title: "9. Murmuracion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/9._Murmuracion.mp3" },
                 { title: "10. Conformismo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Guerra_Espiritual/10._Conformismo.mp3" }
             ]
+        },
+
+        {
+            id: "alianzas_y_limites",
+            title: "Alianzas y Limites",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/portada.jpg",
+            episodes: [
+                { title: "1. El Lazo del Extrano", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/1._El_Lazo_del_Extrano.mp3" },
+                { title: "2. Union Desigual", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/2._Union_Desigual.mp3" },
+                { title: "3. Separar al Escarnecedor", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/3._Separar_al_Escarnecedor.mp3" },
+                { title: "4. Malas Conversaciones", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/4._Malas_Conversaciones.mp3" },
+                { title: "5. No Satures al Vecino", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/5._No_Satures_al_Vecino.mp3" },
+                { title: "6. El Amigo Verdadero", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/6._El_Amigo_Verdadero.mp3" },
+                { title: "7. Sabios Consejeros", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/7._Sabios_Consejeros.mp3" },
+                { title: "8. El Hombre de Discordia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/8._El_Hombre_de_Discordia.mp3" },
+                { title: "9. Amor sin Fingimiento", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/9._Amor_sin_Fingimiento.mp3" },
+                { title: "10. Paz Colectiva", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Limites/10._Paz_Colectiva.mp3" }
+            ]
+        },
+        {
+            id: "alianzas_y_resguardo",
+            title: "Alianzas y Resguardo",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/portada.jpg",
+            episodes: [
+                { title: "1. El Yugo de Cuidado", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/1._El_Yugo_de_Cuidado.mp3" },
+                { title: "2. El Amigo de Crisis", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/2._El_Amigo_de_Crisis.mp3" },
+                { title: "3. Separar al Violento", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/3._Separar_al_Violento.mp3" },
+                { title: "4. Distancia del Necio", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/4._Distancia_del_Necio.mp3" },
+                { title: "5. Hierro que Pule", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/5._Hierro_que_Pule.mp3" },
+                { title: "6. El Lazo del Fiador", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/6._El_Lazo_del_Fiador.mp3" },
+                { title: "7. Multitud de Consejo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/7._Multitud_de_Consejo.mp3" },
+                { title: "8. Unidad Sincera", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/8._Unidad_Sincera.mp3" },
+                { title: "9. Restaurar con Amor", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/9._Restaurar_con_Amor.mp3" },
+                { title: "10. Cuidar el Jardin Intimo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Alianzas_y_Resguardo/10._Cuidar_el_Jardin_Intimo.mp3" }
+            ]
+        },
+        {
+            id: "armadura_y_defensa",
+            title: "Armadura y Defensa",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/portada.jpg",
+            episodes: [
+                { title: "1. El Cinturon de la Verdad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/1._El_Cinturon_de_la_Verdad.mp3" },
+                { title: "2. La Coraza de Justicia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/2._La_Coraza_de_Justicia.mp3" },
+                { title: "3. El Escudo de la Fe", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/3._El_Escudo_de_la_Fe.mp3" },
+                { title: "4. El Yelmo de la Salvacion", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/4._El_Yelmo_de_la_Salvacion.mp3" },
+                { title: "5. La Espada del Espiritu", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/5._La_Espada_del_Espiritu.mp3" },
+                { title: "6. Sometimiento y Resistencia", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/6._Sometimiento_y_Resistencia.mp3" },
+                { title: "7. La Sangre del Pacto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/7._La_Sangre_del_Pacto.mp3" },
+                { title: "8. No Dar Lugar al Enemigo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/8._No_Dar_Lugar_al_Enemigo.mp3" },
+                { title: "9. Angeles Guardianes", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/9._Angeles_Guardianes.mp3" },
+                { title: "10. El Triunfo de la Cruz", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armadura_y_Defensa/10._El_Triunfo_de_la_Cruz.mp3" }
+            ]
+        },
+        {
+            id: "armas_de_nuestra_milicia",
+            title: "Armas de nuestra Milicia",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/portada.jpg",
+            episodes: [
+                { title: "1. La Oracion Ferviente", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/1._La_Oracion_Ferviente.mp3" },
+                { title: "2. El Ayuno que Dios Escoge", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/2._El_Ayuno_que_Dios_Escoge.mp3" },
+                { title: "3. La Palabra Escrita", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/3._La_Palabra_Escrita.mp3" },
+                { title: "4. La Alabanza que Libera", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/4._La_Alabanza_que_Libera.mp3" },
+                { title: "5. El Testimonio Publico", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/5._El_Testimonio_Publico.mp3" },
+                { title: "6. El Nombre de Jesus", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/6._El_Nombre_de_Jesus.mp3" },
+                { title: "7. La Unidad del Acuerdo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/7._La_Unidad_del_Acuerdo.mp3" },
+                { title: "8. El Silencio ante el Ataque", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/8._El_Silencio_ante_el_Ataque.mp3" },
+                { title: "9. La Sangre del Cordero", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/9._La_Sangre_del_Cordero.mp3" },
+                { title: "10. La Humillacion Sincera", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Armas_de_nuestra_Milicia/10._La_Humillacion_Sincera.mp3" }
+            ]
+        },
+        {
+            id: "caminos_de_la_providencia",
+            title: "Caminos de la Providencia",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/portada.jpg",
+            episodes: [
+                { title: "1. El Pan Cotidiano", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/1._El_Pan_Cotidiano.mp3" },
+                { title: "2. Cuervos Mensajeros", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/2._Cuervos_Mensajeros.mp3" },
+                { title: "3. La Tinaja que no Escasea", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/3._La_Tinaja_que_no_Escasea.mp3" },
+                { title: "4. Riquezas en la Roca", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/4._Riquezas_en_la_Roca.mp3" },
+                { title: "5. Abrir las Ventanas", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/5._Abrir_las_Ventanas.mp3" },
+                { title: "6. Multiplicacion de la Nada", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/6._Multiplicacion_de_la_Nada.mp3" },
+                { title: "7. Vestido de Gloria", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/7._Vestido_de_Gloria.mp3" },
+                { title: "8. El Alfoli Lleno", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/8._El_Alfoli_Lleno.mp3" },
+                { title: "9. Recoger el Mana", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/9._Recoger_el_Mana.mp3" },
+                { title: "10. Todo Satisfecho", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Caminos_de_la_Providencia/10._Todo_Satisfecho.mp3" }
+            ]
+        },
+        {
+            id: "ciudadanos_eternos",
+            title: "Ciudadanos Eternos",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/portada.jpg",
+            episodes: [
+                { title: "1. Dar Cuenta de los Actos", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/1._Dar_Cuenta_de_los_Actos.mp3" },
+                { title: "2. Probar la Obra", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/2._Probar_la_Obra.mp3" },
+                { title: "3. Esperar la Ciudad", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/3._Esperar_la_Ciudad.mp3" },
+                { title: "4. El Orden Nuevo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/4._El_Orden_Nuevo.mp3" },
+                { title: "5. El Galardon Pronto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/5._El_Galardon_Pronto.mp3" },
+                { title: "6. Fijar el Enfoque", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/6._Fijar_el_Enfoque.mp3" },
+                { title: "7. Juicio del Justo", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/7._Juicio_del_Justo.mp3" },
+                { title: "8. Lamparas Preparadas", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/8._Lamparas_Preparadas.mp3" },
+                { title: "9. Lagrimas Secas", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/9._Lagrimas_Secas.mp3" },
+                { title: "10. El Clamor Final", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Ciudadanos_Eternos/10._El_Clamor_Final.mp3" }
+            ]
+        },
+        {
+            id: "consciencia_de_eternidad",
+            title: "Consciencia de Eternidad",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/portada.jpg",
+            episodes: [
+                { title: "1. El Tribunal del Rey", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/1._El_Tribunal_del_Rey.mp3" },
+                { title: "2. Coronas Inmarcesibles", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/2._Coronas_Inmarcesibles.mp3" },
+                { title: "3. Vivir como Extranjeros", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/3._Vivir_como_Extranjeros.mp3" },
+                { title: "4. El Diseno Renovado", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/4._El_Diseno_Renovado.mp3" },
+                { title: "5. El Regreso Inminente", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/5._El_Regreso_Inminente.mp3" },
+                { title: "6. Invertir en lo Invisible", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/6._Invertir_en_lo_Invisible.mp3" },
+                { title: "7. El Libro Abierto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/7._El_Libro_Abierto.mp3" },
+                { title: "8. Velar con Aceite", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/8._Velar_con_Aceite.mp3" },
+                { title: "9. La Patria Deseada", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/9._La_Patria_Deseada.mp3" },
+                { title: "10. Consumado Es", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_de_Eternidad/10._Consumado_Es.mp3" }
+            ]
+        },
+        {
+            id: "consciencia_del_fin",
+            title: "Consciencia del Fin",
+            date: "Serie Completa",
+            cover: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/portada.jpg",
+            episodes: [
+                { title: "1. Cuenta Individual", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/1._Cuenta_Individual.mp3" },
+                { title: "2. La Obra por el Fuego", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/2._La_Obra_por_el_Fuego.mp3" },
+                { title: "3. Fundamento Eterno", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/3._Fundamento_Eterno.mp3" },
+                { title: "4. Renovacion Absoluta", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/4._Renovacion_Absoluta.mp3" },
+                { title: "5. Galardon en Mano", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/5._Galardon_en_Mano.mp3" },
+                { title: "6. Enfoque de lo Alto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/6._Enfoque_de_lo_Alto.mp3" },
+                { title: "7. Libros Abiertos", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/7._Libros_Abiertos.mp3" },
+                { title: "8. Aceite en la Vasija", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/8._Aceite_en_la_Vasija.mp3" },
+                { title: "9. Enjugar el Llanto", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/9._Enjugar_el_Llanto.mp3" },
+                { title: "10. Ven, Senor", file: "https://objectstorage.sa-santiago-1.oraclecloud.com/n/axulgrybsluj/b/parabolas-bucket/o/podcasts/Consciencia_del_Fin/10._Ven%2C_Senor.mp3" }
+            ]
         }
     ];
 
