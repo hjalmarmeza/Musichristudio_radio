@@ -218,6 +218,8 @@ REGLAS CRÍTICAS:
                 devocional = parsed;
                 console.log(`✅ [IA] Respuesta válida de ${api.name}.`);
                 break;
+            } else {
+                throw new Error(`La API no devolvió contenido válido. Respuesta cruda: ${JSON.stringify(data)}`);
             }
         } catch (e) {
             console.warn(`⚠️ [IA] ${api.name} falló: ${e.message}`);
