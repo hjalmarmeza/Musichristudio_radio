@@ -193,7 +193,19 @@ REGLAS CRÍTICAS:
                     throw new Error(`No se encontró un bloque JSON válido. Respuesta parcial: "${clean.substring(0, 50)}..."`);
                 }
                 
-                const parsed = JSON.parse(clean.substring(start, end + 1));
+                let jsonString = clean.substring(start, end + 1);
+                // Limpieza agresiva de JSON para errores comunes de LLMs
+                jsonString = jsonString.replace(/[\n\r\t]/g, ' '); // Eliminar saltos de línea literales
+                jsonString = jsonString.replace(/,\s*}/g, '}'); // Eliminar comas al final
+                jsonString = jsonString.replace(/,\s*\]/g, ']'); // Eliminar comas en arrays (por si acaso)
+                
+                let parsed;
+                try {
+                    parsed = JSON.parse(jsonString);
+                } catch (parseError) {
+                    console.error(`[DEBUG IA] JSON Inválido: ${jsonString}`);
+                    throw new Error(`JSON.parse falló: ${parseError.message}`);
+                }
                 
                 // Validar campos requeridos
                 const required = ['titulo', 'promesa_cita', 'promesa_texto', 'revelacion_rhema', 'accion_diaria'];
