@@ -187,6 +187,22 @@
                         </div>
                     </div>
 
+                    <!-- Widget 2: Creador de Postales de Fe -->
+                    <div class="widget-card postcard-widget" id="open-postcard-widget">
+                        <div class="widget-glow postcard-glow"></div>
+                        <div class="widget-content">
+                            <div class="widget-icon-box postcard-icon">
+                                <i class="fa-solid fa-image"></i>
+                                <span class="new-badge">NUEVO</span>
+                            </div>
+                            <h3>Postales de Fe</h3>
+                            <p>Crea hermosas imágenes con versículos o frases inspiradoras para compartir la palabra en tus redes sociales.</p>
+                            <button class="widget-btn postcard-btn">
+                                <i class="fa-solid fa-paintbrush"></i> Crear Postal
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Widget 4: Pan de Vida Diario (Devocional Automatizado) -->
                     <div class="widget-card devotional-widget" id="open-devotional-widget">
                         <div class="widget-glow devotional-glow"></div>
@@ -890,6 +906,60 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- MODAL: CREADOR DE POSTALES DE FE -->
+    <div class="nasa-modal-overlay" id="postcard-modal">
+        <button class="close-nasa-btn" id="close-postcard-btn">&times;</button>
+        <div class="nasa-modal-content" style="max-width: 900px; display: flex; flex-direction: row; flex-wrap: wrap;">
+            
+            <!-- Vista Previa Canvas -->
+            <div style="flex: 1; min-width: 300px; padding: 20px; display: flex; align-items: center; justify-content: center; background: #000;">
+                <canvas id="postcard-canvas" width="1080" height="1080" style="max-width: 100%; height: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 10px;"></canvas>
+            </div>
+
+            <!-- Controles -->
+            <div style="flex: 1; min-width: 300px; padding: 30px; background: #0d0f15; display: flex; flex-direction: column; gap: 20px; overflow-y: auto;">
+                <h3 style="color: #fff; margin-bottom: 5px; font-size: 1.5rem;"><i class="fa-solid fa-paintbrush" style="color: #00c6ff;"></i> Diseña tu Postal</h3>
+                <p style="color: #8892b0; font-size: 0.9rem; margin-bottom: 10px;">Crea imágenes inspiradoras para compartir.</p>
+
+                <div>
+                    <label style="color: #fff; display: block; margin-bottom: 8px;">Fondo</label>
+                    <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;" id="postcard-bgs">
+                        <!-- Thumbs genrados por JS -->
+                    </div>
+                </div>
+
+                <div>
+                    <label style="color: #fff; display: block; margin-bottom: 8px;">Mensaje / Versículo</label>
+                    <textarea id="postcard-text" rows="4" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; resize: none; font-family: 'Inter', sans-serif;">Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.&#10;- Salmos 46:1</textarea>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <div style="flex: 1;">
+                        <label style="color: #fff; display: block; margin-bottom: 8px;">Tipografía</label>
+                        <select id="postcard-font" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; outline: none;">
+                            <option value="Inter">Inter (Moderna)</option>
+                            <option value="Merriweather">Merriweather (Clásica)</option>
+                            <option value="Cinzel">Cinzel (Elegante)</option>
+                            <option value="Caveat">Caveat (Manuscrita)</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="color: #fff; display: block; margin-bottom: 8px;">Alineación</label>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="align-btn active" data-align="left" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: none; color: white; border-radius: 5px; cursor: pointer;"><i class="fa-solid fa-align-left"></i></button>
+                            <button class="align-btn" data-align="center" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: none; color: white; border-radius: 5px; cursor: pointer;"><i class="fa-solid fa-align-center"></i></button>
+                            <button class="align-btn" data-align="right" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: none; color: white; border-radius: 5px; cursor: pointer;"><i class="fa-solid fa-align-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="download-postcard-btn" style="margin-top: 10px; padding: 15px; width: 100%; background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,198,255,0.4);">
+                    <i class="fa-solid fa-download"></i> Descargar Imagen
+                </button>
+            </div>
         </div>
     </div>
 

@@ -3606,3 +3606,160 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ==========================================
+// WIDGET 2: CREADOR DE POSTALES DE FE
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const openBtn = document.getElementById('open-postcard-widget');
+    const modal = document.getElementById('postcard-modal');
+    const closeBtn = document.getElementById('close-postcard-btn');
+    const canvas = document.getElementById('postcard-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    const textInput = document.getElementById('postcard-text');
+    const fontSelect = document.getElementById('postcard-font');
+    const alignBtns = document.querySelectorAll('.align-btn');
+    const downloadBtn = document.getElementById('download-postcard-btn');
+    const bgsContainer = document.getElementById('postcard-bgs');
+
+    if (!openBtn || !modal || !canvas) return;
+
+    let currentBgImage = new Image();
+    let currentAlign = 'left';
+
+    const BACKGROUNDS = [
+        'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=1080&h=1080',
+        'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=1080&h=1080',
+        'https://images.unsplash.com/photo-1444065707204-12decac917e8?auto=format&fit=crop&q=80&w=1080&h=1080',
+        'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=1080&h=1080',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&q=80&w=1080&h=1080'
+    ];
+
+    function initPostcard() {
+        BACKGROUNDS.forEach((src, idx) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.className = `bg-thumb ${idx === 0 ? 'active' : ''}`;
+            img.onclick = () => {
+                document.querySelectorAll('.bg-thumb').forEach(el => el.classList.remove('active'));
+                img.classList.add('active');
+                loadBackgroundImage(src);
+            };
+            bgsContainer.appendChild(img);
+        });
+        loadBackgroundImage(BACKGROUNDS[0]);
+    }
+
+    function loadBackgroundImage(url) {
+        currentBgImage = new Image();
+        currentBgImage.crossOrigin = "anonymous"; // Important for canvas export
+        currentBgImage.onload = drawCanvas;
+        currentBgImage.src = url;
+    }
+
+    function drawCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        if (currentBgImage.complete && currentBgImage.naturalWidth > 0) {
+            const scale = Math.max(canvas.width / currentBgImage.width, canvas.height / currentBgImage.height);
+            const x = (canvas.width / 2) - (currentBgImage.width / 2) * scale;
+            const y = (canvas.height / 2) - (currentBgImage.height / 2) * scale;
+            ctx.drawImage(currentBgImage, x, y, currentBgImage.width * scale, currentBgImage.height * scale);
+        } else {
+            ctx.fillStyle = '#0d0f15';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const text = textInput.value;
+        const font = fontSelect.value;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold 60px "${font}", sans-serif`;
+        ctx.textBaseline = 'middle';
+
+        let alignX = canvas.width / 2;
+        if (currentAlign === 'left') {
+            ctx.textAlign = 'left';
+            alignX = 100;
+        } else if (currentAlign === 'right') {
+            ctx.textAlign = 'right';
+            alignX = canvas.width - 100;
+        } else {
+            ctx.textAlign = 'center';
+            alignX = canvas.width / 2;
+        }
+
+        const lines = text.split('\n');
+        const lineHeight = 80;
+        const totalTextHeight = lines.length * lineHeight;
+        let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 40;
+
+        ctx.shadowColor = "rgba(0,0,0,0.8)";
+        ctx.shadowBlur = 15;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 4;
+
+        lines.forEach(line => {
+            wrapText(ctx, line, alignX, startY, canvas.width - 200, lineHeight);
+            startY += lineHeight;
+        });
+
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Marca de Agua
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.font = `300 24px "Inter", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('Creado en Musichris Studio', canvas.width / 2, canvas.height - 50);
+    }
+
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        let words = text.split(' ');
+        let line = '';
+
+        for(let n = 0; n < words.length; n++) {
+            let testLine = line + words[n] + ' ';
+            let metrics = context.measureText(testLine);
+            let testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line.trim(), x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line.trim(), x, y);
+    }
+
+    openBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        if(bgsContainer.children.length === 0) initPostcard();
+        setTimeout(drawCanvas, 100);
+    });
+
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    textInput.addEventListener('input', drawCanvas);
+    fontSelect.addEventListener('change', drawCanvas);
+
+    alignBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            alignBtns.forEach(b => b.classList.remove('active'));
+            const target = e.currentTarget;
+            target.classList.add('active');
+            currentAlign = target.dataset.align;
+            drawCanvas();
+        });
+    });
+
+    downloadBtn.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'postal-musichris.jpg';
+        link.href = canvas.toDataURL('image/jpeg', 0.9);
+        link.click();
+    });
+});
+

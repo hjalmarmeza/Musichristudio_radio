@@ -2432,6 +2432,51 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
 }
 
+/* Widget 2: Postales de Fe */
+.postcard-widget {
+    background: radial-gradient(circle at top right, rgba(0, 198, 255, 0.08), rgba(5, 4, 10, 0.95));
+}
+
+.postcard-icon i {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.postcard-glow {
+    background: radial-gradient(circle, rgba(0, 198, 255, 0.15) 0%, transparent 70%);
+}
+
+.postcard-btn {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff;
+}
+
+.postcard-btn:hover {
+    box-shadow: 0 10px 20px rgba(0, 198, 255, 0.3);
+}
+
+.align-btn.active {
+    background: rgba(0, 198, 255, 0.3) !important;
+    border: 1px solid #00c6ff !important;
+}
+
+.bg-thumb {
+    width: 80px; height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+
+.bg-thumb.active {
+    border-color: #00c6ff;
+    transform: scale(1.05);
+}
+
 /* Widget 4: Pan de Vida Diario (Devotional) Specific */
 .devotional-widget {
     background: radial-gradient(circle at bottom left, rgba(255, 138, 0, 0.08), rgba(5, 4, 10, 0.95));
