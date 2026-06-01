@@ -3690,9 +3690,32 @@ function initPostcardCreatorModal() {
             alignX = canvas.width / 2;
         }
 
-        const lines = text.split('\n');
+        const paragraphs = text.split('\n');
         const lineHeight = 80;
-        const totalTextHeight = lines.length * lineHeight;
+        const allLines = [];
+
+        paragraphs.forEach(paragraph => {
+            if (paragraph.trim() === '') {
+                allLines.push('');
+                return;
+            }
+            let words = paragraph.split(' ');
+            let line = '';
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = ctx.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > (canvas.width - 200) && n > 0) {
+                    allLines.push(line.trim());
+                    line = words[n] + ' ';
+                } else {
+                    line = testLine;
+                }
+            }
+            allLines.push(line.trim());
+        });
+
+        const totalTextHeight = allLines.length * lineHeight;
         let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight / 2) - 40;
 
         ctx.shadowColor = "rgba(0,0,0,0.8)";
@@ -3700,8 +3723,10 @@ function initPostcardCreatorModal() {
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 4;
 
-        lines.forEach(line => {
-            wrapText(ctx, line, alignX, startY, canvas.width - 200, lineHeight);
+        allLines.forEach(line => {
+            if (line !== '') {
+                ctx.fillText(line, alignX, startY);
+            }
             startY += lineHeight;
         });
 
@@ -3714,25 +3739,6 @@ function initPostcardCreatorModal() {
         ctx.font = `300 24px "Inter", sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillText('Creado en Musichris Studio', canvas.width / 2, canvas.height - 50);
-    }
-
-    function wrapText(context, text, x, y, maxWidth, lineHeight) {
-        let words = text.split(' ');
-        let line = '';
-
-        for(let n = 0; n < words.length; n++) {
-            let testLine = line + words[n] + ' ';
-            let metrics = context.measureText(testLine);
-            let testWidth = metrics.width;
-            if (testWidth > maxWidth && n > 0) {
-                context.fillText(line.trim(), x, y);
-                line = words[n] + ' ';
-                y += lineHeight;
-            } else {
-                line = testLine;
-            }
-        }
-        context.fillText(line.trim(), x, y);
     }
 
     openBtn.addEventListener('click', (e) => {
