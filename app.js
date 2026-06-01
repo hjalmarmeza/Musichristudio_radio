@@ -3744,7 +3744,13 @@ function initPostcardCreatorModal() {
 
     closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     textInput.addEventListener('input', drawCanvas);
-    fontSelect.addEventListener('change', drawCanvas);
+    fontSelect.addEventListener('change', () => {
+        drawCanvas();
+        // Asegurarse de redibujar cuando la fuente esté completamente cargada
+        if (document.fonts) {
+            document.fonts.ready.then(drawCanvas);
+        }
+    });
 
     alignBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
