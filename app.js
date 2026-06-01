@@ -3474,7 +3474,7 @@ document.addEventListener('DOMContentLoaded', () => {
         grid.style.display = 'none';
 
         const RSS_FEEDS = [
-            'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fworld%2Frss.xml',
+            'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.christianpost.com%2Frss%2F',
             'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.relevantmagazine.com%2Ffeed%2F',
             'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.christianitytoday.com%2Ffeed%2F'
         ];
