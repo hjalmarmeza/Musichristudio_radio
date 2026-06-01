@@ -4329,9 +4329,11 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 
 .news-card-img {
     width: 100%;
-    height: 140px;
-    object-fit: cover;
-    background: #000;
+    height: 170px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #07050f;
 }
 
 .news-card-content {
