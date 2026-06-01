@@ -3618,6 +3618,7 @@ function initPostcardCreatorModal() {
     const textInput = document.getElementById('postcard-text');
     const fontSelect = document.getElementById('postcard-font');
     const alignBtns = document.querySelectorAll('.align-btn');
+    const shareBtn = document.getElementById('share-postcard-btn');
     const downloadBtn = document.getElementById('download-postcard-btn');
     const bgsContainer = document.getElementById('postcard-bgs');
 
@@ -3767,6 +3768,29 @@ function initPostcardCreatorModal() {
             drawCanvas();
         });
     });
+
+    if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+            canvas.toBlob(async (blob) => {
+                if (!blob) return;
+                const file = new File([blob], 'postal-musichris.jpg', { type: 'image/jpeg' });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'MusiChris Studio',
+                            text: '¡Mira esta hermosa postal de fe que creé en MusiChris Studio!'
+                        });
+                    } catch (err) {
+                        console.log('Error al compartir', err);
+                    }
+                } else {
+                    alert('Tu navegador no soporta compartir directamente. Por favor, usa el botón de Guardar.');
+                }
+            }, 'image/jpeg', 0.9);
+        });
+    }
 
     downloadBtn.addEventListener('click', () => {
         const link = document.createElement('a');
