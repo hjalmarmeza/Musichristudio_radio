@@ -3509,7 +3509,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 translateES(item.title),
                 translateES(rawDesc)
             ]);
-            const photo = item.thumbnail || item.enclosure?.link || FALLBACK_PHOTOS[i % FALLBACK_PHOTOS.length];
+            let photo = item.thumbnail || item.enclosure?.link;
+            if (photo && photo.startsWith('http')) {
+                photo = `https://wsrv.nl/?url=${encodeURIComponent(photo)}`;
+            } else {
+                photo = FALLBACK_PHOTOS[i % FALLBACK_PHOTOS.length];
+            }
             return { title, desc, photo, link: item.link, author: item.author };
         }));
 
