@@ -1,4 +1,4 @@
-const CACHE_NAME = "musichris-radio-cache-v4";
+const CACHE_NAME = "musichris-radio-cache-v5";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
@@ -42,13 +42,31 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url);
 
-  // Bypass cache for audio streaming and Firebase Realtime DB REST API queries
-  if (
-    requestUrl.hostname.includes("sslip.io") || 
-    requestUrl.hostname.includes("oraclecloud.com") ||
-    requestUrl.pathname.includes(".json") || 
-    event.request.method !== "GET"
-  ) {
+  // Bypass cache for audio streaming, Firebase, and ALL external API calls
+  const externalApis = [
+    "sslip.io",
+    "oraclecloud.com",
+    "earthquake.usgs.gov",
+    "allorigins.win",
+    "translate.googleapis.com",
+    "api.rss2json.com",
+    "api.nasa.gov",
+    "epic.gsfc.nasa.gov",
+    "sdo.gsfc.nasa.gov",
+    "firebase",
+    "firebaseio.com",
+    "firebaseapp.com",
+    "bbci.co.uk",
+    "relevantmagazine.com",
+    "christianitytoday.com"
+  ];
+
+  const isBypassed =
+    externalApis.some(domain => requestUrl.hostname.includes(domain)) ||
+    requestUrl.pathname.includes(".json") ||
+    event.request.method !== "GET";
+
+  if (isBypassed) {
     return; // Let the browser fetch directly from network
   }
 

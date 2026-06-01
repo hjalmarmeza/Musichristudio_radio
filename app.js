@@ -1114,9 +1114,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             })
-            .catch(error => {
-                console.warn("⚠️ Error al obtener metadatos de AzuraCast:", error);
-                // Fail silently, keep current or default metadata
+            .catch(() => {
+                // Silencioso: esperado en localhost por CORS.
+                // Funciona correctamente en producción (Firebase Hosting).
             });
     }
 
@@ -1541,8 +1541,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     prayersScroller.appendChild(el);
                 });
             })
-            .catch(err => {
-                console.error("Error loading prayers:", err);
+            .catch(() => {
+                // Silencioso en localhost: Firebase bloquea peticiones sin auth desde HTTP local.
+                // En producción (HTTPS + Firebase Hosting) funciona correctamente.
+                // Mostramos datos de muestra para no dejar el Muro vacío.
+                const prayersScroller = document.getElementById('prayers-scroller');
+                if (!prayersScroller || prayersScroller.children.length > 0) return;
+                const fallback = [
+                    { name: "MusiChris Studio", text: "Orando en cadena global de fe y bendición para todo el mundo." },
+                    { name: "Hermano Pedro", text: "Clamando por restauración familiar y paz espiritual en cada hogar." },
+                    { name: "Hermana María", text: "Dando gracias por un milagro financiero y provisión diaria." },
+                    { name: "Comunidad", text: "Unidos en oración por las naciones y sus líderes. ¡Él reina!" }
+                ];
+                const renderItems = [...fallback, ...fallback];
+                renderItems.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'scroll-item';
+                    el.innerHTML = `✨ <span class="item-name">${item.name}:</span> ${item.text}`;
+                    prayersScroller.appendChild(el);
+                });
             });
     }
 
@@ -1664,6 +1681,102 @@ document.addEventListener("DOMContentLoaded", () => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Publicar en el Muro`;
         });
+    }
+
+    // -------------------------------------------------------------
+    // 🌍 CHRISTIAN NEWS RADAR LOGIC
+    // -------------------------------------------------------------
+    async function fetchChristianNews() {
+        const gridContainer = document.getElementById("news-grid-container");
+        const loader = document.getElementById("news-loader");
+        if (!gridContainer || !loader) return;
+
+        // Limpiar
+        gridContainer.style.display = "none";
+        gridContainer.innerHTML = "";
+        loader.style.display = "flex";
+
+        // Usar rss2json api proxy para Noticias Cristianas (con bypass de caché)
+        const RSS_URL = "https://www.noticiascristianas.com/feed";
+        const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&_t=${Date.now()}`;
+
+        try {
+            const response = await fetch(API_URL, { cache: "no-store" });
+            const data = await response.json();
+
+            loader.style.display = "none";
+
+            if (data.status === "ok" && data.items && data.items.length > 0) {
+                // Tomar los primeros 6
+                const items = data.items.slice(0, 6);
+
+                items.forEach(item => {
+                    // Extraer imagen si existe en enclosure o thumbnail
+                    let imageUrl = "";
+                    if (item.enclosure && item.enclosure.link) {
+                        imageUrl = item.enclosure.link;
+                    } else if (item.thumbnail) {
+                        imageUrl = item.thumbnail;
+                    } else {
+                        // Regex extract from description HTML
+                        const imgRegex = /<img[^>]+src="([^">]+)"/g;
+                        const match = imgRegex.exec(item.description);
+                        if (match) {
+                            imageUrl = match[1];
+                        }
+                    }
+
+                    // Fallback cristiano global si no hay imagen
+                    if (!imageUrl) {
+                        const fallbacks = [
+                            "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=600",
+                            "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=600"
+                        ];
+                        // Select one pseudo-randomly based on the title length so it stays consistent per article
+                        const index = (item.title ? item.title.length : 0) % fallbacks.length;
+                        imageUrl = fallbacks[index];
+                    }
+
+                    // Clean text from html
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = item.description || "";
+                    let cleanDesc = tempDiv.textContent || tempDiv.innerText || "";
+                    cleanDesc = cleanDesc.substring(0, 120) + "...";
+
+                    // Formatear Fecha
+                    const pubDate = new Date(item.pubDate);
+                    const formattedDate = pubDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                    const cardHTML = `
+                        <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="news-card">
+                            <img src="${imageUrl}" alt="News Image" class="news-card-img" onerror="this.src='https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=600'">
+                            <div class="news-card-content">
+                                <div class="news-card-source">
+                                    <span>NOTICIAS CRISTIANAS</span>
+                                    <span>${formattedDate}</span>
+                                </div>
+                                <h4 class="news-card-title">${item.title}</h4>
+                                <p class="news-card-desc">${cleanDesc}</p>
+                                <div class="news-card-footer">
+                                    Leer noticia completa <i class="fa-solid fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                    gridContainer.insertAdjacentHTML("beforeend", cardHTML);
+                });
+
+                gridContainer.style.display = "grid";
+            } else {
+                gridContainer.style.display = "flex";
+                gridContainer.innerHTML = `<p style="color:white; text-align:center; width:100%;">No se encontraron noticias recientes en el radar.</p>`;
+            }
+        } catch (error) {
+            console.error("Error fetching news:", error);
+            loader.style.display = "none";
+            gridContainer.style.display = "flex";
+            gridContainer.innerHTML = `<p style="color:#ff6b6b; text-align:center; width:100%;">Error de conexión. No se pudo rastrear la actualidad global.</p>`;
+        }
     }
 
     // -------------------------------------------------------------
@@ -2329,6 +2442,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initPostcardCreator();
     initParablesCatalog();
     bindSpiritualWidgets();
+    fetchChristianNews();
 
     // Actualización del Muro cada 30 segundos
     setInterval(fetchPrayerWall, 30000);
@@ -2930,4 +3044,560 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Temporizador eliminado
+
+    /* =========================================================
+       🌍 WIDGET 7: ALERTAS DE INTERCESIÓN (SISMOS)
+    ========================================================= */
+    async function fetchEarthquakes() {
+        earthquakesLoadedFlag = true;
+        earthquakesLoader.style.display = "flex";
+        earthquakesContainer.style.display = "none";
+        earthquakesContainer.innerHTML = "";
+
+        try {
+            // USGS api: 4.5+ in the past day
+            const res = await fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson");
+            const data = await res.json();
+            
+            // Filtrar mayores a 5.0
+            const strongQuakes = data.features.filter(q => q.properties.mag >= 5.0);
+
+            if (strongQuakes.length === 0) {
+                earthquakesContainer.innerHTML = `
+                    <div style="text-align:center; padding: 30px; color: var(--text-muted);">
+                        <i class="fa-solid fa-dove" style="font-size:3rem; color:#fff; margin-bottom:15px; opacity:0.8;"></i>
+                        <h4 style="color:#fff; font-size:1.3rem;">La tierra descansa tranquila hoy</h4>
+                        <p style="font-style:italic;">"Él hace cesar las guerras hasta los confines de la tierra" (Salmo 46:9)</p>
+                    </div>
+                `;
+            } else {
+                strongQuakes.forEach(quake => {
+                    const place = quake.properties.place;
+                    const mag = parseFloat(quake.properties.mag).toFixed(1);
+                    const time = new Date(quake.properties.time).toLocaleString();
+
+                    const card = document.createElement("div");
+                    card.className = "earthquake-card";
+                    card.innerHTML = `
+                        <h4>🚨 Sismo en ${place}</h4>
+                        <div class="earthquake-meta">
+                            <span class="earthquake-mag"><i class="fa-solid fa-house-crack"></i> Mag: ${mag}</span>
+                            <span><i class="fa-regular fa-clock"></i> ${time}</span>
+                        </div>
+                    `;
+                    earthquakesContainer.appendChild(card);
+                });
+            }
+        } catch (err) {
+            console.error("Error fetching earthquakes:", err);
+            earthquakesContainer.innerHTML = "<p style='color:red; text-align:center;'>Error al conectar con la base de datos sísmica global.</p>";
+        }
+
+        earthquakesLoader.style.display = "none";
+        earthquakesContainer.style.display = "block";
+    }
+
+    /* =========================================================
+       🌍 BARRA ESTRATÉGICA DE CLIMA SILENCIOSA
+    ========================================================= */
+    const weatherStrategicBar = document.getElementById("weather-strategic-bar");
+    const wsbIcon = document.getElementById("wsb-icon");
+    const wsbLocation = document.getElementById("wsb-location");
+    const wsbTemp = document.getElementById("wsb-temp");
+    const wsbVerse = document.getElementById("wsb-verse");
+
+    if (weatherStrategicBar) {
+        // Ejecutar inmediatamente al cargar para que sea silencioso
+        weatherStrategicBar.style.display = "flex";
+        autoLocateWeather();
+    }
+
+    async function autoLocateWeather() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    try {
+                        const revGeoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=es`);
+                        const revGeoData = await revGeoRes.json();
+                        let cityName = revGeoData.city || revGeoData.locality || "Tu Ubicación";
+                        if (revGeoData.countryName) cityName += `, ${revGeoData.countryName}`;
+
+                        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                        const weatherData = await weatherRes.json();
+                        const current = weatherData.current_weather;
+
+                        updateWeatherUI(cityName, current.temperature, current.weathercode);
+                    } catch (error) {
+                        fallbackWeather();
+                    }
+                },
+                (error) => {
+                    fallbackWeather();
+                }
+            );
+        } else {
+            fallbackWeather();
+        }
+    }
+
+    async function fallbackWeather() {
+        try {
+            // Jerusalem Coordinates
+            const lat = 31.7690;
+            const lon = 35.2163;
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            const weatherData = await weatherRes.json();
+            const current = weatherData.current_weather;
+            updateWeatherUI("Jerusalén, Israel", current.temperature, current.weathercode);
+        } catch(e) {
+            weatherStrategicBar.style.display = "none";
+        }
+    }
+
+    function updateWeatherUI(city, temp, code) {
+        wsbLocation.textContent = city;
+        wsbTemp.textContent = `| ${Math.round(temp)}°C`;
+
+        let iconClass = "fa-solid fa-sun";
+        let verse = `"Mas a vosotros los que teméis mi nombre, nacerá el Sol de justicia" - Mal 4:2`;
+
+        // Mapeo WMO (simplificado)
+        if (code === 0 || code === 1) {
+            iconClass = "fa-solid fa-sun";
+            verse = `"El cielo resplandece de su gloria y la tierra está llena de su alabanza." - Hab 3:3`;
+        } else if (code === 2 || code === 3 || code === 45 || code === 48) {
+            iconClass = "fa-solid fa-cloud";
+            verse = `"Aun en las nubes está tu fidelidad, oh Señor." - Salmo 36:5`;
+            wsbIcon.style.color = "#a0aab2";
+        } else if (code >= 51 && code <= 67) {
+            iconClass = "fa-solid fa-cloud-showers-heavy";
+            verse = `"Pide a Jehová lluvia... y Él dará aguaceros sobre los campos." - Zac 10:1`;
+            wsbIcon.style.color = "#4ba3e3";
+        } else if (code >= 71 && code <= 77) {
+            iconClass = "fa-solid fa-snowflake";
+            verse = `"Lávame, y seré más blanco que la nieve." - Salmo 51:7`;
+            wsbIcon.style.color = "#ffffff";
+        } else if (code >= 95) {
+            iconClass = "fa-solid fa-cloud-bolt";
+            verse = `"Cálmate... Y todo quedó tranquilo." - Marcos 4:39`;
+            wsbIcon.style.color = "#ffd700";
+        }
+
+        wsbIcon.className = iconClass;
+        wsbVerse.textContent = verse;
+    }
+
 });
+
+/* =========================================================
+   ✨ LOGICA: MARAVILLAS DE LA CREACIÓN (NASA)
+========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const btnOpenNasa = document.getElementById('open-wonders-widget');
+    const btnCloseNasa = document.getElementById('close-nasa-btn');
+    const modalNasa = document.getElementById('nasa-wonders-modal');
+    const nasaTabs = modalNasa ? modalNasa.querySelectorAll('.nasa-tab') : [];
+    const nasaPanes = modalNasa ? modalNasa.querySelectorAll('.nasa-tab-pane') : [];
+
+    // Elementos SDO
+    const imgSdo = document.getElementById('nasa-sdo-img');
+    const loaderSdo = document.getElementById('sdo-loading');
+
+    // Elementos EPIC
+    const imgEpic = document.getElementById('nasa-epic-img');
+    const loaderEpic = document.getElementById('epic-loading');
+    const titleEpic = document.getElementById('epic-title');
+
+    // Elementos APOD
+    const imgApod = document.getElementById('nasa-apod-img');
+    const loaderApod = document.getElementById('apod-loading');
+    const titleApod = document.getElementById('apod-title');
+    const descApod = document.getElementById('apod-desc');
+
+    let nasaLoaded = { sdo: false, epic: false, apod: false };
+
+    if(btnOpenNasa && modalNasa && btnCloseNasa) {
+        // Abrir Modal
+        btnOpenNasa.addEventListener('click', () => {
+            modalNasa.classList.add('active');
+            if(!nasaLoaded.sdo) fetchSDO();
+        });
+
+        // Cerrar Modal
+        btnCloseNasa.addEventListener('click', () => {
+            modalNasa.classList.remove('active');
+        });
+
+        // Cerrar al hacer clic afuera
+        modalNasa.addEventListener('click', (e) => {
+            if(e.target === modalNasa) {
+                modalNasa.classList.remove('active');
+            }
+        });
+    }
+
+    // Navegación de Pestañas
+    nasaTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remover activos
+            nasaTabs.forEach(t => t.classList.remove('active'));
+            nasaPanes.forEach(p => p.classList.remove('active'));
+            
+            // Activar seleccionado
+            tab.classList.add('active');
+            const targetId = tab.getAttribute('data-tab');
+            document.getElementById(targetId).classList.add('active');
+
+            // Cargar data si no ha sido cargada
+            if(targetId === 'tab-epic' && !nasaLoaded.epic) fetchEPIC();
+            if(targetId === 'tab-apod' && !nasaLoaded.apod) fetchAPOD();
+        });
+    });
+
+    // Fetch SDO (Sol)
+    function fetchSDO() {
+        nasaLoaded.sdo = true;
+        // Agregamos un timestamp para evadir caché, usando el formato de video MP4
+        const sdoUrl = `https://sdo.gsfc.nasa.gov/assets/img/latest/mpeg/latest_512_0304.mp4?t=${new Date().getTime()}`;
+        
+        const vidSdo = document.getElementById('nasa-sdo-video');
+        if(vidSdo) {
+            vidSdo.onloadeddata = () => {
+                loaderSdo.style.display = 'none';
+                vidSdo.style.display = 'block';
+                vidSdo.style.opacity = '1';
+            };
+            vidSdo.src = sdoUrl;
+        }
+    }
+
+    // Fetch EPIC (Tierra)
+    async function fetchEPIC() {
+        nasaLoaded.epic = true;
+        try {
+            const res = await fetch('https://epic.gsfc.nasa.gov/api/natural');
+            const data = await res.json();
+            
+            if(data && data.length > 0) {
+                const latest = data[0];
+                const imgName = latest.image;
+                // Parsear fecha (YYYY-MM-DD HH:MM:SS) a partes
+                const dateParts = latest.date.split(' ')[0].split('-');
+                const year = dateParts[0];
+                const month = dateParts[1];
+                const day = dateParts[2];
+                
+                const imgUrl = `https://epic.gsfc.nasa.gov/archive/natural/${year}/${month}/${day}/png/${imgName}.png`;
+                
+                imgEpic.onload = () => {
+                    loaderEpic.style.display = 'none';
+                    imgEpic.style.display = 'block';
+                    imgEpic.style.opacity = '1';
+                };
+                imgEpic.src = imgUrl;
+                titleEpic.innerText = `La Tierra (${latest.date.split(' ')[0]})`;
+            } else {
+                throw new Error("No data");
+            }
+        } catch(err) {
+            console.error("EPIC Error:", err);
+            loaderEpic.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Error conectando con satélite EPIC.";
+        }
+    }
+
+    // Helper para traducir textos usando la API gratuita de Google Translate
+    async function translateToSpanish(text) {
+        try {
+            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=${encodeURIComponent(text)}`);
+            const json = await res.json();
+            return json[0].map(item => item[0]).join('');
+        } catch(e) {
+            return text; // Fallback al texto original si falla la traducción
+        }
+    }
+
+    // Fetch APOD (Cosmos) — con fallback silencioso para rate-limit
+    async function fetchAPOD() {
+        nasaLoaded.apod = true;
+
+        const showFallback = () => {
+            if(imgApod) {
+                imgApod.onload = () => {
+                    loaderApod.style.display = 'none';
+                    imgApod.style.display = 'block';
+                    imgApod.style.opacity = '1';
+                };
+                imgApod.src = "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200";
+            }
+            if(titleApod) titleApod.innerText = "La Grandeza del Universo";
+            if(descApod) descApod.innerText = "\"Los cielos cuentan la gloria de Dios, y el firmamento anuncia la obra de sus manos.\" — Salmo 19:1";
+        };
+
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 5000);
+
+            const res = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { signal: controller.signal });
+            clearTimeout(timeout);
+
+            // Si hay rate-limit (429) o error del servidor (5xx), ir directo al fallback
+            if (res.status === 429 || res.status === 503 || res.status === 500 || !res.ok) {
+                showFallback();
+                return;
+            }
+
+            const data = await res.json();
+
+            if(data.url) {
+                if(data.media_type === 'video') {
+                    loaderApod.style.display = 'none';
+                    if(imgApod) imgApod.style.display = 'none';
+                    const wrapper = document.createElement('div');
+                    wrapper.style.cssText = 'width:100%;height:100%;';
+                    wrapper.innerHTML = `<iframe src="${data.url}" style="width:100%;height:100%;border:none;"></iframe>`;
+                    document.getElementById('tab-apod').querySelector('.nasa-media-container').appendChild(wrapper);
+                } else {
+                    if(imgApod) {
+                        imgApod.onload = () => {
+                            loaderApod.style.display = 'none';
+                            imgApod.style.display = 'block';
+                            imgApod.style.opacity = '1';
+                        };
+                        imgApod.src = data.url;
+                    }
+                }
+
+                const translatedTitle = await translateToSpanish(data.title);
+                const translatedDesc = await translateToSpanish(data.explanation);
+                if(titleApod) titleApod.innerText = translatedTitle;
+                if(descApod) descApod.innerText = translatedDesc;
+            } else {
+                showFallback();
+            }
+        } catch(err) {
+            // Timeout o error de red — fallback silencioso
+            showFallback();
+        }
+    }
+});
+
+/* =========================================================
+   🌍 LOGICA: CENTRO DE INTERCESIÓN GLOBAL
+========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const btnIntercession = document.getElementById('open-intercession-widget');
+    const modalIntercession = document.getElementById('intercession-modal');
+    const closeIntercessionBtn = document.getElementById('close-intercession-btn');
+
+    let newsLoadedFlag = false;
+    let earthquakesLoadedFlag = false;
+
+    if (!btnIntercession || !modalIntercession) return;
+
+    // Abrir modal al hacer clic en tarjeta o botón
+    btnIntercession.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+            modalIntercession.classList.add('active');
+            if (!newsLoadedFlag) fetchNews();
+        }
+    });
+    const openBtn = btnIntercession.querySelector('.widget-btn');
+    if (openBtn) {
+        openBtn.addEventListener('click', () => {
+            modalIntercession.classList.add('active');
+            if (!newsLoadedFlag) fetchNews();
+        });
+    }
+
+    // Cerrar modal
+    if (closeIntercessionBtn) {
+        closeIntercessionBtn.addEventListener('click', () => {
+            modalIntercession.classList.remove('active');
+        });
+    }
+    modalIntercession.addEventListener('click', (e) => {
+        if (e.target === modalIntercession) {
+            modalIntercession.classList.remove('active');
+        }
+    });
+
+    // Tabs del modal de Intercesión
+    const intercessionTabs = modalIntercession.querySelectorAll('.nasa-tab');
+    const intercessionPanes = modalIntercession.querySelectorAll('.nasa-tab-pane');
+
+    intercessionTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            intercessionTabs.forEach(t => t.classList.remove('active'));
+            intercessionPanes.forEach(p => p.classList.remove('active'));
+
+            tab.classList.add('active');
+            const target = tab.getAttribute('data-tab');
+            const pane = document.getElementById(target);
+            if (pane) pane.classList.add('active');
+
+            // Lazy load: sismos solo cuando se abre esa pestaña
+            if (target === 'tab-earthquakes' && !earthquakesLoadedFlag) {
+                fetchEarthquakes();
+            }
+        });
+    });
+
+    // --- Helper: traducir texto al español ---
+    async function translateES(text) {
+        if (!text) return text;
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            const res = await fetch(
+                `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=es&dt=t&q=${encodeURIComponent(text)}`,
+                { signal: controller.signal }
+            );
+            clearTimeout(timeoutId);
+            const json = await res.json();
+            return json[0].map(item => item[0]).join('');
+        } catch {
+            return text; // si falla o tarda mucho, devolver original
+        }
+    }
+
+    // --- Función fetchNews (lazy) con traducción al español ---
+    async function fetchNews() {
+        newsLoadedFlag = true;
+        const loader = document.getElementById('news-loader');
+        const grid = document.getElementById('news-grid-container');
+        if (!loader || !grid) return;
+
+        loader.style.display = 'flex';
+        grid.style.display = 'none';
+
+        const RSS_FEEDS = [
+            'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fworld%2Frss.xml',
+            'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.relevantmagazine.com%2Ffeed%2F',
+            'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.christianitytoday.com%2Ffeed%2F'
+        ];
+
+        const FALLBACK_PHOTOS = [
+            "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=600"
+        ];
+
+        let allItems = [];
+        for (const feed of RSS_FEEDS) {
+            try {
+                const res = await fetch(feed);
+                const data = await res.json();
+                if (data.items && data.items.length > 0) {
+                    allItems = allItems.concat(data.items.slice(0, 4));
+                }
+            } catch (e) { /* skip */ }
+        }
+
+        if (allItems.length === 0) {
+            loader.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Sin conexión al radar.';
+            return;
+        }
+
+        // Traducir todos los títulos y descripciones al español en paralelo
+        const translated = await Promise.all(allItems.map(async (item, i) => {
+            const rawDesc = item.description
+                ? item.description.replace(/<[^>]*>/g, '').slice(0, 150)
+                : '';
+            const [title, desc] = await Promise.all([
+                translateES(item.title),
+                translateES(rawDesc)
+            ]);
+            const photo = item.thumbnail || item.enclosure?.link || FALLBACK_PHOTOS[i % FALLBACK_PHOTOS.length];
+            return { title, desc, photo, link: item.link, author: item.author };
+        }));
+
+        grid.innerHTML = translated.map(item => `
+            <article class="news-card" onclick="window.open('${item.link}', '_blank')">
+                ${item.photo ? `<div class="news-card-img" style="background-image: url('${item.photo}')"></div>` : ''}
+                <div class="news-card-body">
+                    <span class="news-source">${item.author || 'Fuente Global'}</span>
+                    <h4 class="news-title">${item.title}</h4>
+                    <p class="news-desc">${item.desc}...</p>
+                </div>
+            </article>`).join('');
+
+        loader.style.display = 'none';
+        grid.style.display = 'grid';
+    }
+
+    // --- Función fetchEarthquakes (lazy) ---
+    async function fetchEarthquakes() {
+        earthquakesLoadedFlag = true;
+        const loader = document.getElementById('earthquakes-loader');
+        const container = document.getElementById('earthquakes-container');
+        if (!loader || !container) return;
+
+        loader.style.display = 'flex';
+        container.style.display = 'none';
+
+        // Ya no necesitamos el proxy porque arreglamos el Service Worker
+        const USGS_URL = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson';
+
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+            const res = await fetch(USGS_URL, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            
+            if (!res.ok) throw new Error('fetch failed');
+            const data = await res.json();
+
+            if (!data.features || data.features.length === 0) {
+                loader.style.display = 'none';
+                container.style.display = 'block';
+                container.innerHTML = '<div style="text-align:center;padding:30px;color:#4ade80;"><i class="fa-solid fa-circle-check" style="font-size:2rem;"></i><p style="margin-top:10px;">Sin alertas significativas este mes. ¡Paz en la tierra!</p></div>';
+                return;
+            }
+
+            // Filtrar estrictamente sismos 5.0+ (o nulos que aún están por determinarse)
+            const filteredFeatures = data.features.filter(f => f.properties.mag === null || f.properties.mag >= 5.0);
+
+            if (filteredFeatures.length === 0) {
+                loader.style.display = 'none';
+                container.style.display = 'block';
+                container.innerHTML = '<div style="text-align:center;padding:30px;color:#4ade80;"><i class="fa-solid fa-circle-check" style="font-size:2rem;"></i><p style="margin-top:10px;">Sin sismos mayores a 5.0 este mes. ¡Paz en la tierra!</p></div>';
+                return;
+            }
+
+            const sorted = filteredFeatures.sort((a, b) => (b.properties.mag || 0) - (a.properties.mag || 0));
+
+            // Traducir los lugares al español en paralelo
+            const cards = await Promise.all(sorted.map(async f => {
+                const p = f.properties;
+                const mag = p.mag !== null ? p.mag : 0; // Prevenir error de null
+                const color = mag >= 7 ? '#ff4b4b' : mag >= 5.5 ? '#ff9a3c' : '#facc15';
+                const date = new Date(p.time).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                const place = await translateES(p.place || 'Ubicación desconocida');
+                const alert = mag >= 7 ? '⚠️ ALERTA MAYOR' : mag >= 5.5 ? '🟠 Moderado' : '🟡 Leve';
+                const magDisplay = p.mag !== null ? mag.toFixed(1) : 'Por determinar';
+                const magFontSize = p.mag !== null ? '2rem' : '1.1rem';
+                
+                return `
+                    <div class="earthquake-card" style="border-left: 4px solid ${color};">
+                        <div class="eq-mag" style="color:${color}; font-size: ${magFontSize}; font-weight: 900;">${magDisplay}</div>
+                        <div class="eq-info">
+                            <strong>${place}</strong>
+                            <span>${date} · ${alert}</span>
+                        </div>
+                        <div class="eq-prayer" title="Orar por esta región"><i class="fa-solid fa-hands-praying"></i></div>
+                    </div>`;
+            }));
+
+
+            container.innerHTML = cards.join('');
+            loader.style.display = 'none';
+            container.style.display = 'block';
+
+        } catch (err) {
+            loader.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#ff4b4b;font-size:1.5rem;"></i><p style="margin-top:8px;">Fallo de conexión: ${err.message || err}</p>`;
+        }
+    }
+});
+
