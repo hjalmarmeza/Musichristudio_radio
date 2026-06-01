@@ -3561,8 +3561,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Filtrar estrictamente sismos 5.0+ (o nulos que aún están por determinarse)
-            const filteredFeatures = data.features.filter(f => f.properties.mag === null || f.properties.mag >= 5.0);
+            // Filtrar estrictamente sismos 5.0+
+            const filteredFeatures = data.features.filter(f => f.properties.mag !== null && f.properties.mag >= 5.0);
 
             if (filteredFeatures.length === 0) {
                 loader.style.display = 'none';
