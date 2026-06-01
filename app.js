@@ -3607,9 +3607,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// WIDGET 2: CREADOR DE POSTALES DE FE
+// WIDGET 2: CREADOR DE POSTALES DE FE (MODAL)
 // ==========================================
-document.addEventListener('DOMContentLoaded', () => {
+function initPostcardCreatorModal() {
     const openBtn = document.getElementById('open-postcard-widget');
     const modal = document.getElementById('postcard-modal');
     const closeBtn = document.getElementById('close-postcard-btn');
@@ -3735,13 +3735,14 @@ document.addEventListener('DOMContentLoaded', () => {
         context.fillText(line.trim(), x, y);
     }
 
-    openBtn.addEventListener('click', () => {
-        modal.style.display = 'flex';
+    openBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
         if(bgsContainer.children.length === 0) initPostcard();
         setTimeout(drawCanvas, 100);
     });
 
-    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     textInput.addEventListener('input', drawCanvas);
     fontSelect.addEventListener('change', drawCanvas);
 
@@ -3761,5 +3762,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.href = canvas.toDataURL('image/jpeg', 0.9);
         link.click();
     });
-});
+}
+
+initPostcardCreatorModal();
 
