@@ -2005,15 +2005,15 @@ document.addEventListener("DOMContentLoaded", () => {
             thumb.title = video.name;
             thumb.setAttribute("aria-label", video.name);
 
-            // Usamos un <video> pausado en el primer fotograma como miniatura
+            // Usamos una miniatura JPG en lugar de cargar el video completo para ahorrar datos y evitar bloqueos
+            const thumbUrl = video.src.replace('videos', 'thumbs').replace('.mp4', '.jpg');
             thumb.innerHTML = `
-                <video
-                    class="bg-thumb-preview"
-                    src="${video.src}#t=0.5"
-                    muted
-                    playsinline
-                    preload="metadata"
-                ></video>
+                <img 
+                    class="bg-thumb-preview" 
+                    src="${thumbUrl}" 
+                    alt="${video.name}" 
+                    loading="lazy" 
+                />
                 <div class="bg-thumb-label">${video.name}</div>
                 <div class="bg-thumb-overlay"></div>
             `;
