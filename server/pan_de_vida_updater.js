@@ -134,7 +134,8 @@ REGLAS CRÍTICAS:
 - Si hay reflexión explícita, resúmela manteniendo la esencia espiritual.
 - La acción diaria debe ser práctica, alcanzable y espiritual.
 - Todo en español ministerial, cálido y directo.
-- NO incluyas el nombre "Esperanza Diaria" ni "Pastor Rick" ni menciones que es un correo.`;
+- NO incluyas el nombre "Esperanza Diaria" ni "Pastor Rick" ni menciones que es un correo.
+- NUNCA uses comillas dobles ("") dentro de tus textos. Si debes citar un versículo o frase, usa ÚNICAMENTE comillas simples ('').`;
 
     const userPrompt = `ASUNTO DEL CORREO: ${subject}\n\nCONTENIDO:\n${body.substring(0, 3000)}`;
 
@@ -143,7 +144,7 @@ REGLAS CRÍTICAS:
             name: 'CEREBRAS',
             key: process.env.CEREBRAS_API_KEY,
             url: 'https://api.cerebras.ai/v1/chat/completions',
-            model: 'llama3.1-8b'
+            model: 'llama3.3-70b'
         },
         {
             name: 'DEEPINFRA',
@@ -195,6 +196,7 @@ REGLAS CRÍTICAS:
                 
                 let jsonString = clean.substring(start, end + 1);
                 // Limpieza agresiva de JSON para errores comunes de LLMs
+                jsonString = jsonString.replace(/""/g, '"'); // Limpieza de emergencia para comillas dobles
                 jsonString = jsonString.replace(/[\n\r\t]/g, ' '); // Eliminar saltos de línea literales
                 jsonString = jsonString.replace(/,\s*}/g, '}'); // Eliminar comas al final
                 jsonString = jsonString.replace(/,\s*\]/g, ']'); // Eliminar comas en arrays (por si acaso)
