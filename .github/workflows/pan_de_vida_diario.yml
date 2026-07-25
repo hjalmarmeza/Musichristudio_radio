@@ -2,8 +2,8 @@ name: 🍞 Pan de Vida Diario — MusiChris Studio Radio
 
 on:
   schedule:
-    # Todos los días a las 6:00 AM UTC = 8:00 AM España = 1:00 AM México
-    - cron: '0 6 * * *'
+    # Todos los días a las 9:30 AM UTC = 11:30 AM España = 3:30 AM México
+    - cron: '30 9 * * *'
   workflow_dispatch:
     # Permite ejecución manual desde la pestaña Actions de GitHub
 
