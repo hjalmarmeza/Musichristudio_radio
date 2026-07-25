@@ -144,7 +144,7 @@ REGLAS CRÍTICAS:
             name: 'CEREBRAS',
             key: process.env.CEREBRAS_API_KEY,
             url: 'https://api.cerebras.ai/v1/chat/completions',
-            model: 'llama3.3-70b'
+            model: 'llama-3.3-70b'
         },
         {
             name: 'DEEPINFRA',
@@ -178,6 +178,7 @@ REGLAS CRÍTICAS:
                         { role: 'system', content: systemPrompt },
                         { role: 'user',   content: userPrompt   }
                     ],
+                    response_format: { type: 'json_object' },
                     temperature: 0.3
                 })
             });
