@@ -9,7 +9,7 @@ const fs = require('fs');
 // ─────────────────────────────────────────────────────────────────────────────
 const FIREBASE_API_KEY = 'AIzaSyDns9TUBRrrwIyyuVAizHmWsv9C3iX4neU';
 const FIREBASE_DB_URL  = 'https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app';
-const GMAIL_SOURCE     = 'devocional@vnpem.org.mx';
+const GMAIL_SOURCE     = 'connect@newsletter.purposedriven.com';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPER: Parsear JSON resistente (Base64, markdown, espacios)
@@ -45,7 +45,7 @@ function getFechaEspanol() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PASO 1: Leer Gmail — obtener correo de devocional@vnpem.org.mx
+// PASO 1: Leer Gmail — obtener correo de connect@newsletter.purposedriven.com
 // ─────────────────────────────────────────────────────────────────────────────
 async function leerGmail() {
     console.log(`\n📧 [GMAIL] Buscando correo de ${GMAIL_SOURCE}...`);
@@ -114,7 +114,7 @@ async function procesarConIA(subject, body) {
     console.log('\n🧠 [IA] Extrayendo campos del devocional para la radio...');
 
     const systemPrompt = `Eres el motor ministerial de MusiChris Studio Radio.
-Recibes el contenido de un correo devocional diario del ministerio VNPEM y debes extraer exactamente 5 campos para mostrarlos en la sección "Pan de Vida Diario" de la radio.
+Recibes el contenido de un correo devocional diario de "Esperanza Diaria del Pastor Rick" y debes extraer exactamente 5 campos para mostrarlos en la sección "Pan de Vida Diario" de la radio.
 
 RESPONDE ÚNICAMENTE CON UN OBJETO JSON VÁLIDO. SIN MARKDOWN, SIN EXPLICACIONES, SIN TEXTO ADICIONAL.
 ASEGÚRATE DE QUE TODAS LAS CLAVES Y VALORES ESTÉN ENTRE COMILLAS DOBLES Y DE ESCAPAR COMILLAS INTERNAS.
@@ -134,7 +134,7 @@ REGLAS CRÍTICAS:
 - Si hay reflexión explícita, resúmela manteniendo la esencia espiritual.
 - La acción diaria debe ser práctica, alcanzable y espiritual.
 - Todo en español ministerial, cálido y directo.
-- NO incluyas el nombre "VNPEM" ni menciones que es un correo.`;
+- NO incluyas el nombre "Esperanza Diaria" ni "Pastor Rick" ni menciones que es un correo.`;
 
     const userPrompt = `ASUNTO DEL CORREO: ${subject}\n\nCONTENIDO:\n${body.substring(0, 3000)}`;
 
