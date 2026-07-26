@@ -3356,6 +3356,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? (data.thumbnail_url || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200") 
                     : data.url;
                 
+                if(imgApod) {
                     imgApod.onload = () => {
                         loaderApod.style.display = 'none';
                         imgApod.style.display = 'block';
