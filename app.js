@@ -3340,7 +3340,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 5000);
 
-            const res = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { signal: controller.signal });
+            const res = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&thumbs=True', { signal: controller.signal });
             clearTimeout(timeout);
 
             // Si hay rate-limit (429) o error del servidor (5xx), ir directo al fallback
@@ -3352,21 +3352,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if(data.url) {
-                if(data.media_type === 'video') {
-                    loaderApod.style.display = 'none';
-                    if(imgApod) imgApod.style.display = 'none';
-                    const wrapper = document.createElement('div');
-                    wrapper.style.cssText = 'width:100%;height:100%;';
-                    wrapper.innerHTML = `<iframe src="${data.url}" style="width:100%;height:100%;border:none;"></iframe>`;
-                    document.getElementById('tab-apod').querySelector('.nasa-media-container').appendChild(wrapper);
-                } else {
-                    if(imgApod) {
-                        imgApod.onload = () => {
-                            loaderApod.style.display = 'none';
-                            imgApod.style.display = 'block';
-                            imgApod.style.opacity = '1';
-                        };
-                        imgApod.src = data.url;
+                const imageUrl = data.media_type === 'video' && data.thumbnail_url ? data.thumbnail_url : data.url;
+                
+                if(imgApod) {
+                    imgApod.onload = () => {
+                        loaderApod.style.display = 'none';
+                        imgApod.style.display = 'block';
+                        imgApod.style.opacity = '1';
+                    };
+                    imgApod.src = imageUrl;
+                    
+                    // Envolver la imagen en un enlace para ver el original o el video
+                    if (!imgApod.parentElement.matches('a.nasa-apod-link')) {
+                        const link = document.createElement('a');
+                        link.href = data.url;
+                        link.target = '_blank';
+                        link.className = 'nasa-apod-link';
+                        link.style.display = 'block';
+                        imgApod.parentNode.insertBefore(link, imgApod);
+                        link.appendChild(imgApod);
+                    } else {
+                        imgApod.parentElement.href = data.url;
                     }
                 }
 
