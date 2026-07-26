@@ -3356,7 +3356,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? (data.thumbnail_url || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200") 
                     : data.url;
                 
-                if(imgApod) {
                     imgApod.onload = () => {
                         loaderApod.style.display = 'none';
                         imgApod.style.display = 'block';
@@ -3367,7 +3366,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         imgApod.onerror = null; // evitar loop
                         imgApod.src = "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200";
                     };
-                    imgApod.src = imageUrl;
                     
                     // Envolver la imagen en un enlace para ver el original o el video
                     if (!imgApod.parentElement.matches('a.nasa-apod-link')) {
@@ -3381,6 +3379,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         imgApod.parentElement.href = data.url;
                     }
+                    
+                    // IMPORTANTE: Asignar el src DESPUÉS de mover la imagen en el DOM
+                    // para evitar que el navegador cancele la carga.
+                    imgApod.src = imageUrl;
                 }
 
                 const translatedTitle = await translateToSpanish(data.title);
