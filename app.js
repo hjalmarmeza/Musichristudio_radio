@@ -3352,13 +3352,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if(data.url) {
-                const imageUrl = data.media_type === 'video' && data.thumbnail_url ? data.thumbnail_url : data.url;
+                const imageUrl = (data.media_type === 'video') 
+                    ? (data.thumbnail_url || "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200") 
+                    : data.url;
                 
                 if(imgApod) {
                     imgApod.onload = () => {
                         loaderApod.style.display = 'none';
                         imgApod.style.display = 'block';
                         imgApod.style.opacity = '1';
+                    };
+                    imgApod.onerror = () => {
+                        // Si falla la imagen, cargar el fallback
+                        imgApod.onerror = null; // evitar loop
+                        imgApod.src = "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200";
                     };
                     imgApod.src = imageUrl;
                     
