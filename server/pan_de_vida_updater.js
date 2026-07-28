@@ -9,7 +9,7 @@ const fs = require('fs');
 // ─────────────────────────────────────────────────────────────────────────────
 const FIREBASE_API_KEY = 'AIzaSyDns9TUBRrrwIyyuVAizHmWsv9C3iX4neU';
 const FIREBASE_DB_URL  = 'https://proyecto-musichris-350df-default-rtdb.us-central1.firebasedatabase.app';
-const GMAIL_SOURCE     = 'connect@newsletter.purposedriven.com';
+const GMAIL_SOURCE     = 'info@visionparavivir.org';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPER: Parsear JSON resistente (Base64, markdown, espacios)
@@ -45,7 +45,7 @@ function getFechaEspanol() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PASO 1: Leer Gmail — obtener correo de connect@newsletter.purposedriven.com
+// PASO 1: Leer Gmail — obtener correo de ${GMAIL_SOURCE}
 // ─────────────────────────────────────────────────────────────────────────────
 async function leerGmail() {
     console.log(`\n📧 [GMAIL] Buscando correo de ${GMAIL_SOURCE}...`);
@@ -135,7 +135,8 @@ REGLAS CRÍTICAS:
 - La acción diaria debe ser práctica, alcanzable y espiritual.
 - Todo en español ministerial, cálido y directo.
 - NO incluyas el nombre "Esperanza Diaria" ni "Pastor Rick" ni menciones que es un correo.
-- NUNCA uses comillas dobles ("") dentro de tus textos. Si debes citar un versículo o frase, usa ÚNICAMENTE comillas simples ('').`;
+- NUNCA uses comillas dobles ("") dentro de tus textos. Si debes citar un versículo o frase, usa ÚNICAMENTE comillas simples ('').
+- GRAMÁTICA IMPECABLE: Aplica estrictamente las reglas del español. Cambia 'y' por 'e' antes de palabras que empiezan con 'i' o 'hi' (ej: "gracia e inteligencia"). Cambia 'o' por 'u' antes de palabras que empiezan con 'o' o 'ho'.`;
 
     const userPrompt = `ASUNTO DEL CORREO: ${subject}\n\nCONTENIDO:\n${body.substring(0, 3000)}`;
 
@@ -189,7 +190,13 @@ REGLAS CRÍTICAS:
                 // Limpiar y parsear JSON dentro del try-catch para que si falla, pase a la siguiente IA
                 let clean = rawContent.replace(/```json/gi, '').replace(/```/g, '').trim();
                 const start = clean.indexOf('{');
-                const end   = clean.lastIndexOf('}');
+                let end   = clean.lastIndexOf('}');
+                
+                // Auto-cierre si la IA olvidó la llave final (común en respuestas cortadas)
+                if (start !== -1 && end === -1) {
+                    clean += '\n}';
+                    end = clean.length - 1;
+                }
                 
                 if (start === -1 || end === -1) {
                     throw new Error(`No se encontró un bloque JSON válido. Respuesta parcial: "${clean.substring(0, 50)}..."`);
