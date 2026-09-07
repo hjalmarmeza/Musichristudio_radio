@@ -3163,6 +3163,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 }
 .devotional-verse-box {
     position: relative; /* FIX: added relative so it stays inside */
+}
 
 .devotional-verse-text {
     font-size: 1.15rem;
