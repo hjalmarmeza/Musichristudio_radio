@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cinzel:wght@400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    
     
     <!-- PWA & Mobile Integration Tags -->
     <link rel="manifest" href="manifest.json">
@@ -22,6 +22,7 @@
     <meta name="apple-mobile-web-app-title" content="MusiChris">
     <link rel="apple-touch-icon" href="assets/musichris_logo.png">
     <link rel="icon" type="image/png" href="assets/musichris_logo.png">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Forzar carga de fuentes para Canvas -->
@@ -119,7 +120,7 @@
 
                         <!-- Player Controls -->
                         <div class="controls-container">
-                            <div class="volume-control-wrapper">
+                            <div class="volume-control-wrapper" style="display: none !important;">
                                 <button class="icon-btn" id="mute-btn" title="Silenciar">
                                     <i class="fa-solid fa-volume-high" id="volume-icon"></i>
                                 </button>
@@ -127,9 +128,14 @@
                             </div>
 
                             <div class="play-button-wrapper">
-                                <button class="play-btn" id="play-btn" title="Reproducir Señal">
-                                    <i class="fa-solid fa-play" id="play-icon"></i>
-                                </button>
+                            
+    <button class="play-btn" id="play-btn" title="Reproducir Señal">
+        <i class="fa-solid fa-play" id="play-icon"></i>
+    </button>
+    <div id="orb-loader" style="display: none; width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px var(--neon-purple); border: 2px solid rgba(0, 242, 254, 0.5); align-items: center; justify-content: center; animation: pulseOrb 0.8s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle, #fff 0%, var(--neon-cyan) 60%, transparent 100%); box-shadow: 0 0 10px #fff; animation: orbFloat 1s infinite alternate ease-in-out;"></div>
+    </div>
+
                             </div>
 
                             <div class="interaction-wrapper">
@@ -924,5 +930,21 @@
 
     <!-- Firebase SDK (Auth) -->
     <script type="module" src="app.js?v=2.1"></script>
+
+
+
+
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+
+<script src="ux.js"></script>
 </body>
+
+
+
 </html>
