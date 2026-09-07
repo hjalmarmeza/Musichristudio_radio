@@ -634,7 +634,7 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
 
 /* 6.5. 📢 MAJESTIC RECTANGULAR ANNOUNCEMENT STRIP */
 .announcement-strip-section {
-    background: var(--bg-dark);
+    background: transparent !important;
     padding: 40px 0 20px 0;
     position: relative;
     z-index: 20;
@@ -658,7 +658,8 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     display: flex;
     align-items: center;
     padding: 40px 60px;
-    background-color: #07050f;
+    background-color: rgba(7, 5, 15, 0.5) !important;
+    backdrop-filter: blur(16px);
     transition: var(--transition-smooth);
 }
 
@@ -4378,7 +4379,8 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #07050f;
+    background-color: rgba(7, 5, 15, 0.5) !important;
+    backdrop-filter: blur(16px);
 }
 
 .news-card-content {
