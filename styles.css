@@ -3154,13 +3154,15 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
     position: relative;
 }
 
-.quote-icon {
+.devotional-quote-icon {
     position: absolute;
     top: 20px;
     left: 20px;
     font-size: 1.5rem;
     color: rgba(248, 181, 0, 0.2);
 }
+.devotional-verse-box {
+    position: relative; /* FIX: added relative so it stays inside */
 
 .devotional-verse-text {
     font-size: 1.15rem;
