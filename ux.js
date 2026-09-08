@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === MATRIX / HACKER EFFECT FOR WIDGET TITLES ===
     const matrixLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#%&*";
-    document.querySelectorAll('.widget-card').forEach(card => {
+    document.querySelectorAll('.widget-card, .announcement-card-strip').forEach(card => {
         const titleEl = card.querySelector('h3');
         if(!titleEl) return;
         
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(window.lucide) { lucide.createIcons(); }
 
     // 3D Tilt Logic
-    document.querySelectorAll('.widget-card').forEach(card => {
+    document.querySelectorAll('.widget-card, .announcement-card-strip').forEach(card => {
         const glare = document.createElement('div');
         glare.className = 'widget-glare';
         card.appendChild(glare);
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === MATRIX / HACKER EFFECT FOR WIDGET TITLES ===
     const matrixLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#%&*";
-    document.querySelectorAll('.widget-card').forEach(card => {
+    document.querySelectorAll('.widget-card, .announcement-card-strip').forEach(card => {
         const titleEl = card.querySelector('h3');
         if(!titleEl) return;
         

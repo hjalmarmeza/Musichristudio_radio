@@ -5141,10 +5141,33 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
       .strip-bg-layer, .strip-overlay-layer {
           display: none !important;
       }
+      
       .announcement-card-strip {
           background: rgba(255, 255, 255, 0.03) !important;
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
           border: 1px solid var(--border-color) !important;
           box-shadow: none !important;
+          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+          transform-style: preserve-3d;
+          perspective: 1000px;
+          will-change: transform;
       }
+      .announcement-card-strip:hover {
+          transform: translateY(-8px);
+          border-color: rgba(0, 242, 254, 0.3) !important;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 242, 254, 0.05) !important;
+      }
+      .announcement-card-strip .widget-glare {
+          position: absolute;
+          top: 0; left: 0; width: 500px; height: 500px;
+          background: radial-gradient(circle closest-side, rgba(255,255,255,0.1), transparent);
+          pointer-events: none;
+          transform: translate(-50%, -50%);
+          opacity: 0;
+          transition: opacity 0.3s;
+          z-index: 10;
+          border-radius: 50%;
+      }
+      .announcement-card-strip:hover .widget-glare { opacity: 1; }
+
