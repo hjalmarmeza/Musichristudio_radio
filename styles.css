@@ -5142,9 +5142,9 @@ body, section, header, footer, .main-content, .hero-section, .about-container, .
           display: none !important;
       }
       .announcement-card-strip {
-          background: rgba(255, 255, 255, 0.02) !important; /* ULTRA CLEAR */
-          backdrop-filter: blur(8px) !important; /* LESS BLUR SO IMAGE IS VISIBLE */
-          -webkit-backdrop-filter: blur(8px) !important;
-          border: 1px solid rgba(255,255,255,0.1) !important;
+          background: rgba(255, 255, 255, 0.03) !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          border: 1px solid var(--border-color) !important;
           box-shadow: none !important;
       }
